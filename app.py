@@ -75,8 +75,8 @@ max_date = max(final_df['createdAt'].max(), trade_df['executedAt'].max())
 start_date = st.sidebar.date_input('시작일', min_date)
 end_date = st.sidebar.date_input('종료일', max_date)
 
-# 목표가 조정값 선택
-price_adjustment = st.sidebar.slider('목표가 조정값', 0.1, 5.0, 1.0, 0.1)
+# 목표가 조정값 선택(최솟값, 최대값, 기본값, 조정 단위)
+price_adjustment = st.sidebar.slider('목표가 조정값', 0.1, 10.0, 1.0, 0.1)
 
 # 통화 선택
 available_currencies = ['USD', 'JPY', 'CNY', 'CAD']
@@ -125,16 +125,28 @@ time_series = results_df.set_index('executedAt')['found'].rolling('1D').mean()
 fig = px.line(time_series, title='일별 목표가 도달률')
 st.plotly_chart(fig)
 
+# 날짜 범위 필터링
+filtered_trade_df_2 = filtered_trade_df[
+    (filtered_trade_df['executedAt'] >= start_datetime) & 
+    (filtered_trade_df['executedAt'] <= end_datetime)
+]
+
+# 목표가 도달 데이터 필터링
+matched_rates_df_2 = matched_rates_df[
+    (matched_rates_df['createdAt'] >= start_datetime) & 
+    (matched_rates_df['createdAt'] <= end_datetime)
+]
+
 # 거래 데이터 표시
 st.subheader('거래 데이터')
-st.dataframe(filtered_trade_df)
+st.dataframe(filtered_trade_df_2)
 
 # 목표가 도달 데이터 표시
-if not matched_rates_df.empty:
+if not matched_rates_df_2.empty:
     st.subheader('목표가 도달 데이터')
     # 시간순으로 정렬
-    matched_rates_df = matched_rates_df.sort_values(['currency', 'createdAt'])
-    st.dataframe(matched_rates_df)
+    matched_rates_df_2 = matched_rates_df_2.sort_values(['currency', 'createdAt'])
+    st.dataframe(matched_rates_df_2)
 else:
     st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
 
