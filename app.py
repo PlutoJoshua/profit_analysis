@@ -15,6 +15,7 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, price_adj
     results = []
     matched_rates = []  # 매칭된 환율 데이터 저장
     for idx, trade_row in trade_df.iterrows():
+        # 매도의 경우 KRW로 표시됨 -> currencyCode0으로 통화 변경
         currency = trade_row['currencyCode0'] if trade_row['currencyCode'] == 'KRW' else trade_row['currencyCode']
         
         # 매수/매도에 따라 target_price 계산 (price_adjustment 적용)
@@ -146,6 +147,17 @@ if not matched_rates_df_2.empty:
     st.subheader('목표가 도달 데이터')
     # 시간순으로 정렬
     matched_rates_df_2 = matched_rates_df_2.sort_values(['currency', 'createdAt'])
+    
+    # 거래 가격과 target_price 추가
+    matched_rates_df_2['target_price'] = matched_rates_df_2.apply(
+        lambda row: results_df.loc[
+            (results_df['currency'] == row['currency']) & 
+            (results_df['executedAt'] == row['trade_executedAt']), 
+            'target_price'
+        ].values[0], 
+        axis=1
+    )
+    
     st.dataframe(matched_rates_df_2)
 else:
     st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
