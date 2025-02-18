@@ -20,18 +20,20 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, price_adj
         # 매수/매도에 따라 target_price 계산 (price_adjustment 적용)
         if trade_row['isBuyOrder'] == 1:  # 매수
             target_price = trade_row['price'] - price_adjustment
+            matching_rates = filtered_df[
+                (filtered_df['currencyCode'] ==currency) &
+                (filtered_df['basePrice'] <= target_price)
+            ]
         else:  # 매도
             target_price = trade_row['price'] + price_adjustment
+            matching_rates = filtered_df[
+                (filtered_df['currencyCode'] == currency) &
+                (filtered_df['basePrice'] >= target_price)
+            ]
             
-        # 매칭되는 환율 데이터 찾기
-        matching_rates = filtered_df[
-            (filtered_df['currencyCode'] == currency) & 
-            (filtered_df['basePrice'] == target_price)
-        ]
-        
         matches = matching_rates.shape[0]
         
-        # 매칭된 데이터가 있으면 저장
+        # 매칭된 환율 데이터 저장
         if matches > 0:
             for _, rate_row in matching_rates.iterrows():
                 matched_rates.append({
@@ -43,6 +45,7 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, price_adj
                     'order_type': '매수' if trade_row['isBuyOrder'] == 1 else '매도'
                 })
         
+        # 거래 건별 요약 정보 저장
         results.append({
             'currency': currency,
             'order_type': '매수' if trade_row['isBuyOrder'] == 1 else '매도',
@@ -53,6 +56,7 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, price_adj
             'executedAt': trade_row['executedAt']
         })
     
+    # 데이터 프레임으로 return
     return pd.DataFrame(results), pd.DataFrame(matched_rates)
 
 # Streamlit 앱 메인
