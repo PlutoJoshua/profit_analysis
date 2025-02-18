@@ -73,7 +73,7 @@ start_date = st.sidebar.date_input('시작일', min_date)
 end_date = st.sidebar.date_input('종료일', max_date)
 
 # 목표가 조정값 선택
-price_adjustment = st.sidebar.slider('목표가 조정값', 0.1, 5.0, 1.0, 0.1)
+price_adjustment = st.sidebar.slider('목표가 조정값', 0.1, 10.0, 1.0, 0.1)
 
 # 통화 선택
 available_currencies = ['USD', 'JPY', 'CNY', 'CAD']
