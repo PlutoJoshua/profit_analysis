@@ -25,7 +25,7 @@ def load_data():
             result_df = pd.DataFrame(data['result'])
             # 시간 추가
             if created_at is not None:
-                result_df['createdAt'] = created_at
+                result_df['createdAt'] = pd.to_datetime(created_at, format='%Y-%m-%d %H:%M:%S') + pd.Timedelta(hours=9) # UTC -> KST
             return result_df
         except Exception as e:
             return None
@@ -35,7 +35,6 @@ def load_data():
     for _, row in df.iterrows(): # 각 행 순회
         result = parse_json(row['data'], row['createdAt'])
         if result is not None:
-            result['createdAt'] = pd.to_datetime(result['createdAt'], format='%Y-%m-%d %H:%M:%S') + pd.Timedelta(hours=9) # UTC -> KST
             parsed_data.append(result)
     
     final_df = pd.concat(parsed_data, ignore_index=True)
