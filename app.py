@@ -75,6 +75,7 @@ end_date = st.sidebar.date_input('종료일', max_date)
 # 목표가 조정값 선택
 price_adjustment = st.sidebar.slider('목표가 조정값', 0.1, 10.0, 1.0, 0.1)
 
+
 # 통화 선택
 available_currencies = ['USD', 'JPY', 'CNY', 'CAD']
 selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
@@ -108,19 +109,35 @@ with col3:
     st.metric('목표가 도달률', f'{success_rate:.2f}%')
 
 # 통화별 분석
-st.subheader('통화별 분석')
-currency_analysis = results_df.groupby('currency').agg({
+# st.subheader('통화별 분석')
+# currency_analysis = results_df.groupby('currency').agg({
+#     'found': ['count', 'sum'],
+#     'match_count': 'sum'
+# }).round(2)
+# currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+# st.dataframe(currency_analysis)
+
+st.markdown("---")
+# 통화별 분석 결과 표시
+st.subheader('통화별 목표가 도달 거래 수')
+currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
     'found': ['count', 'sum'],
     'match_count': 'sum'
 }).round(2)
 currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+currency_analysis = currency_analysis.reset_index()
 st.dataframe(currency_analysis)
 
-# 시각화
-st.subheader('시계열 분석')
-time_series = results_df.set_index('executedAt')['found'].rolling('1D').mean()
-fig = px.line(time_series, title='일별 목표가 도달률')
-st.plotly_chart(fig)
+st.markdown("---")
+# 매수와 매도에 대한 바 차트 시각화
+st.subheader('매수 및 매도 목표가 도달 거래 수 바 차트')
+fig_bar = px.bar(currency_analysis, 
+                  x='currency', 
+                  y='목표가 도달', 
+                  color='order_type', 
+                  title='통화별 매수 및 매도 목표가 도달 거래 수',
+                  labels={'목표가 도달': '목표가 도달 거래 수', 'currency': '통화'})
+st.plotly_chart(fig_bar)
 
 # 거래 데이터 표시
 st.subheader('거래 데이터')
