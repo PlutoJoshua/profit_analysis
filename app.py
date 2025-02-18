@@ -5,7 +5,7 @@ from datetime import datetime
 import plotly.express as px
 from data import load_data
 
-def analyze_target_prices(filtered_df, trade_df, start_date, end_date, price_adjustment):
+def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price_adjustment, sell_price_adjustment):
     # 날짜 필터링
     filtered_df = filtered_df[(filtered_df['createdAt'] >= start_date) & 
                              (filtered_df['createdAt'] <= end_date)]
@@ -19,10 +19,10 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, price_adj
         
         # 매수/매도에 따라 target_price 계산 (price_adjustment 적용)
         if trade_row['isBuyOrder'] == 1:  # 매수
-            target_price = trade_row['price'] - price_adjustment
+            target_price = trade_row['price'] - buy_price_adjustment
             
         else:  # 매도
-            target_price = trade_row['price'] + price_adjustment
+            target_price = trade_row['price'] + sell_price_adjustment
             
         # 매칭되는 환율 데이터 찾기
         matching_rates = filtered_df[
@@ -73,8 +73,8 @@ start_date = st.sidebar.date_input('시작일', min_date)
 end_date = st.sidebar.date_input('종료일', max_date)
 
 # 목표가 조정값 선택
-price_adjustment = st.sidebar.slider('목표가 조정값', 0.1, 10.0, 1.0, 0.1)
-
+buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.1, 10.0, 1.0, 0.1)
+sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.1, 10.0, 1.0, 0.1)
 
 # 통화 선택
 available_currencies = ['USD', 'JPY', 'CNY', 'CAD']
@@ -93,7 +93,7 @@ filtered_df = final_df[final_df['currencyCode'].isin(selected_currencies)]
 start_datetime = datetime.combine(start_date, datetime.min.time())
 end_datetime = datetime.combine(end_date, datetime.max.time())
 
-results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, price_adjustment)
+results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, buy_price_adjustment, sell_price_adjustment)
 
 # 결과 표시
 st.header('분석 결과')
