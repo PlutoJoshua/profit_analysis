@@ -20,14 +20,18 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, price_adj
         # 매수/매도에 따라 target_price 계산 (price_adjustment 적용)
         if trade_row['isBuyOrder'] == 1:  # 매수
             target_price = trade_row['price'] - price_adjustment
+            # 매칭되는 환율 데이터 찾기
+            matching_rates = filtered_df[
+                (filtered_df['currencyCode'] == currency) & 
+                (filtered_df['basePrice'] <= target_price)
+            ]
         else:  # 매도
             target_price = trade_row['price'] + price_adjustment
-            
-        # 매칭되는 환율 데이터 찾기
-        matching_rates = filtered_df[
-            (filtered_df['currencyCode'] == currency) & 
-            (filtered_df['basePrice'] == target_price)
-        ]
+            # 매칭되는 환율 데이터 찾기
+            matching_rates = filtered_df[
+                (filtered_df['currencyCode'] == currency) & 
+                (filtered_df['basePrice'] >= target_price)
+            ]
         
         matches = matching_rates.shape[0]
         
