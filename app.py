@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import json
+
 from datetime import datetime
 import plotly.express as px
 from data import load_data
@@ -14,31 +14,29 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, price_adj
     
     results = []
     matched_rates = []  # 매칭된 환율 데이터 저장
+
+    # currencyCode0을 미리 계산하여 trade_df에 추가
+    trade_df['effective_currency'] = trade_df.apply(
+        lambda x: x['currencyCode0'] if x['currencyCode'] == 'KRW' else x['currencyCode'], axis=1
+    )
+
     for idx, trade_row in trade_df.iterrows():
-        # 매도의 경우 KRW로 표시됨 -> currencyCode0으로 통화 변경
-        currency = trade_row['currencyCode0'] if trade_row['currencyCode'] == 'KRW' else trade_row['currencyCode']
-        
         # 매수/매도에 따라 target_price 계산 (price_adjustment 적용)
-        if trade_row['isBuyOrder'] == 1:  # 매수
-            target_price = trade_row['price'] - price_adjustment
-            matching_rates = filtered_df[
-                (filtered_df['currencyCode'] ==currency) &
-                (filtered_df['basePrice'] <= target_price)
-            ]
-        else:  # 매도
-            target_price = trade_row['price'] + price_adjustment
-            matching_rates = filtered_df[
-                (filtered_df['currencyCode'] == currency) &
-                (filtered_df['basePrice'] >= target_price)
-            ]
-            
+        target_price = trade_row['price'] - price_adjustment if trade_row['isBuyOrder'] == 1 else trade_row['price'] + price_adjustment
+        
+        # 매칭된 환율 데이터 필터링
+        matching_rates = filtered_df[
+            (filtered_df['currencyCode'] == trade_row['effective_currency']) &
+            ((filtered_df['basePrice'] <= target_price) if trade_row['isBuyOrder'] == 1 else (filtered_df['basePrice'] >= target_price))
+        ]
+        
         matches = matching_rates.shape[0]
         
         # 매칭된 환율 데이터 저장
         if matches > 0:
             for _, rate_row in matching_rates.iterrows():
                 matched_rates.append({
-                    'currency': currency,
+                    'currency': trade_row['effective_currency'],
                     'basePrice': rate_row['basePrice'],
                     'createdAt': rate_row['createdAt'],
                     'trade_executedAt': trade_row['executedAt'],
@@ -48,7 +46,7 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, price_adj
         
         # 거래 건별 요약 정보 저장
         results.append({
-            'currency': currency,
+            'currency': trade_row['effective_currency'],
             'order_type': '매수' if trade_row['isBuyOrder'] == 1 else '매도',
             'original_price': trade_row['price'],
             'target_price': target_price,
@@ -101,67 +99,67 @@ results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade
 # 결과 표시
 st.header('분석 결과')
 
-# 전체 통계
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric('전체 거래 수', len(results_df))
-with col2:
-    st.metric('목표가 도달 거래 수', results_df['found'].sum())
-with col3:
-    success_rate = (results_df['found'].sum() / len(results_df)) * 100
-    st.metric('목표가 도달률', f'{success_rate:.2f}%')
+# # 전체 통계
+# col1, col2, col3 = st.columns(3)
+# with col1:
+#     st.metric('전체 거래 수', len(results_df))
+# with col2:
+#     st.metric('목표가 도달 거래 수', results_df['found'].sum())
+# with col3:
+#     success_rate = (results_df['found'].sum() / len(results_df)) * 100
+#     st.metric('목표가 도달률', f'{success_rate:.2f}%')
 
-# 통화별 분석
-st.subheader('통화별 분석')
-currency_analysis = results_df.groupby('currency').agg({
-    'found': ['count', 'sum'],
-    'match_count': 'sum'
-}).round(2)
-currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
-st.dataframe(currency_analysis)
+# # 통화별 분석
+# st.subheader('통화별 분석')
+# currency_analysis = results_df.groupby('currency').agg({
+#     'found': ['count', 'sum'],
+#     'match_count': 'sum'
+# }).round(2)
+# currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+# st.dataframe(currency_analysis)
 
-# 시각화
-st.subheader('시계열 분석')
-time_series = results_df.set_index('executedAt')['found'].rolling('1D').mean()
-fig = px.line(time_series, title='일별 목표가 도달률')
-st.plotly_chart(fig)
+# # 시각화
+# st.subheader('시계열 분석')
+# time_series = results_df.set_index('executedAt')['found'].rolling('1D').mean()
+# fig = px.line(time_series, title='일별 목표가 도달률')
+# st.plotly_chart(fig)
 
-# 날짜 범위 필터링
-filtered_trade_df_2 = filtered_trade_df[
-    (filtered_trade_df['executedAt'] >= start_datetime) & 
-    (filtered_trade_df['executedAt'] <= end_datetime)
-]
+# # 날짜 범위 필터링
+# filtered_trade_df_2 = filtered_trade_df[
+#     (filtered_trade_df['executedAt'] >= start_datetime) & 
+#     (filtered_trade_df['executedAt'] <= end_datetime)
+# ]
 
-# 목표가 도달 데이터 필터링
-matched_rates_df_2 = matched_rates_df[
-    (matched_rates_df['createdAt'] >= start_datetime) & 
-    (matched_rates_df['createdAt'] <= end_datetime)
-]
+# # 목표가 도달 데이터 필터링
+# matched_rates_df_2 = matched_rates_df[
+#     (matched_rates_df['createdAt'] >= start_datetime) & 
+#     (matched_rates_df['createdAt'] <= end_datetime)
+# ]
 
-# 거래 데이터 표시
-st.subheader('거래 데이터')
-st.dataframe(filtered_trade_df_2)
+# # 거래 데이터 표시
+# st.subheader('거래 데이터')
+# st.dataframe(filtered_trade_df_2)
 
-# 목표가 도달 데이터 표시
-if not matched_rates_df_2.empty:
-    st.subheader('목표가 도달 데이터')
-    # 시간순으로 정렬
-    matched_rates_df_2 = matched_rates_df_2.sort_values(['currency', 'createdAt'])
+# # 목표가 도달 데이터 표시
+# if not matched_rates_df_2.empty:
+#     st.subheader('목표가 도달 데이터')
+#     # 시간순으로 정렬
+#     matched_rates_df_2 = matched_rates_df_2.sort_values(['currency', 'createdAt'])
     
-    # 거래 가격과 target_price 추가
-    matched_rates_df_2['target_price'] = matched_rates_df_2.apply(
-        lambda row: results_df.loc[
-            (results_df['currency'] == row['currency']) & 
-            (results_df['executedAt'] == row['trade_executedAt']), 
-            'target_price'
-        ].values[0], 
-        axis=1
-    )
+#     # 거래 가격과 target_price 추가
+#     matched_rates_df_2['target_price'] = matched_rates_df_2.apply(
+#         lambda row: results_df.loc[
+#             (results_df['currency'] == row['currency']) & 
+#             (results_df['executedAt'] == row['trade_executedAt']), 
+#             'target_price'
+#         ].values[0], 
+#         axis=1
+#     )
     
-    st.dataframe(matched_rates_df_2)
-else:
-    st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
+#     st.dataframe(matched_rates_df_2)
+# else:
+#     st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
 
-# 환율 데이터 표시
-st.subheader('전체 환율 데이터')
-st.dataframe(filtered_df)
+# # 환율 데이터 표시
+# st.subheader('전체 환율 데이터')
+# st.dataframe(filtered_df)
