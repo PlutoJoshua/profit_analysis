@@ -99,67 +99,67 @@ results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade
 # 결과 표시
 st.header('분석 결과')
 
-# # 전체 통계
-# col1, col2, col3 = st.columns(3)
-# with col1:
-#     st.metric('전체 거래 수', len(results_df))
-# with col2:
-#     st.metric('목표가 도달 거래 수', results_df['found'].sum())
-# with col3:
-#     success_rate = (results_df['found'].sum() / len(results_df)) * 100
-#     st.metric('목표가 도달률', f'{success_rate:.2f}%')
+# 전체 통계
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric('전체 거래 수', len(results_df))
+with col2:
+    st.metric('목표가 도달 거래 수', results_df['found'].sum())
+with col3:
+    success_rate = (results_df['found'].sum() / len(results_df)) * 100
+    st.metric('목표가 도달률', f'{success_rate:.2f}%')
 
-# # 통화별 분석
-# st.subheader('통화별 분석')
-# currency_analysis = results_df.groupby('currency').agg({
-#     'found': ['count', 'sum'],
-#     'match_count': 'sum'
-# }).round(2)
-# currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
-# st.dataframe(currency_analysis)
+# 통화별 분석
+st.subheader('통화별 분석')
+currency_analysis = results_df.groupby('currency').agg({
+    'found': ['count', 'sum'],
+    'match_count': 'sum'
+}).round(2)
+currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+st.dataframe(currency_analysis)
 
-# # 시각화
-# st.subheader('시계열 분석')
-# time_series = results_df.set_index('executedAt')['found'].rolling('1D').mean()
-# fig = px.line(time_series, title='일별 목표가 도달률')
-# st.plotly_chart(fig)
+# 시각화
+st.subheader('시계열 분석')
+time_series = results_df.set_index('executedAt')['found'].rolling('1D').mean()
+fig = px.line(time_series, title='일별 목표가 도달률')
+st.plotly_chart(fig)
 
-# # 날짜 범위 필터링
-# filtered_trade_df_2 = filtered_trade_df[
-#     (filtered_trade_df['executedAt'] >= start_datetime) & 
-#     (filtered_trade_df['executedAt'] <= end_datetime)
-# ]
+# 날짜 범위 필터링
+filtered_trade_df_2 = filtered_trade_df[
+    (filtered_trade_df['executedAt'] >= start_datetime) & 
+    (filtered_trade_df['executedAt'] <= end_datetime)
+]
 
-# # 목표가 도달 데이터 필터링
-# matched_rates_df_2 = matched_rates_df[
-#     (matched_rates_df['createdAt'] >= start_datetime) & 
-#     (matched_rates_df['createdAt'] <= end_datetime)
-# ]
+# 목표가 도달 데이터 필터링
+matched_rates_df_2 = matched_rates_df[
+    (matched_rates_df['createdAt'] >= start_datetime) & 
+    (matched_rates_df['createdAt'] <= end_datetime)
+]
 
-# # 거래 데이터 표시
-# st.subheader('거래 데이터')
-# st.dataframe(filtered_trade_df_2)
+# 거래 데이터 표시
+st.subheader('거래 데이터')
+st.dataframe(filtered_trade_df_2)
 
-# # 목표가 도달 데이터 표시
-# if not matched_rates_df_2.empty:
-#     st.subheader('목표가 도달 데이터')
-#     # 시간순으로 정렬
-#     matched_rates_df_2 = matched_rates_df_2.sort_values(['currency', 'createdAt'])
+# 목표가 도달 데이터 표시
+if not matched_rates_df_2.empty:
+    st.subheader('목표가 도달 데이터')
+    # 시간순으로 정렬
+    matched_rates_df_2 = matched_rates_df_2.sort_values(['currency', 'createdAt'])
     
-#     # 거래 가격과 target_price 추가
-#     matched_rates_df_2['target_price'] = matched_rates_df_2.apply(
-#         lambda row: results_df.loc[
-#             (results_df['currency'] == row['currency']) & 
-#             (results_df['executedAt'] == row['trade_executedAt']), 
-#             'target_price'
-#         ].values[0], 
-#         axis=1
-#     )
+    # 거래 가격과 target_price 추가
+    matched_rates_df_2['target_price'] = matched_rates_df_2.apply(
+        lambda row: results_df.loc[
+            (results_df['currency'] == row['currency']) & 
+            (results_df['executedAt'] == row['trade_executedAt']), 
+            'target_price'
+        ].values[0], 
+        axis=1
+    )
     
-#     st.dataframe(matched_rates_df_2)
-# else:
-#     st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
+    st.dataframe(matched_rates_df_2)
+else:
+    st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
 
-# # 환율 데이터 표시
-# st.subheader('전체 환율 데이터')
-# st.dataframe(filtered_df)
+# 환율 데이터 표시
+st.subheader('전체 환율 데이터')
+st.dataframe(filtered_df)
