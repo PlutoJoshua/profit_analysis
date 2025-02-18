@@ -140,6 +140,8 @@ matched_rates_df_2 = matched_rates_df[
 st.subheader('거래 데이터')
 st.dataframe(filtered_trade_df_2)
 
+
+
 # 목표가 도달 데이터 표시
 if not matched_rates_df_2.empty:
     st.subheader('목표가 도달 데이터')
