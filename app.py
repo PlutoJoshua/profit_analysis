@@ -1,10 +1,9 @@
 import streamlit as st
 import pandas as pd
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 import plotly.express as px
 from data import load_data
-
 def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price_adjustment, sell_price_adjustment):
     # 날짜 필터링
     filtered_df = filtered_df[(filtered_df['createdAt'] >= start_date) & 
@@ -20,15 +19,19 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
         # 매수/매도에 따라 target_price 계산 (price_adjustment 적용)
         if trade_row['isBuyOrder'] == 1:  # 매수
             target_price = trade_row['price'] - buy_price_adjustment
-            
+            # 매칭 조건: target_price 이하
+            matching_rates = filtered_df[
+                (filtered_df['currencyCode'] == currency) & 
+                (filtered_df['basePrice'] <= target_price)  
+            ]
+         
         else:  # 매도
             target_price = trade_row['price'] + sell_price_adjustment
-            
-        # 매칭되는 환율 데이터 찾기
-        matching_rates = filtered_df[
-            (filtered_df['currencyCode'] == currency) & 
-            (filtered_df['basePrice'] == target_price)
-        ]
+            # 매칭 조건: target_price 이상
+            matching_rates = filtered_df[
+                (filtered_df['currencyCode'] == currency) & 
+                (filtered_df['basePrice'] >= target_price)  
+            ]
         
         matches = matching_rates.shape[0]
         
@@ -66,10 +69,12 @@ final_df, trade_df = load_data()
 st.sidebar.header('분석 설정')
 
 # 날짜 범위 선택
-min_date = min(final_df['createdAt'].min(), trade_df['executedAt'].min())
+# min_date = min(final_df['createdAt'].min(), trade_df['executedAt'].min())
 max_date = max(final_df['createdAt'].max(), trade_df['executedAt'].max())
+# 가장 최근 날짜 기준 일주일 전 계산
+one_week_ago = max_date - timedelta(days=7)
 
-start_date = st.sidebar.date_input('시작일', min_date)
+start_date = st.sidebar.date_input('시작일', one_week_ago)
 end_date = st.sidebar.date_input('종료일', max_date)
 
 # 목표가 조정값 선택
@@ -109,13 +114,13 @@ with col3:
     st.metric('목표가 도달률', f'{success_rate:.2f}%')
 
 # 통화별 분석
-# st.subheader('통화별 분석')
-# currency_analysis = results_df.groupby('currency').agg({
-#     'found': ['count', 'sum'],
-#     'match_count': 'sum'
-# }).round(2)
-# currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
-# st.dataframe(currency_analysis)
+st.subheader('통화별 분석')
+currency_analysis = results_df.groupby('currency').agg({
+    'found': ['count', 'sum'],
+    'match_count': 'sum'
+}).round(2)
+currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+st.dataframe(currency_analysis)
 
 st.markdown("---")
 # 통화별 분석 결과 표시
