@@ -26,8 +26,7 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
             target_price = trade_row['price'] - buy_price_adjustment
             matching_rates = filtered_df[
                 (filtered_df['currencyCode'] == currency) &
-                (filtered_df['low'] <= target_price) &
-                (filtered_df['high'] >= target_price) &
+                ((filtered_df['low'] <= target_price) | (filtered_df['high'] >= target_price)) &
                 (filtered_df['Date'] >= start_date) &
                 (filtered_df['Date'] <= end_date)  # 거래 날짜부터 date_window 기간까지
             ]
@@ -35,8 +34,7 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
             target_price = trade_row['price'] + sell_price_adjustment
             matching_rates = filtered_df[
                 (filtered_df['currencyCode'] == currency) &
-                (filtered_df['low'] <= target_price) &
-                (filtered_df['high'] >= target_price) & 
+                ((filtered_df['low'] <= target_price) | (filtered_df['high'] >= target_price)) & 
                 (filtered_df['Date'] >= start_date) &
                 (filtered_df['Date'] <= end_date)  # 거래 날짜부터 date_window 기간까지
             ]
@@ -55,7 +53,6 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
                     'basePrice': rate_row['close'],
                     'trade_executedAt': trade_row['executedAt'],
                     'createdAt': rate_row['Date'],
-                    'trade_executedAt': trade_row['executedAt'],
                 })
 
         results.append({
@@ -159,3 +156,90 @@ else:
     # Ag-Grid 테이블을 사용하여 데이터 시각화
 AgGrid(matched_rates_df, editable=True, filter=True, sortable=True, resizable=True)
 
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from datetime import timedelta
+
+# 시계열 차트 작성 함수 (매수와 매도 차트를 나눠서 생성)
+def plot_buy_time_series(df, currency):
+    # 매수 데이터만 필터링
+    buy_df = df[(df['currency'] == currency) & (df['order_type'] == '매수')]
+    
+    fig = px.line()
+    
+    # 매수 고가, 저가, 거래 가격
+    fig.add_scatter(x=buy_df['createdAt'], 
+                    y=buy_df['highPrice'], 
+                    mode='lines', 
+                    name=f'{currency} 매수 고가', 
+                    line=dict(color='green'))
+    fig.add_scatter(x=buy_df['createdAt'], 
+                    y=buy_df['LowPrice'], 
+                    mode='lines', 
+                    name=f'{currency} 매수 저가', 
+                    line=dict(color='red'))
+    fig.add_scatter(x=buy_df['createdAt'], 
+                    y=buy_df['trade_price'], 
+                    mode='lines', 
+                    name=f'{currency} 매수 거래 가격', 
+                    line=dict(color='blue'))
+    
+    fig.update_layout(
+        title=f'{currency} 매수 시계열 차트',
+        xaxis_title='날짜',
+        yaxis_title='가격',
+        legend_title='데이터 타입'
+    )
+    return fig
+
+def plot_sell_time_series(df, currency):
+    # 매도 데이터만 필터링
+    sell_df = df[(df['currency'] == currency) & (df['order_type'] == '매도')]
+    
+    fig = px.line()
+    
+    # 매도 고가, 저가, 거래 가격
+    fig.add_scatter(x=sell_df['createdAt'], 
+                    y=sell_df['highPrice'], 
+                    mode='lines', 
+                    name=f'{currency} 매도 고가', 
+                    line=dict(color='orange'))
+    fig.add_scatter(x=sell_df['createdAt'], 
+                    y=sell_df['LowPrice'], 
+                    mode='lines', 
+                    name=f'{currency} 매도 저가', 
+                    line=dict(color='purple'))
+    fig.add_scatter(x=sell_df['createdAt'], 
+                    y=sell_df['trade_price'], 
+                    mode='lines', 
+                    name=f'{currency} 매도 거래 가격', 
+                    line=dict(color='black'))
+    
+    fig.update_layout(
+        title=f'{currency} 매도 시계열 차트',
+        xaxis_title='날짜',
+        yaxis_title='가격',
+        legend_title='데이터 타입'
+    )
+    return fig
+
+# 목표가 도달 데이터
+if not matched_rates_df.empty:
+    st.subheader('목표가 도달 데이터 시계열')
+
+    # 날짜 순으로 정렬
+    matched_rates_df = matched_rates_df.sort_values(['currency', 'createdAt'])
+    
+    # 통화별로 매수 시계열 차트 생성
+    for currency in matched_rates_df['currency'].unique():
+        # 매수 차트
+        fig_buy = plot_buy_time_series(matched_rates_df, currency)
+        st.plotly_chart(fig_buy)
+        
+        # 매도 차트
+        fig_sell = plot_sell_time_series(matched_rates_df, currency)
+        st.plotly_chart(fig_sell)
+
+else:
+    st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
