@@ -3,6 +3,10 @@ import pandas as pd
 import yfinance as yf
 import plotly.express as px
 from datetime import datetime, timedelta
+from data import load_data
+
+# 데이터 로드
+final_df, trade_df = load_data()
 
 def load_yahoo_data(currencies, start_date, end_date):
     """
@@ -10,7 +14,8 @@ def load_yahoo_data(currencies, start_date, end_date):
     """
     data_frames = []
     for currency in currencies:
-        ticker = f'{currency}=X'
+        # 통화 코드 형식: "USDKRW=X", "JPYKRW=X" 등의 형태로 설정
+        ticker = f'{currency}KRW=X'
         df = yf.download(ticker, start=start_date, end=end_date)
         df['currency'] = currency
         df.reset_index(inplace=True)
@@ -90,16 +95,6 @@ selected_currencies = st.sidebar.multiselect('통화 선택', available_currenci
 
 # 야후 파이낸스 데이터 로드
 final_df = load_yahoo_data(selected_currencies, start_date, end_date)
-
-# 거래 데이터 (예제 데이터)
-trade_data = {
-    'currencyCode': ['USD', 'JPY', 'CNY', 'CAD'],
-    'currencyCode0': ['KRW', 'KRW', 'KRW', 'KRW'],
-    'price': [1300, 9.5, 200, 1000],
-    'isBuyOrder': [1, 0, 1, 0],
-    'executedAt': [datetime(2025, 2, 1), datetime(2025, 2, 2), datetime(2025, 1, 15), datetime(2025, 1, 20)]
-}
-trade_df = pd.DataFrame(trade_data)
 
 # 분석 실행
 results_df, matched_rates_df = analyze_target_prices(final_df, trade_df, buy_price_adjustment, sell_price_adjustment)
