@@ -5,29 +5,6 @@ import plotly.express as px
 from datetime import datetime, timedelta
 from data import load_data
 
-# 데이터 로드
-final_df, trade_df = load_data()
-
-def load_yahoo_data(currencies, start_date, end_date):
-    """
-    야후 파이낸스에서 통화 데이터를 다운로드합니다.
-    """
-    data_frames = []
-    for currency in currencies:
-        # 통화 코드 형식: "USDKRW=X", "JPYKRW=X" 등의 형태로 설정
-        ticker = f'{currency}KRW=X'
-        df = yf.download(ticker, start=start_date, end=end_date)
-        df['currency'] = currency
-        df.reset_index(inplace=True)
-        df.rename(columns={
-            'Date': 'createdAt',
-            'High': 'highPrice',
-            'Low': 'lowPrice',
-            'Close': 'closePrice'
-        }, inplace=True)
-        data_frames.append(df)
-    return pd.concat(data_frames, ignore_index=True)
-
 def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_price_adjustment):
     results = []
     matched_rates = []
