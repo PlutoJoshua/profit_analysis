@@ -180,6 +180,7 @@ def plot_high_low_difference(df, currency):
     
     return fig
 
+st.markdown("---")
 # 환율 데이터를 선택한 통화에 맞게 필터링하고 차트 그리기
 if not final_df.empty:
     st.subheader('하루 고가와 저가 차이 시계열(전체)')
@@ -194,10 +195,10 @@ filtered_df = final_df[
     (final_df['Date'] >= start_date) & 
     (final_df['Date'] <= end_date)
 ]
-
+st.markdown("---")
 # 환율 데이터를 선택한 통화에 맞게 필터링하고 차트 그리기
 if not filtered_df.empty:
-    st.subheader('하루 고가와 저가 차이 시계열')
+    st.subheader('하루 고가와 저가 차이 시계열(날짜)')
 
     # 선택된 통화에 대해 차트 생성
     for currency in selected_currencies:
@@ -205,3 +206,78 @@ if not filtered_df.empty:
         st.plotly_chart(fig)
 else:
     st.warning('선택한 기간 동안 환율 데이터가 없습니다.')
+
+    # 통화별로 데이터를 필터링할 수 있도록
+filtered_currency_df = final_df[final_df['currencyCode'].isin(selected_currencies)]
+
+# 시계열 차트 생성 (통화별로 고가, 저가, 종가 표시)
+fig = px.line(filtered_currency_df, 
+              x='Date', 
+              y=['high', 'low', 'close'],
+              title='환율 고가, 저가, 종가 시계열',
+              labels={'high': '고가', 'low': '저가', 'close': '종가', 'Date': '날짜'},
+              line_shape='linear')
+
+# 환율 데이터에서 하루 동안 고가와 저가의 차이를 계산하여 시각화
+def plot_currency(df, currency):
+    # 선택된 통화의 데이터 필터링
+    currency_df = df[df['currencyCode'] == currency]
+
+    # 시계열 차트 작성
+    fig = px.line(currency_df, 
+                x='Date', 
+                y=['high', 'low', 'close'],
+                title=f'{currency}환율 고가, 저가, 종가 시계열',
+                labels={'high': '고가', 'low': '저가', 'close': '종가', 'Date': '날짜'},
+                line_shape='linear')
+
+    fig.update_layout(
+        xaxis_title='날짜',
+        yaxis_title='환율 데이터',
+        legend_title='데이터 타입'
+    )
+    
+    return fig
+
+# 선택된 통화에 대해 차트 생성
+for currency in selected_currencies:
+    fig = plot_currency(filtered_currency_df, currency)
+    st.plotly_chart(fig)
+
+
+
+# 고가 - 종가, 종가 - 저가 계산
+filtered_currency_df['high_to_open'] = filtered_currency_df['high'] - filtered_currency_df['open']
+filtered_currency_df['open_to_low'] = filtered_currency_df['open'] - filtered_currency_df['low']
+
+# 평균값 계산 및 출력
+high_to_open_mean = filtered_currency_df['high_to_open'].mean()  # 고가 - 시가 평균
+open_to_low_mean = filtered_currency_df['open_to_low'].mean()    # 시가 - 저가 평균
+st.markdown(f'고가 - 시가 평균: {high_to_open_mean}, 시가 - 저가 평균: {open_to_low_mean}')
+
+# 환율 데이터에서 하루 동안 고가와 저가의 차이를 계산하여 시각화
+def filtered_plot_currency(df, currency):
+    # 선택된 통화의 데이터 필터링
+    currency_df = df[df['currencyCode'] == currency]
+
+    # 시계열 차트 작성
+    fig = px.line(currency_df, 
+                x='Date', 
+                y=['high_to_open', 'open_to_low'],
+                title=f'{currency}환율 변동 폭 (고가 - 시가, 종가 - 시가)',
+                labels={'high_to_close': '고가 - 시가', 'close_to_low': '시가 - 저가', 'Date': '날짜'},
+                line_shape='linear')
+
+    fig.update_layout(
+        xaxis_title='날짜',
+        yaxis_title='환율 데이터',
+        legend_title='데이터 타입'
+    )
+    
+    return fig
+
+    # 시계열 차트 표시
+# 선택된 통화에 대해 차트 생성
+for currency in selected_currencies:
+    fig = filtered_plot_currency(filtered_currency_df, currency)
+    st.plotly_chart(fig)
