@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 from datetime import datetime, timedelta
 from data import load_trade_data, load_yh_data
+from st_aggrid import AgGrid # pip install streamlit-aggrid
 
 # 예시로 거래 데이터와 야후 데이터 로드
 trade_df = load_trade_data()  # 거래 데이터 로드
@@ -145,3 +146,6 @@ if not matched_rates_df.empty:
     st.dataframe(matched_rates_df)
 else:
     st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
+
+    # Ag-Grid 테이블을 사용하여 데이터 시각화
+AgGrid(matched_rates_df, editable=True, filter=True, sortable=True, resizable=True)
