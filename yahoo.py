@@ -255,8 +255,8 @@ def filtered_plot_currency(df, currency):
     # 선택된 통화의 데이터 필터링
     currency_df = df[df['currencyCode'] == currency]
     # 평균값 계산 및 출력
-    high_to_open_mean = currency_df['high_to_open'].mean()  # 고가 - 시가 평균
-    open_to_low_mean = currency_df['open_to_low'].mean()    # 시가 - 저가 평균
+    high_to_open_mean = (currency_df['high_to_open'].mean()).round(2)  # 고가 - 시가 평균
+    open_to_low_mean = (currency_df['open_to_low'].mean()).round(2)    # 시가 - 저가 평균
     st.markdown(f'고가 - 시가 평균: {high_to_open_mean}, 시가 - 저가 평균: {open_to_low_mean}')
     # 시계열 차트 작성
     fig = px.line(currency_df, 
