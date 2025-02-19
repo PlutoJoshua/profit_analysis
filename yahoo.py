@@ -10,6 +10,12 @@ trade_df = load_trade_data()
 final_df = load_yh_data()
 
 # 목표가 분석 함수
+"""
+1. 통화코드 일치
+2. 저가 보다 높거나 같음
+3. 고가 보다 작거나 같음
+4. 환율 데이터 날짜는 거래 날짜부터 date_window까지
+"""
 def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_price_adjustment, date_window):
     results, matched_rates = [], []
 
@@ -22,12 +28,7 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
         target_price = trade_price - buy_price_adjustment if is_buy_order else trade_price + sell_price_adjustment
 
         # 매칭 조건
-        """
-        1. 통화코드 일치
-        2. 저가 보다 높거나 같음
-        3. 고가 보다 작거나 같음
-        4. 환율 데이터 날짜는 거래 날짜부터 date_window까지
-        """
+
         matching_rates = filtered_df[(filtered_df['currencyCode'] == currency) &
                                      (filtered_df['low'] <= target_price) &
                                      (filtered_df['high'] >= target_price) &
