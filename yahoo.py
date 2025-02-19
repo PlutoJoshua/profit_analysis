@@ -84,6 +84,9 @@ col3.metric('목표가 도달률', f"{(results_df['found'].mean() * 100):.2f}%")
 
 currency_analysis = results_df.groupby(['currency', 'order_type']).agg({'found': ['count', 'sum'], 'match_count': 'sum'}).reset_index()
 currency_analysis.columns = ['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수']
+# 거래 성사률 계산 (목표가 도달 / 전체 거래) * 100
+currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
+
 st.subheader('통화별 목표가 도달 거래 수')
 st.dataframe(currency_analysis)
 
