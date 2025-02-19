@@ -48,7 +48,6 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
                     'basePrice': rate_row['close'],
                     'createdAt': rate_row['Date'],
                     'trade_executedAt': trade_row['executedAt'],
-
                 })
 
         results.append({
@@ -58,7 +57,7 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
             'target_price': target_price,
             'found': matches > 0,
             'match_count': matches,
-            'executedAt': trade_row['executedAt']
+            'executedAt': trade_row['executedAt'],
         })
 
     return pd.DataFrame(results), pd.DataFrame(matched_rates)
@@ -149,3 +148,37 @@ else:
 
     # Ag-Grid 테이블을 사용하여 데이터 시각화
 AgGrid(matched_rates_df, editable=True, filter=True, sortable=True, resizable=True)
+
+# 목표가 도달 데이터를 거래별로 그룹화하여 매칭된 환율 데이터 리스트 생성
+if not matched_rates_df.empty:
+    st.subheader('목표가 도달 데이터 (거래별로 묶기)')
+
+    # 거래별로 매칭된 환율 데이터들을 묶기
+    grouped_by_trade = matched_rates_df.groupby('trade_executedAt').apply(
+        lambda x: x[['currency', 'order_type', 'trade_price', 'highPrice', 'LowPrice', 'basePrice', 'createdAt']].values.tolist()
+    ).reset_index(name='matched_rates')
+
+    # 데이터프레임에 매칭된 환율 데이터 풀어내기
+    expanded_data = []
+    for _, row in grouped_by_trade.iterrows():
+        for matched_rate in row['matched_rates']:
+            expanded_data.append({
+                'trade_executedAt': row['trade_executedAt'],
+                'currency': matched_rate[0],
+                'order_type': matched_rate[1],
+                'trade_price': matched_rate[2],
+                'highPrice': matched_rate[3],
+                'LowPrice': matched_rate[4],
+                'basePrice': matched_rate[5],
+                'createdAt': matched_rate[6]
+            })
+
+    # 데이터프레임으로 변환
+    final_matched_df = pd.DataFrame(expanded_data)
+
+    # 결과 표시
+    st.dataframe(final_matched_df)
+
+else:
+    st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
+
