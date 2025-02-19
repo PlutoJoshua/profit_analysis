@@ -106,8 +106,7 @@ filtered_trade_df = filtered_trade_df[
     (filtered_trade_df['executedAt'] <= end_date)
 ]
 filtered_df = filtered_df[
-    (filtered_df['Date'] >= start_date) & 
-    (filtered_df['Date'] <= end_date)
+    (filtered_df['Date'] >= start_date)
 ]
 
 date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 5)
