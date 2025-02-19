@@ -82,6 +82,9 @@ selected_currencies = st.sidebar.multiselect('통화 선택', available_currenci
 filtered_trade_df = trade_df[(trade_df.apply(lambda x: (x['currencyCode0'] if x['currencyCode'] == 'KRW' else x['currencyCode']) in selected_currencies, axis=1)) &
                              (trade_df['executedAt'].between(start_date, end_date))]
 
+# final_df의 시간 부분을 23:59:59로 설정
+final_df['Date'] = pd.to_datetime(final_df['Date']).dt.floor('D') + pd.Timedelta(hours=15, minutes=59, seconds=59)
+
 filtered_df = final_df[(final_df['currencyCode'].isin(selected_currencies)) &
                        (final_df['Date'] >= start_date)]
 
