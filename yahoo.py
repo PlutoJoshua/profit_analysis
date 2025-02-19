@@ -60,7 +60,7 @@ buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 10.0
 sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
 date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 5)
 
-available_currencies = ['USD', 'JPY', 'CNY', 'CAD']
+available_currencies = ['USD', 'JPY', 'CAD']
 selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
 
 # 데이터 필터링
