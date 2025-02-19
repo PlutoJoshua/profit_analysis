@@ -9,12 +9,17 @@ from st_aggrid import AgGrid # pip install streamlit-aggrid
 trade_df = load_trade_data()  # 거래 데이터 로드
 final_df = load_yh_data()     # 야후 데이터 로드
 
-def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_price_adjustment):
+def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_price_adjustment, date_window):
 
     results = []
     matched_rates = []
     for idx, trade_row in trade_df.iterrows():
         currency = trade_row['currencyCode0'] if trade_row['currencyCode'] == 'KRW' else trade_row['currencyCode']
+        trade_date = trade_row['executedAt']
+
+        # 거래 날짜를 기준으로 환율 데이터 기간 설정
+        start_date = trade_date
+        end_date = trade_date + timedelta(days=date_window)
 
         # 매수/매도에 따라 target_price 계산
         if trade_row['isBuyOrder'] == 1:  # 매수
@@ -23,7 +28,8 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
                 (filtered_df['currencyCode'] == currency) &
                 (filtered_df['low'] <= target_price) &
                 (filtered_df['high'] >= target_price) &
-                (filtered_df['Date'] >= trade_row['executedAt']) # 거래 일자 이후 데이터만
+                (filtered_df['Date'] >= start_date) &
+                (filtered_df['Date'] <= end_date)  # 거래 날짜부터 date_window 기간까지
             ]
         else:  # 매도
             target_price = trade_row['price'] + sell_price_adjustment
@@ -31,7 +37,8 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
                 (filtered_df['currencyCode'] == currency) &
                 (filtered_df['low'] <= target_price) &
                 (filtered_df['high'] >= target_price) & 
-                (filtered_df['Date'] >= trade_row['executedAt']) # 거래 일자 이후 데이터만
+                (filtered_df['Date'] >= start_date) &
+                (filtered_df['Date'] <= end_date)  # 거래 날짜부터 date_window 기간까지
             ]
 
         matches = matching_rates.shape[0]
@@ -46,6 +53,7 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
                     'highPrice' : rate_row['high'],
                     'LowPrice' :rate_row['low'],
                     'basePrice': rate_row['close'],
+                    'trade_executedAt': trade_row['executedAt'],
                     'createdAt': rate_row['Date'],
                     'trade_executedAt': trade_row['executedAt'],
                 })
@@ -102,8 +110,10 @@ filtered_df = filtered_df[
     (filtered_df['Date'] <= end_date)
 ]
 
+date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 5)
+
 # 분석 실행
-results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, buy_price_adjustment, sell_price_adjustment)
+results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, buy_price_adjustment, sell_price_adjustment, date_window)
 
 # 결과 표시
 st.header('분석 결과')
@@ -142,43 +152,11 @@ st.plotly_chart(fig_bar)
 if not matched_rates_df.empty:
     st.subheader('목표가 도달 데이터')
     matched_rates_df = matched_rates_df.sort_values(['currency', 'createdAt'])
+    matched_rates_df['time_diff'] = matched_rates_df['trade_executedAt'] - matched_rates_df['createdAt']
     st.dataframe(matched_rates_df)
 else:
     st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
 
     # Ag-Grid 테이블을 사용하여 데이터 시각화
 AgGrid(matched_rates_df, editable=True, filter=True, sortable=True, resizable=True)
-
-# 목표가 도달 데이터를 거래별로 그룹화하여 매칭된 환율 데이터 리스트 생성
-if not matched_rates_df.empty:
-    st.subheader('목표가 도달 데이터 (거래별로 묶기)')
-
-    # 거래별로 매칭된 환율 데이터들을 묶기
-    grouped_by_trade = matched_rates_df.groupby('trade_executedAt').apply(
-        lambda x: x[['currency', 'order_type', 'trade_price', 'highPrice', 'LowPrice', 'basePrice', 'createdAt']].values.tolist()
-    ).reset_index(name='matched_rates')
-
-    # 데이터프레임에 매칭된 환율 데이터 풀어내기
-    expanded_data = []
-    for _, row in grouped_by_trade.iterrows():
-        for matched_rate in row['matched_rates']:
-            expanded_data.append({
-                'trade_executedAt': row['trade_executedAt'],
-                'currency': matched_rate[0],
-                'order_type': matched_rate[1],
-                'trade_price': matched_rate[2],
-                'highPrice': matched_rate[3],
-                'LowPrice': matched_rate[4],
-                'basePrice': matched_rate[5],
-                'createdAt': matched_rate[6]
-            })
-
-    # 데이터프레임으로 변환
-    final_matched_df = pd.DataFrame(expanded_data)
-
-    # 결과 표시
-    st.dataframe(final_matched_df)
-
-else:
-    st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
 
