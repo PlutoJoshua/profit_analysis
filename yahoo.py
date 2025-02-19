@@ -244,22 +244,20 @@ for currency in selected_currencies:
     fig = plot_currency(filtered_currency_df, currency)
     st.plotly_chart(fig)
 
-
-
 # 고가 - 종가, 종가 - 저가 계산
 filtered_currency_df['high_to_open'] = filtered_currency_df['high'] - filtered_currency_df['open']
 filtered_currency_df['open_to_low'] = filtered_currency_df['open'] - filtered_currency_df['low']
 
-# 평균값 계산 및 출력
-high_to_open_mean = filtered_currency_df['high_to_open'].mean()  # 고가 - 시가 평균
-open_to_low_mean = filtered_currency_df['open_to_low'].mean()    # 시가 - 저가 평균
-st.markdown(f'고가 - 시가 평균: {high_to_open_mean}, 시가 - 저가 평균: {open_to_low_mean}')
 
 # 환율 데이터에서 하루 동안 고가와 저가의 차이를 계산하여 시각화
 def filtered_plot_currency(df, currency):
+    st.markdown("---")
     # 선택된 통화의 데이터 필터링
     currency_df = df[df['currencyCode'] == currency]
-
+    # 평균값 계산 및 출력
+    high_to_open_mean = currency_df['high_to_open'].mean()  # 고가 - 시가 평균
+    open_to_low_mean = currency_df['open_to_low'].mean()    # 시가 - 저가 평균
+    st.markdown(f'고가 - 시가 평균: {high_to_open_mean}, 시가 - 저가 평균: {open_to_low_mean}')
     # 시계열 차트 작성
     fig = px.line(currency_df, 
                 x='Date', 
