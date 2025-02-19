@@ -14,16 +14,27 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
     results, matched_rates = [], []
 
     for _, trade_row in trade_df.iterrows():
+        # 원화 > 외화 코드 변환
         currency = trade_row['currencyCode0'] if trade_row['currencyCode'] == 'KRW' else trade_row['currencyCode']
+
         trade_date, is_buy_order, trade_price = trade_row['executedAt'], trade_row['isBuyOrder'], trade_row['price']
+        # 매수/매도 목표 가격 설정
         target_price = trade_price - buy_price_adjustment if is_buy_order else trade_price + sell_price_adjustment
 
+        # 매칭 조건
+        """
+        1. 통화코드 일치
+        2. 저가 보다 높거나 같음
+        3. 고가 보다 작거나 같음
+        4. 환율 데이터 날짜는 거래 날짜부터 date_window까지
+        """
         matching_rates = filtered_df[(filtered_df['currencyCode'] == currency) &
                                      (filtered_df['low'] <= target_price) &
                                      (filtered_df['high'] >= target_price) &
                                      (filtered_df['Date'].between(trade_date, trade_date + timedelta(days=date_window)))]
 
         matches = len(matching_rates)
+        # 거래 성사 df 생성
         for _, rate_row in matching_rates.iterrows():
             matched_rates.append({
                 'currency': currency,
@@ -35,7 +46,7 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
                 'trade_executedAt': trade_date,
                 'createdAt': rate_row['Date'],
             })
-
+        # 결과 df 생성
         results.append({
             'currency': currency,
             'order_type': '매수' if is_buy_order else '매도',
@@ -50,16 +61,21 @@ def analyze_target_prices(filtered_df, trade_df, buy_price_adjustment, sell_pric
 
 # Sidebar 설정
 st.sidebar.header('설정')
+# 날짜 설정
 max_date = max(final_df['Date'].max(), trade_df['executedAt'].max())
 one_week_ago = max_date - timedelta(days=7)
 
 start_date = pd.Timestamp(st.sidebar.date_input('시작일', one_week_ago))
 end_date = pd.Timestamp(st.sidebar.date_input('종료일', max_date))
 
+# 목표가 설정
 buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
 sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
+
+# 분석 기간 설정
 date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 5)
 
+# 통화 설정
 available_currencies = ['USD', 'JPY', 'CAD']
 selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
 
