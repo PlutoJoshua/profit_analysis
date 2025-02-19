@@ -119,6 +119,18 @@ if not matched_rates_df.empty:
 else:
     st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
 
+# 목표가 도달 못한 거래 데이터 필터링
+not_matched_df = results_df[results_df['found'] == False]
+
+# 목표가 도달 못한 거래 데이터 표시
+st.subheader('목표가 도달 못한 거래 데이터')
+if not not_matched_df.empty:
+    st.dataframe(not_matched_df)
+else:
+    st.warning('목표가 도달 못한 거래 데이터가 없습니다.')
+
+
+
 # 고가-저가 차이 시각화 함수
 def plot_high_low_difference(df, currency, title_suffix=''):
     currency_df = df[df['currencyCode'] == currency]
