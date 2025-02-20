@@ -82,7 +82,7 @@ buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.1, 10.0
 sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.1, 10.0, 1.0, 0.1)
 
 # 통화 선택
-available_currencies = ['USD', 'JPY', 'CNY', 'CAD']
+available_currencies = ['USD', 'JPY']
 selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
 
 # 통화 선택 후 데이터 필터링
@@ -120,6 +120,7 @@ currency_analysis = results_df.groupby('currency').agg({
     'match_count': 'sum'
 }).round(2)
 currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
 st.dataframe(currency_analysis)
 
 st.markdown("---")
@@ -151,12 +152,13 @@ st.dataframe(filtered_trade_df)
 # 목표가 도달 데이터 표시
 if not matched_rates_df.empty:
     st.subheader('목표가 도달 데이터')
+    matched_rates_df['time_diff'] = matched_rates_df['createdAt'] - matched_rates_df['trade_executedAt']
     # 시간순으로 정렬
     matched_rates_df = matched_rates_df.sort_values(['currency', 'createdAt'])
     st.dataframe(matched_rates_df)
 else:
     st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
 
-# 환율 데이터 표시
-st.subheader('전체 환율 데이터')
-st.dataframe(filtered_df)
+# # 환율 데이터 표시
+# st.subheader('전체 환율 데이터')
+# st.dataframe(filtered_df)
