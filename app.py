@@ -86,11 +86,11 @@ start_date = st.sidebar.date_input('시작일', one_week_ago)
 end_date = st.sidebar.date_input('종료일', max_date)
 
 # 분석 기간 설정
-date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 5)
+date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 10, 5)
 
 # 목표가 조정값 선택
-buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
-sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
+buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 7.0, 1.0, 0.5)
+sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 7.0, 1.0, 0.5)
 
 # 통화 선택
 available_currencies = ['USD', 'JPY']
