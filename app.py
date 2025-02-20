@@ -4,7 +4,13 @@ import json
 from datetime import datetime, timedelta
 import plotly.express as px
 from data import load_data
-def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price_adjustment, sell_price_adjustment):
+
+            # matching_rates = filtered_df[
+            #     (filtered_df['currencyCode'] == currency) & 
+            #     (filtered_df['basePrice'] <= target_price)  
+            # ]
+
+def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price_adjustment, sell_price_adjustment, date_window):
     # 날짜 필터링
     filtered_df = filtered_df[(filtered_df['createdAt'] >= start_date) & 
                              (filtered_df['createdAt'] <= end_date)]
@@ -15,14 +21,15 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
     matched_rates = []  # 매칭된 환율 데이터 저장
     for idx, trade_row in trade_df.iterrows():
         currency = trade_row['currencyCode0'] if trade_row['currencyCode'] == 'KRW' else trade_row['currencyCode']
-        
+        trade_date = trade_row['executedAt']
         # 매수/매도에 따라 target_price 계산 (price_adjustment 적용)
         if trade_row['isBuyOrder'] == 1:  # 매수
             target_price = trade_row['price'] - buy_price_adjustment
             # 매칭 조건: target_price 이하
             matching_rates = filtered_df[
                 (filtered_df['currencyCode'] == currency) & 
-                (filtered_df['basePrice'] <= target_price)  
+                (filtered_df['basePrice'] <= target_price) &
+                (filtered_df['createdAt'].between(trade_date, trade_date + timedelta(days=date_window)))
             ]
          
         else:  # 매도
@@ -30,7 +37,8 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
             # 매칭 조건: target_price 이상
             matching_rates = filtered_df[
                 (filtered_df['currencyCode'] == currency) & 
-                (filtered_df['basePrice'] >= target_price)  
+                (filtered_df['basePrice'] >= target_price) &
+                (filtered_df['createdAt'].between(trade_date, trade_date + timedelta(days=date_window)))
             ]
         
         matches = matching_rates.shape[0]
@@ -77,9 +85,12 @@ one_week_ago = max_date - timedelta(days=7)
 start_date = st.sidebar.date_input('시작일', one_week_ago)
 end_date = st.sidebar.date_input('종료일', max_date)
 
+# 분석 기간 설정
+date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 5)
+
 # 목표가 조정값 선택
-buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.1, 10.0, 1.0, 0.1)
-sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.1, 10.0, 1.0, 0.1)
+buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
+sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
 
 # 통화 선택
 available_currencies = ['USD', 'JPY']
@@ -98,7 +109,7 @@ filtered_df = final_df[final_df['currencyCode'].isin(selected_currencies)]
 start_datetime = datetime.combine(start_date, datetime.min.time())
 end_datetime = datetime.combine(end_date, datetime.max.time())
 
-results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, buy_price_adjustment, sell_price_adjustment)
+results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, buy_price_adjustment, sell_price_adjustment, date_window)
 
 # 결과 표시
 st.header('분석 결과')
@@ -134,6 +145,38 @@ currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 �
 currency_analysis = currency_analysis.reset_index()
 st.dataframe(currency_analysis)
 
+# 시뮬레이션을 위한 매개변수 설정
+analysis_periods = range(1, 8)  # 1일부터 7일까지
+buy_price_adjustments = [i * 0.5 for i in range(1, 21)]  # 1부터 10까지 0.5 단위
+sell_price_adjustments = [i * 0.5 for i in range(1, 21)]  # 1부터 10까지 0.5 단위
+
+# 결과 저장을 위한 리스트
+simulation_results = []
+
+# 모든 경우의 수에 대해 시뮬레이션 실행
+for date_window in analysis_periods:
+    for buy_adjust in buy_price_adjustments:
+        for sell_adjust in sell_price_adjustments:
+            results_df, matched_rates_df = analyze_target_prices(
+                filtered_df, filtered_trade_df, start_datetime, end_datetime, buy_adjust, sell_adjust, date_window
+            )
+            simulation_results.append({
+                'date_window': date_window,
+                'buy_adjustment': buy_adjust,
+                'sell_adjustment': sell_adjust,
+                'total_trades': len(results_df),
+                'successful_trades': results_df['found'].sum(),
+                'success_rate': (results_df['found'].sum() / len(results_df)) * 100 if len(results_df) > 0 else 0
+            })
+
+# 시뮬레이션 결과를 데이터프레임으로 변환
+simulation_results_df = pd.DataFrame(simulation_results)
+
+# 결과 표시
+st.header('시뮬레이션 결과')
+st.dataframe(simulation_results_df)
+
+
 st.markdown("---")
 # 매수와 매도에 대한 바 차트 시각화
 st.subheader('매수 및 매도 목표가 도달 거래 수 바 차트')
@@ -158,6 +201,16 @@ if not matched_rates_df.empty:
     st.dataframe(matched_rates_df)
 else:
     st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
+
+# 목표가 도달 못한 거래 데이터 필터링
+not_matched_df = results_df[results_df['found'] == False]
+
+# 목표가 도달 못한 거래 데이터 표시
+st.subheader('⚡️ 목표가 도달 못한 거래 데이터')
+if not not_matched_df.empty:
+    st.dataframe(not_matched_df)
+else:
+    st.warning('목표가 도달 못한 거래 데이터가 없습니다.')
 
 # # 환율 데이터 표시
 # st.subheader('전체 환율 데이터')
