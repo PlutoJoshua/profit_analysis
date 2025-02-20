@@ -149,8 +149,8 @@ st.markdown("---")
 
 # 고가-저가 차이 시각화 함수
 def plot_high_low_difference(df, currency, title_suffix=''):
-    currency_df = df[df['currencyCode'] == currency]
-    currency_df.loc[:, 'high_low_diff'] = currency_df['high'] - currency_df['low']
+    currency_df = df[df['currencyCode'] == currency].copy()
+    currency_df['high_low_diff'] = currency_df['high'] - currency_df['low']
     return px.line(currency_df, x='Date', y='high_low_diff',
                    title=f'{currency} 하루 고가와 저가 차이 {title_suffix}',
                    labels={'high_low_diff': '고가 - 저가 차이', 'Date': '날짜'})
