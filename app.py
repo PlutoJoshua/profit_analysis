@@ -86,14 +86,14 @@ start_date = st.sidebar.date_input('시작일', one_week_ago)
 end_date = st.sidebar.date_input('종료일', max_date)
 
 # 분석 기간 설정
-date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 5, 1)
+date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 5)
 
 # 목표가 조정값 선택
-buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 5.0, 1.0, 1.0)
-sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 5.0, 1.0, 1.0)
+buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
+sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
 
 # 통화 선택
-available_currencies = ['USD']
+available_currencies = ['USD', 'JPY']
 selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
 
 # 통화 선택 후 데이터 필터링
@@ -145,38 +145,6 @@ currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 �
 currency_analysis = currency_analysis.reset_index()
 st.dataframe(currency_analysis)
 
-# 시뮬레이션을 위한 매개변수 설정
-analysis_periods = range(1, 3)  # 1일부터 7일까지
-buy_price_adjustments = [i for i in range(1, 5)]  # 1부터 10까지 0.5 단위
-sell_price_adjustments = [i for i in range(1, 5)]  # 1부터 10까지 0.5 단위
-
-# 결과 저장을 위한 리스트
-simulation_results = []
-
-# 모든 경우의 수에 대해 시뮬레이션 실행
-for date_window in analysis_periods:
-    for buy_adjust in buy_price_adjustments:
-        for sell_adjust in sell_price_adjustments:
-            results_df, matched_rates_df = analyze_target_prices(
-                filtered_df, filtered_trade_df, start_datetime, end_datetime, buy_adjust, sell_adjust, date_window
-            )
-            simulation_results.append({
-                'date_window': date_window,
-                'buy_adjustment': buy_adjust,
-                'sell_adjustment': sell_adjust,
-                'total_trades': len(results_df),
-                'successful_trades': results_df['found'].sum(),
-                'success_rate': (results_df['found'].sum() / len(results_df)) * 100 if len(results_df) > 0 else 0
-            })
-
-# 시뮬레이션 결과를 데이터프레임으로 변환
-simulation_results_df = pd.DataFrame(simulation_results)
-
-# 결과 표시
-st.header('시뮬레이션 결과')
-st.dataframe(simulation_results_df)
-
-
 st.markdown("---")
 # 매수와 매도에 대한 바 차트 시각화
 st.subheader('매수 및 매도 목표가 도달 거래 수 바 차트')
@@ -215,3 +183,22 @@ else:
 # # 환율 데이터 표시
 # st.subheader('전체 환율 데이터')
 # st.dataframe(filtered_df)
+
+# Streamlit 세션 상태 초기화
+if 'cached_analysis' not in st.session_state:
+    st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수'])
+
+# 새 분석 결과 생성
+currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
+    'found': ['count', 'sum'],
+    'match_count': 'sum'
+}).round(2)
+currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+currency_analysis = currency_analysis.reset_index()
+
+# 기존 데이터와 새 데이터 누적 저장
+st.session_state.cached_analysis = pd.concat([st.session_state.cached_analysis, currency_analysis], ignore_index=True).drop_duplicates()
+
+# 누적된 결과 출력
+st.subheader('누적된 통화별 목표가 도달 거래 수')
+st.dataframe(st.session_state.cached_analysis)
