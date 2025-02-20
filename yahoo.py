@@ -132,12 +132,25 @@ if not not_matched_df.empty:
 else:
     st.warning('목표가 도달 못한 거래 데이터가 없습니다.')
 
+st.markdown("---")
 
+# 환율 시계열 (고가, 저가, 종가) 함수
+def plot_currency(df, currency):
+    currency_df = df[df['currencyCode'] == currency]
+    return px.line(currency_df, x='Date', y=['high', 'low', 'close'],
+                   title=f'{currency} 환율 시계열 (고가, 저가, 종가)',
+                   labels={'value': '환율', 'Date': '날짜'}, line_shape='linear')
+
+# 통화별 시계열 차트
+for currency in selected_currencies:
+    st.plotly_chart(plot_currency(filtered_df, currency))
+
+st.markdown("---")
 
 # 고가-저가 차이 시각화 함수
 def plot_high_low_difference(df, currency, title_suffix=''):
     currency_df = df[df['currencyCode'] == currency]
-    currency_df['high_low_diff'] = currency_df['high'] - currency_df['low']
+    currency_df.loc[:, 'high_low_diff'] = currency_df['high'] - currency_df['low']
     return px.line(currency_df, x='Date', y='high_low_diff',
                    title=f'{currency} 하루 고가와 저가 차이 {title_suffix}',
                    labels={'high_low_diff': '고가 - 저가 차이', 'Date': '날짜'})
@@ -152,16 +165,7 @@ filtered_df = final_df[final_df['Date'].between(start_date, end_date)]
 for currency in selected_currencies:
     st.plotly_chart(plot_high_low_difference(filtered_df, currency, title_suffix='(필터링)'))
 
-# 환율 시계열 (고가, 저가, 종가) 함수
-def plot_currency(df, currency):
-    currency_df = df[df['currencyCode'] == currency]
-    return px.line(currency_df, x='Date', y=['high', 'low', 'close'],
-                   title=f'{currency} 환율 시계열 (고가, 저가, 종가)',
-                   labels={'value': '환율', 'Date': '날짜'}, line_shape='linear')
-
-# 통화별 시계열 차트
-for currency in selected_currencies:
-    st.plotly_chart(plot_currency(filtered_df, currency))
+st.markdown("---")
 
 # 고가-시가, 시가-저가 변동 시각화
 st.subheader('고가-시가 및 시가-저가 변동 시각화')
