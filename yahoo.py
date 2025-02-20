@@ -92,9 +92,10 @@ filtered_df = final_df[(final_df['currencyCode'].isin(selected_currencies)) &
 results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, buy_price_adjustment, sell_price_adjustment, date_window)
 
 # 결과 표시
-st.title('환율 목표가 분석 (야후 파이낸스)')
-st.header('분석 결과')
+st.title('📊 환율 목표가 분석 (야후 파이낸스)')
 
+st.header('분석 결과')
+st.markdown("---")
 col1, col2, col3 = st.columns(3)
 col1.metric('전체 거래 수', len(results_df))
 col2.metric('목표가 도달 거래 수', results_df['found'].sum())
@@ -108,17 +109,21 @@ currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도�
 st.subheader('통화별 목표가 도달 거래 수')
 st.dataframe(currency_analysis)
 
-st.subheader('매수 및 매도 목표가 도달 거래 수 바 차트')
+st.markdown("---")
+st.subheader('📌 매수 및 매도 목표가 도달 거래 수 바 차트')
 fig_bar = px.bar(currency_analysis, x='currency', y='목표가 도달', color='order_type',
                  title='통화별 매수 및 매도 목표가 도달 거래 수',
                  labels={'목표가 도달': '목표가 도달 거래 수', 'currency': '통화'})
 st.plotly_chart(fig_bar)
 
+st.markdown("---")
+
 if not matched_rates_df.empty:
-    st.subheader('목표가 도달 데이터')
-    matched_rates_df['time_diff'] = matched_rates_df['trade_executedAt'] - matched_rates_df['createdAt']
+    st.subheader('⚡️ 목표가 도달 데이터')
+    matched_rates_df['time_diff'] = matched_rates_df['createdAt'] - matched_rates_df['trade_executedAt']
+    
     st.dataframe(matched_rates_df)
-    AgGrid(matched_rates_df, editable=True, filter=True, sortable=True, resizable=True)
+    # AgGrid(matched_rates_df, editable=True, filter=True, sortable=True, resizable=True)
 else:
     st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
 
@@ -126,7 +131,7 @@ else:
 not_matched_df = results_df[results_df['found'] == False]
 
 # 목표가 도달 못한 거래 데이터 표시
-st.subheader('목표가 도달 못한 거래 데이터')
+st.subheader('⚡️ 목표가 도달 못한 거래 데이터')
 if not not_matched_df.empty:
     st.dataframe(not_matched_df)
 else:
@@ -135,6 +140,7 @@ else:
 st.markdown("---")
 
 # 환율 시계열 (고가, 저가, 종가) 함수
+st.subheader('💵 전체 환율 시계열')
 def plot_currency(df, currency):
     currency_df = df[df['currencyCode'] == currency]
     return px.line(currency_df, x='Date', y=['high', 'low', 'close'],
@@ -156,11 +162,13 @@ def plot_high_low_difference(df, currency, title_suffix=''):
                    labels={'high_low_diff': '고가 - 저가 차이', 'Date': '날짜'})
 
 # 고가-저가 차이 시각화
-st.subheader('하루 고가와 저가 차이 시계열 (전체)')
+st.subheader('📈 하루 고가와 저가 차이 시계열 (전체)')
 for currency in selected_currencies:
     st.plotly_chart(plot_high_low_difference(final_df, currency))
 
-st.subheader('하루 고가와 저가 차이 시계열 (날짜 필터링)')
+st.markdown("---")
+
+st.subheader('📈 하루 고가와 저가 차이 시계열 (날짜 필터링)')
 filtered_df = final_df[final_df['Date'].between(start_date, end_date)]
 for currency in selected_currencies:
     st.plotly_chart(plot_high_low_difference(filtered_df, currency, title_suffix='(필터링)'))
@@ -168,7 +176,7 @@ for currency in selected_currencies:
 st.markdown("---")
 
 # 고가-시가, 시가-저가 변동 시각화
-st.subheader('고가-시가 및 시가-저가 변동 시각화')
+st.subheader('🛎️ 고가-시가 및 시가-저가 변동 시각화')
 filtered_currency_df = final_df[final_df['currencyCode'].isin(selected_currencies)]
 filtered_currency_df['high_to_open'] = filtered_currency_df['high'] - filtered_currency_df['open']
 filtered_currency_df['open_to_low'] = filtered_currency_df['open'] - filtered_currency_df['low']
