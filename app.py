@@ -86,14 +86,14 @@ start_date = st.sidebar.date_input('시작일', one_week_ago)
 end_date = st.sidebar.date_input('종료일', max_date)
 
 # 분석 기간 설정
-date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 10, 5)
+date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 5, 1)
 
 # 목표가 조정값 선택
-buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 7.0, 1.0, 0.5)
-sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 7.0, 1.0, 0.5)
+buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 5.0, 1.0, 1.0)
+sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 5.0, 1.0, 1.0)
 
 # 통화 선택
-available_currencies = ['USD', 'JPY']
+available_currencies = ['USD']
 selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
 
 # 통화 선택 후 데이터 필터링
@@ -146,9 +146,9 @@ currency_analysis = currency_analysis.reset_index()
 st.dataframe(currency_analysis)
 
 # 시뮬레이션을 위한 매개변수 설정
-analysis_periods = range(1, 8)  # 1일부터 7일까지
-buy_price_adjustments = [i * 0.5 for i in range(1, 21)]  # 1부터 10까지 0.5 단위
-sell_price_adjustments = [i * 0.5 for i in range(1, 21)]  # 1부터 10까지 0.5 단위
+analysis_periods = range(1, 3)  # 1일부터 7일까지
+buy_price_adjustments = [i for i in range(1, 5)]  # 1부터 10까지 0.5 단위
+sell_price_adjustments = [i for i in range(1, 5)]  # 1부터 10까지 0.5 단위
 
 # 결과 저장을 위한 리스트
 simulation_results = []
