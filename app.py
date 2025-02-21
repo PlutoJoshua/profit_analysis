@@ -58,6 +58,7 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
             'target_price': target_price,
             'found': matches > 0,
             'match_count': matches,
+            'amount' : trade_row['amount'],
             'executedAt': trade_row['executedAt']
         })
     
@@ -220,18 +221,18 @@ if st.sidebar.button('분석 실행'):
 if st.sidebar.button('모든 조합 시뮬레이션 실행'):
     # Streamlit 세션 상태 초기화
     if 'cached_analysis' not in st.session_state:
-        st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)', '분석 설명'])
+        st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
 
     # 가능한 모든 조합 생성
-    date_windows = range(1, 8)  # 1일부터 7일까지
-    adjustments = [i for i in range(1, 6)]  # 매수 목표가: 1.0 ~ 5.0
-    # sell_adjustments = [i for i in range(1, 6)]  # 매도 목표가: 1.0 ~ 5.0
+    date_windows = range(1, 8) 
+    adjustments = [i * 1.0 for i in range(1, 11)]  # 목표가
 
     # 모든 조합 생성
     all_combinations = itertools.product(date_windows, adjustments)
 
     # 결과 저장용 리스트
-    simulation_results = []
+    buy_results = []  # 매수 결과 저장
+    sell_results = []  # 매도 결과 저장
 
     # 통화 선택 후 데이터 필터링
     filtered_trade_df = trade_df[
@@ -261,30 +262,33 @@ if st.sidebar.button('모든 조합 시뮬레이션 실행'):
             date_window
         )
 
-        # 현재 조합에 대한 설명
-        analysis_description = f"date_window={date_window}, 매수 목표가={adjustment}, 매도 목표가={adjustment}"
-
         # 통화별 분석
         currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
             'found': ['count', 'sum'],
-            'match_count': 'sum'
+            'match_count': 'sum',
+            'amount': 'sum'  # 거래량 합계 추가
         }).round(2)
-        currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+        currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수', '총 거래량']
         currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
         currency_analysis = currency_analysis.reset_index()
-
+        # profit 계산 추가
+        currency_analysis['profit'] = currency_analysis['총 거래량'] * adjustment
         # 설명 추가
-        currency_analysis['분석 설명'] = analysis_description
-
+        currency_analysis[['date_window', 'adjustment']] = date_window, adjustment
         # 결과 누적
-        simulation_results.append(currency_analysis)
+        # 결과 누적
+        if '매수' in currency_analysis['order_type'].values:  # 매수 결과
+            buy_results.append(currency_analysis[currency_analysis['order_type'] == '매수'])
+        if '매도' in currency_analysis['order_type'].values:  # 매도 결과
+            sell_results.append(currency_analysis[currency_analysis['order_type'] == '매도'])
 
     # 모든 결과를 하나의 DataFrame으로 병합
-    all_simulations_df = pd.concat(simulation_results, ignore_index=True)
+    all_buy_simulations_df = pd.concat(buy_results, ignore_index=True)
+    all_sell_simulations_df = pd.concat(sell_results, ignore_index=True)
 
     # 기존 누적된 데이터에 병합
     st.session_state.cached_analysis = pd.concat(
-        [st.session_state.cached_analysis, all_simulations_df],
+        [st.session_state.cached_analysis, all_buy_simulations_df, all_sell_simulations_df],
         ignore_index=True
     ).drop_duplicates().reset_index(drop=True)
 
