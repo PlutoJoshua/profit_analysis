@@ -155,20 +155,21 @@ with tab2 :
         st.success("모든 조합 시뮬레이션이 완료되었습니다.")
         st.dataframe(n_results_df)
         st.markdown(f"---")
-        n_profit_df, n_total_amo, n_total_pro = calculate_profit(n_results_df, n_adjustment, start_date, end_date)
-        n_success_rate = (n_results_df['found'].sum() / len(n_results_df)) * 100
+        (buy_profit_df, total_buy_amo, total_buy_pro), (sell_profit_df, total_sell_amo, total_sell_pro) = calculate_profit(n_results_df, n_adjustment, start_date, end_date)
+        # n_success_rate = (n_results_df['found'].sum() / len(n_results_df)) * 100
          # 전체 통계
-        display_metrics(n_results_df, n_success_rate, n_adjustment, n_total_amo, n_total_pro)   
+        display_metrics(n_results_df, buy_profit_df, sell_profit_df, n_adjustment, total_buy_amo, total_buy_pro, total_sell_amo, total_sell_pro)   
         st.markdown(f"---")        
+        n_profit_df = pd.concat([buy_profit_df, sell_profit_df])
         st.dataframe(n_profit_df)
 
         st.markdown(f"---")
         st.subheader("profit")
-        results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, adjustment, adjustment, date_window)
-        profit_df, total_amo, total_pro = calculate_profit(results_df, adjustment, start_date, end_date)
-        success_rate = (results_df['found'].sum() / len(results_df)) * 100
-        display_metrics(results_df, n_success_rate, adjustment, total_amo, total_pro)   
-        st.dataframe(profit_df)
+        # results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, adjustment, adjustment, date_window)
+        # profit_df, total_amo, total_pro = calculate_profit(results_df, adjustment, start_date, end_date)
+        # success_rate = (results_df['found'].sum() / len(results_df)) * 100
+        # display_metrics(results_df, success_rate, adjustment, total_amo, total_pro)   
+        # st.dataframe(profit_df)
 
         # 가능한 모든 조합 생성
         date_windows = range(1, date_window + 1) 

@@ -77,27 +77,46 @@ def calculate_profit(results_df, adjustment, start_date, end_date):
         (results_df['found'] == True)
     ]
     
-    # 수익 계산 (총 거래량 * 매수/매도 조정값)
-    profit_df['profit'] = profit_df['amount'] * adjustment
-    total_amo = profit_df['amount'].sum()
-    total_pro = profit_df['profit'].sum()
-    return profit_df, total_amo, total_pro
+    # 매수와 매도에 따른 수익 계산
+    buy_profit_df = profit_df[profit_df['order_type'] == '매수']
+    sell_profit_df = profit_df[profit_df['order_type'] == '매도']
+    
+    buy_profit_df['profit'] = buy_profit_df['amount'] * adjustment
+    sell_profit_df['profit'] = sell_profit_df['amount'] * adjustment
+    
+    total_buy_amo = buy_profit_df['amount'].sum()
+    total_buy_pro = buy_profit_df['profit'].sum()
+    
+    total_sell_amo = sell_profit_df['amount'].sum()
+    total_sell_pro = sell_profit_df['profit'].sum()
+    
+    return (buy_profit_df, total_buy_amo, total_buy_pro), (sell_profit_df, total_sell_amo, total_sell_pro)
 
-def display_metrics(n_results_df, n_success_rate, n_adjustment, n_total_amo, n_total_pro):
+def display_metrics(results_df, buy_results_df, sell_results_df, adjustment, total_buy_amo, total_buy_pro, total_sell_amo, total_sell_pro):
     # 메트릭 표시 함수
     col1, col2, col3 = st.columns(3)
     col4, col5, col6 = st.columns(3)
+    col7, col8, col9 = st.columns(3)
     with col1:
-        st.metric('전체 거래 수', len(n_results_df))
+        st.metric('전체 거래 수', len(results_df))
     with col2:
-        st.metric('목표가 도달 거래 수', n_results_df['found'].sum())
+        total_found = buy_results_df['found'].sum() + sell_results_df['found'].sum()
+        st.metric('목표가 도달 거래 수', total_found)
     with col3:
-        success_rate = (n_results_df['found'].sum() / len(n_results_df)) * 100
-        st.metric('목표가 도달률', f'{n_success_rate:.2f}%')
+        total_success_rate = (total_found / len(results_df)) * 100 if len(results_df) > 0 else 0
+        st.metric('목표가 도달률', f'{total_success_rate:.2f}%')
     with col4:
-        st.metric('현재 조정값', n_adjustment)
+        st.metric('현재 조정값', adjustment)
     with col5:
-        st.metric('총 거래량', f'{int(n_total_amo):,}')
+        total_buy_results = buy_results_df['found'].sum()
+        st.metric('매수 목표가 도달 거래 수', f'{int(total_buy_results)}')
     with col6:
-        st.metric('총 수익', f'{int(n_total_pro):,}')            
+        total_sell_results = sell_results_df['found'].sum()
+        st.metric('매도 목표가 도달 거래 수', f'{total_sell_results}')     
+    with col7:
+        st.metric('매수/매도 수익', f'{int(total_buy_pro), int(total_sell_pro)}')
+    with col8:
+        st.metric('총 거래량', f'{int(total_buy_amo + total_sell_amo):,}')
+    with col9:
+        st.metric('총 수익', f'{int(total_buy_pro + total_sell_pro):,}')            
     
