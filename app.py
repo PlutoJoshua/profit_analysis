@@ -186,7 +186,7 @@ else:
 
 # Streamlit 세션 상태 초기화
 if 'cached_analysis' not in st.session_state:
-    st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수'])
+    st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
 
 # 새 분석 결과 생성
 currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
@@ -194,11 +194,12 @@ currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
     'match_count': 'sum'
 }).round(2)
 currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
 currency_analysis = currency_analysis.reset_index()
 
 # 기존 데이터와 새 데이터 누적 저장
-st.session_state.cached_analysis = pd.concat([st.session_state.cached_analysis, currency_analysis], ignore_index=True).drop_duplicates()
+st.session_state.cached_analysis = pd.concat([st.session_state.cached_analysis, currency_analysis], ignore_index=True).drop_duplicates().reset_index(drop=True)
 
 # 누적된 결과 출력
 st.subheader('누적된 통화별 목표가 도달 거래 수')
-st.dataframe(st.session_state.cached_analysis)
+st.dataframe(st.session_state.cached_analysis, use_container_width=True)
