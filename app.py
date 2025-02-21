@@ -86,7 +86,7 @@ start_date = st.sidebar.date_input('시작일', one_week_ago)
 end_date = st.sidebar.date_input('종료일', max_date)
 
 # 분석 기간 설정
-date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 5)
+date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 1)
 
 # 목표가 조정값 선택
 buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
@@ -96,110 +96,126 @@ sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 10.
 available_currencies = ['USD', 'JPY']
 selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
 
-# 통화 선택 후 데이터 필터링
-filtered_trade_df = trade_df[
-    trade_df.apply(lambda x: 
-        (x['currencyCode0'] if x['currencyCode'] == 'KRW' else x['currencyCode']) in selected_currencies, 
-        axis=1
-    )
-]
-filtered_df = final_df[final_df['currencyCode'].isin(selected_currencies)]
+# 확인 버튼 추가
+if st.sidebar.button('분석 실행'):
 
-# 분석 실행
-start_datetime = datetime.combine(start_date, datetime.min.time())
-end_datetime = datetime.combine(end_date, datetime.max.time())
+    # 통화 선택 후 데이터 필터링
+    filtered_trade_df = trade_df[
+        trade_df.apply(lambda x: 
+            (x['currencyCode0'] if x['currencyCode'] == 'KRW' else x['currencyCode']) in selected_currencies, 
+            axis=1
+        )
+    ]
+    filtered_df = final_df[final_df['currencyCode'].isin(selected_currencies)]
 
-results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, buy_price_adjustment, sell_price_adjustment, date_window)
+    # 분석 실행
+    start_datetime = datetime.combine(start_date, datetime.min.time())
+    end_datetime = datetime.combine(end_date, datetime.max.time())
 
-# 결과 표시
-st.header('분석 결과')
+    results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, buy_price_adjustment, sell_price_adjustment, date_window)
 
-# 전체 통계
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric('전체 거래 수', len(results_df))
-with col2:
-    st.metric('목표가 도달 거래 수', results_df['found'].sum())
-with col3:
-    success_rate = (results_df['found'].sum() / len(results_df)) * 100
-    st.metric('목표가 도달률', f'{success_rate:.2f}%')
+    # 결과 표시
+    st.header('분석 결과')
 
-# 통화별 분석
-st.subheader('통화별 분석')
-currency_analysis = results_df.groupby('currency').agg({
-    'found': ['count', 'sum'],
-    'match_count': 'sum'
-}).round(2)
-currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
-currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
-st.dataframe(currency_analysis)
+    # 전체 통계
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric('전체 거래 수', len(results_df))
+    with col2:
+        st.metric('목표가 도달 거래 수', results_df['found'].sum())
+    with col3:
+        success_rate = (results_df['found'].sum() / len(results_df)) * 100
+        st.metric('목표가 도달률', f'{success_rate:.2f}%')
 
-st.markdown("---")
-# 통화별 분석 결과 표시
-st.subheader('통화별 목표가 도달 거래 수')
-currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
-    'found': ['count', 'sum'],
-    'match_count': 'sum'
-}).round(2)
-currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
-currency_analysis = currency_analysis.reset_index()
-st.dataframe(currency_analysis)
+    # 통화별 분석
+    st.subheader('통화별 분석')
+    currency_analysis = results_df.groupby('currency').agg({
+        'found': ['count', 'sum'],
+        'match_count': 'sum'
+    }).round(2)
+    currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+    currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
+    st.dataframe(currency_analysis)
 
-st.markdown("---")
-# 매수와 매도에 대한 바 차트 시각화
-st.subheader('매수 및 매도 목표가 도달 거래 수 바 차트')
-fig_bar = px.bar(currency_analysis, 
-                  x='currency', 
-                  y='목표가 도달', 
-                  color='order_type', 
-                  title='통화별 매수 및 매도 목표가 도달 거래 수',
-                  labels={'목표가 도달': '목표가 도달 거래 수', 'currency': '통화'})
-st.plotly_chart(fig_bar)
+    st.markdown("---")
+    # 통화별 분석 결과 표시
+    st.subheader('통화별 목표가 도달 거래 수')
+    currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
+        'found': ['count', 'sum'],
+        'match_count': 'sum'
+    }).round(2)
+    currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+    currency_analysis = currency_analysis.reset_index()
+    st.dataframe(currency_analysis)
 
-# 거래 데이터 표시
-st.subheader('거래 데이터')
-st.dataframe(filtered_trade_df)
+    st.markdown("---")
+    # 매수와 매도에 대한 바 차트 시각화
+    st.subheader('매수 및 매도 목표가 도달 거래 수 바 차트')
+    fig_bar = px.bar(currency_analysis, 
+                    x='currency', 
+                    y='목표가 도달', 
+                    color='order_type', 
+                    title='통화별 매수 및 매도 목표가 도달 거래 수',
+                    labels={'목표가 도달': '목표가 도달 거래 수', 'currency': '통화'})
+    st.plotly_chart(fig_bar)
 
-# 목표가 도달 데이터 표시
-if not matched_rates_df.empty:
-    st.subheader('목표가 도달 데이터')
-    matched_rates_df['time_diff'] = matched_rates_df['createdAt'] - matched_rates_df['trade_executedAt']
-    # 시간순으로 정렬
-    matched_rates_df = matched_rates_df.sort_values(['currency', 'createdAt'])
-    st.dataframe(matched_rates_df)
-else:
-    st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
+    # 거래 데이터 표시
+    st.subheader('거래 데이터')
+    st.dataframe(filtered_trade_df)
 
-# 목표가 도달 못한 거래 데이터 필터링
-not_matched_df = results_df[results_df['found'] == False]
+    # 목표가 도달 데이터 표시
+    if not matched_rates_df.empty:
+        st.subheader('목표가 도달 데이터')
+        matched_rates_df['time_diff'] = matched_rates_df['createdAt'] - matched_rates_df['trade_executedAt']
+        # 시간순으로 정렬
+        matched_rates_df = matched_rates_df.sort_values(['currency', 'createdAt'])
+        st.dataframe(matched_rates_df)
+    else:
+        st.warning('선택한 기간 동안 목표가에 도달한 데이터가 없습니다.')
 
-# 목표가 도달 못한 거래 데이터 표시
-st.subheader('⚡️ 목표가 도달 못한 거래 데이터')
-if not not_matched_df.empty:
-    st.dataframe(not_matched_df)
-else:
-    st.warning('목표가 도달 못한 거래 데이터가 없습니다.')
+    # 목표가 도달 못한 거래 데이터 필터링
+    not_matched_df = results_df[results_df['found'] == False]
 
-# # 환율 데이터 표시
-# st.subheader('전체 환율 데이터')
-# st.dataframe(filtered_df)
+    # 목표가 도달 못한 거래 데이터 표시
+    st.subheader('⚡️ 목표가 도달 못한 거래 데이터')
+    if not not_matched_df.empty:
+        st.dataframe(not_matched_df)
+    else:
+        st.warning('목표가 도달 못한 거래 데이터가 없습니다.')
 
-# Streamlit 세션 상태 초기화
-if 'cached_analysis' not in st.session_state:
-    st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
+    # # 환율 데이터 표시
+    # st.subheader('전체 환율 데이터')
+    # st.dataframe(filtered_df)
 
-# 새 분석 결과 생성
-currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
-    'found': ['count', 'sum'],
-    'match_count': 'sum'
-}).round(2)
-currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
-currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
-currency_analysis = currency_analysis.reset_index()
+    # Streamlit 세션 상태 초기화
+    if 'cached_analysis' not in st.session_state:
+        st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)', '분석 설명'])
 
-# 기존 데이터와 새 데이터 누적 저장
-st.session_state.cached_analysis = pd.concat([st.session_state.cached_analysis, currency_analysis], ignore_index=True).drop_duplicates().reset_index(drop=True)
+    # 누적된 결과 초기화 버튼
+    if st.button('누적된 결과 초기화'):
+        st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)', '분석 설명'])
+        st.success("누적된 결과가 초기화되었습니다.")
+        # 페이지 리로드로 상태 초기화 반영
+        st.experimental_rerun()
+    # 새 분석 결과 생성
+    currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
+        'found': ['count', 'sum'],
+        'match_count': 'sum'
+    }).round(2)
+    currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+    currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
+    currency_analysis = currency_analysis.reset_index()
+    # 현재 분석에 대한 설명 생성
+    analysis_description = f"date_window={date_window}, 매수 목표가={buy_price_adjustment}, 매도 목표가={sell_price_adjustment}"
 
-# 누적된 결과 출력
-st.subheader('누적된 통화별 목표가 도달 거래 수')
-st.dataframe(st.session_state.cached_analysis, use_container_width=True)
+    # 설명 컬럼 추가
+    currency_analysis['분석 설명'] = analysis_description
+
+
+    if not currency_analysis.empty:
+        # 기존 데이터와 새 데이터 누적 저장
+        st.session_state.cached_analysis = pd.concat([st.session_state.cached_analysis, currency_analysis], ignore_index=True).drop_duplicates().reset_index(drop=True)
+
+    # 누적된 결과 출력
+    st.subheader('누적된 통화별 목표가 도달 거래 수')
+    st.dataframe(st.session_state.cached_analysis, use_container_width=True)
