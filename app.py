@@ -48,6 +48,7 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
                     'createdAt': rate_row['createdAt'],
                     'trade_executedAt': trade_row['executedAt'],
                     'trade_price': trade_row['price'],
+                    'amount' : trade_row['amount'],
                     'order_type': '매수' if trade_row['isBuyOrder'] == 1 else '매도'
                 })
         
@@ -269,6 +270,10 @@ if st.sidebar.button('모든 조합 시뮬레이션 실행'):
             'amount': 'sum'  # 거래량 합계 추가
         }).round(2)
         currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수', '총 거래량']
+
+        # 거래량 합계를 date_window 별로 추가
+        currency_analysis['총 거래량'] = results_df.groupby(['currency', 'order_type'])['amount'].sum().reset_index(drop=True)
+
         currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
         currency_analysis = currency_analysis.reset_index()
         # profit 계산 추가
