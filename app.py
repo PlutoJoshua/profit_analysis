@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import json
 from datetime import datetime, timedelta
 import plotly.express as px
 from data import load_data
@@ -11,7 +10,7 @@ from profit import analyze_target_prices, calculate_profit
 final_df, trade_df = load_data()
 # Streamlit 앱 메인
 st.title('환율 목표가 분석')
-tab1, tab2 = st.tabs(['eda', 'analysis'])
+tab1, tab2 = st.tabs(['analysis', 'simulation'])
 
 with tab1 : 
     # 사이드바에 필터 추가

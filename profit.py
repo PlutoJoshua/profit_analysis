@@ -1,4 +1,5 @@
 import pandas as pd
+import streamlit as st
 from datetime import datetime, timedelta
 
 
@@ -7,7 +8,7 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
     filtered_df = filtered_df[(filtered_df['createdAt'] >= start_date) & 
                              (filtered_df['createdAt'] <= end_date + timedelta(days=date_window))]
     trade_df = trade_df[(trade_df['executedAt'] >= start_date) & 
-                        (trade_df['executedAt'] <= end_date + timedelta(days=date_window))]
+                        (trade_df['executedAt'] <= end_date)]
     
     results = []
     matched_rates = []  # 매칭된 환율 데이터 저장
@@ -34,7 +35,8 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
             ]
         
         matches = matching_rates.shape[0]
-        
+        if currency == 'JPY':
+            trade_row['amount'] = trade_row['amount'] // 100
         # 매칭된 데이터가 있으면 저장
         if matches > 0:
             for _, rate_row in matching_rates.iterrows():
@@ -61,6 +63,7 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
     
     return pd.DataFrame(results), pd.DataFrame(matched_rates)
 
+@st.cache_data
 # 수익 계산 함수
 def calculate_profit(results_df, adjustment, start_date, end_date):
     # start_date와 end_date를 datetime64[ns]로 변환
