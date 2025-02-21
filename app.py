@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import plotly.express as px
 from data import load_data
 import itertools
-from profit import analyze_target_prices, calculate_profit
+from profit import analyze_target_prices, calculate_profit, display_metrics
 
 # 데이터 로드
 final_df, trade_df = load_data()
@@ -154,15 +154,20 @@ with tab2 :
         n_results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, n_adjustment, n_adjustment, date_window)
         st.success("모든 조합 시뮬레이션이 완료되었습니다.")
         st.dataframe(n_results_df)
-        
+        st.markdown(f"---")
         n_profit_df, n_total_amo, n_total_pro = calculate_profit(n_results_df, n_adjustment, start_date, end_date)
-        st.markdown(f"현재 조정값 : {n_adjustment}, 총 거래량 : {int(n_total_amo):,}, \n 총 수익 : {int(n_total_pro):,}")
+        n_success_rate = (n_results_df['found'].sum() / len(n_results_df)) * 100
+         # 전체 통계
+        display_metrics(n_results_df, n_success_rate, n_adjustment, n_total_amo, n_total_pro)   
+        st.markdown(f"---")        
         st.dataframe(n_profit_df)
+
         st.markdown(f"---")
         st.subheader("profit")
         results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, adjustment, adjustment, date_window)
         profit_df, total_amo, total_pro = calculate_profit(results_df, adjustment, start_date, end_date)
-        st.markdown(f"**미래 조정값** : {adjustment}, **총 거래량** : {int(total_amo):,}, \n **총 수익** : {int(total_pro):,}")
+        success_rate = (results_df['found'].sum() / len(results_df)) * 100
+        display_metrics(results_df, n_success_rate, adjustment, total_amo, total_pro)   
         st.dataframe(profit_df)
 
         # 가능한 모든 조합 생성

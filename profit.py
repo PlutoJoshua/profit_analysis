@@ -82,3 +82,22 @@ def calculate_profit(results_df, adjustment, start_date, end_date):
     total_amo = profit_df['amount'].sum()
     total_pro = profit_df['profit'].sum()
     return profit_df, total_amo, total_pro
+
+def display_metrics(n_results_df, n_success_rate, n_adjustment, n_total_amo, n_total_pro):
+    # 메트릭 표시 함수
+    col1, col2, col3 = st.columns(3)
+    col4, col5, col6 = st.columns(3)
+    with col1:
+        st.metric('전체 거래 수', len(n_results_df))
+    with col2:
+        st.metric('목표가 도달 거래 수', n_results_df['found'].sum())
+    with col3:
+        success_rate = (n_results_df['found'].sum() / len(n_results_df)) * 100
+        st.metric('목표가 도달률', f'{n_success_rate:.2f}%')
+    with col4:
+        st.metric('현재 조정값', n_adjustment)
+    with col5:
+        st.metric('총 거래량', f'{int(n_total_amo):,}')
+    with col6:
+        st.metric('총 수익', f'{int(n_total_pro):,}')            
+    
