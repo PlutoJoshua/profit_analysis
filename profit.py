@@ -103,18 +103,19 @@ def display_metrics(results_df, buy_results_df, sell_results_df, adjustment, tot
         total_found = buy_results_df['found'].sum() + sell_results_df['found'].sum()
         st.metric('목표가 도달 거래 수', total_found)
     with col3:
-        total_success_rate = (total_found / len(results_df)) * 100 if len(results_df) > 0 else 0
-        st.metric('목표가 도달률', f'{total_success_rate:.2f}%')
+        total_buy_results = buy_results_df['found'].sum()
+        total_sell_results = sell_results_df['found'].sum()
+        st.metric('매수/매도 목표가 도달 거래 수', f'{int(total_buy_results), int(total_sell_results)}')
     with col4:
         st.metric('현재 조정값', adjustment)
     with col5:
-        total_buy_results = buy_results_df['found'].sum()
-        st.metric('매수 목표가 도달 거래 수', f'{int(total_buy_results)}')
+        st.metric('매수 수익', f'{int(total_buy_pro):,}')   
     with col6:
-        total_sell_results = sell_results_df['found'].sum()
-        st.metric('매도 목표가 도달 거래 수', f'{total_sell_results}')     
+        st.metric('매도 수익', f'{int(total_sell_pro):,}')  
     with col7:
-        st.metric('매수/매도 수익', f'{int(total_buy_pro), int(total_sell_pro)}')
+        total_success_rate = (total_found / len(results_df)) * 100 if len(results_df) > 0 else 0
+        st.metric('목표가 도달률', f'{total_success_rate:.2f}%')
+
     with col8:
         st.metric('총 거래량', f'{int(total_buy_amo + total_sell_amo):,}')
     with col9:

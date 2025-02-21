@@ -165,10 +165,14 @@ with tab2 :
 
         st.markdown(f"---")
         st.subheader("profit")
-        # results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, adjustment, adjustment, date_window)
-        # profit_df, total_amo, total_pro = calculate_profit(results_df, adjustment, start_date, end_date)
+        results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, adjustment, adjustment, date_window)
+        (pre_buy_profit_df, pre_total_buy_amo, pre_total_buy_pro), (pre_sell_profit_df, pre_total_sell_amo, pre_total_sell_pro) = calculate_profit(results_df, adjustment, start_date, end_date)
+        
         # success_rate = (results_df['found'].sum() / len(results_df)) * 100
-        # display_metrics(results_df, success_rate, adjustment, total_amo, total_pro)   
+        display_metrics(results_df, pre_buy_profit_df, pre_sell_profit_df, adjustment, pre_total_buy_amo, pre_total_buy_pro, pre_total_sell_amo, pre_total_sell_pro)   
+        st.markdown(f"---")        
+        pre_profit_df = pd.concat([buy_profit_df, sell_profit_df])
+        st.dataframe(pre_profit_df)
         # st.dataframe(profit_df)
 
         # 가능한 모든 조합 생성
