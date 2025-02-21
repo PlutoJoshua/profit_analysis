@@ -61,6 +61,7 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
     
     return pd.DataFrame(results), pd.DataFrame(matched_rates)
 
+# 수익 계산 함수
 def calculate_profit(results_df, adjustment, start_date, end_date):
     # start_date와 end_date를 datetime64[ns]로 변환
     start_datetime = pd.to_datetime(start_date)
@@ -75,4 +76,6 @@ def calculate_profit(results_df, adjustment, start_date, end_date):
     
     # 수익 계산 (총 거래량 * 매수/매도 조정값)
     profit_df['profit'] = profit_df['amount'] * adjustment
-    return profit_df
+    total_amo = profit_df['amount'].sum()
+    total_pro = profit_df['profit'].sum()
+    return profit_df, total_amo, total_pro

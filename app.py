@@ -25,10 +25,10 @@ with tab1 :
     end_date = st.sidebar.date_input('종료일', max_date)
 
     # 분석 기간 설정
-    date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 1)
+    date_window = st.slider('환율 분석 기간(일)', 1, 30, 1)
     # 목표가 조정값 선택
-    buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
-    sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
+    buy_price_adjustment = st.slider('매수 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
+    sell_price_adjustment = st.slider('매도 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
     # 통화 선택
     available_currencies = ['USD', 'JPY']
     selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
@@ -126,6 +126,7 @@ with tab2 :
     # 사용자 입력 받기
     date_window = st.number_input('환율 분석 기간(일)', min_value=1, max_value=30, value=1)
     adjustment = st.number_input('목표가 조정값', min_value=0, max_value=10, value=1, step=1)
+    n_adjustment = st.number_input('현재 조정값', min_value=0, max_value=10, value=1, step=1)
     # 버튼 클릭 시 여러 시뮬레이션 실행
     if st.button('모든 조합 시뮬레이션 실행'):
 
@@ -133,13 +134,6 @@ with tab2 :
         # Streamlit 세션 상태 초기화
         if 'cached_analysis' not in st.session_state:
             st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
-
-        # 가능한 모든 조합 생성
-        date_windows = range(1, date_window + 1) 
-        adjustments = [i * 1.0 for i in range(1, adjustment + 1)]  # 목표가
-
-        # 모든 조합 생성
-        all_combinations = itertools.product(date_windows, adjustments)
 
         # 결과 저장용 리스트
         buy_results = []  # 매수 결과 저장
@@ -158,19 +152,38 @@ with tab2 :
         start_datetime = datetime.combine(start_date, datetime.min.time())
         end_datetime = datetime.combine(end_date, datetime.max.time())
 
-        results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, buy_price_adjustment, sell_price_adjustment, date_window)
+        n_results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, n_adjustment, n_adjustment, date_window)
+        st.success("모든 조합 시뮬레이션이 완료되었습니다.")
+        st.dataframe(n_results_df)
+        
+        n_profit_df, n_total_amo, n_total_pro = calculate_profit(n_results_df, n_adjustment, start_date, end_date)
+        st.markdown(f"현재 조정값 : {n_adjustment}, 총 거래량 : {int(n_total_amo):,}, \n 총 수익 : {int(n_total_pro):,}")
+        st.dataframe(n_profit_df)
+        st.markdown(f"---")
+        st.subheader("profit")
+        results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, adjustment, adjustment, date_window)
+        profit_df, total_amo, total_pro = calculate_profit(results_df, adjustment, start_date, end_date)
+        st.markdown(f"**미래 조정값** : {adjustment}, **총 거래량** : {int(total_amo):,}, \n **총 수익** : {int(total_pro):,}")
+        st.dataframe(profit_df)
+
+        # 가능한 모든 조합 생성
+        date_windows = range(1, date_window + 1) 
+        adjustments = [i * 1.0 for i in range(1, adjustment + 1)]  # 목표가
+
+        # 모든 조합 생성
+        all_combinations = itertools.product(date_windows, adjustments)
 
         # 각 조합에 대해 분석 실행
-        for date_window, adjustment in all_combinations:
+        for i, j in all_combinations:
             # 분석 실행
             results_df, _ = analyze_target_prices(
                 filtered_df, 
                 filtered_trade_df, 
                 start_datetime, 
                 end_datetime, 
-                adjustment, 
-                adjustment, 
-                date_window
+                j, 
+                j, 
+                i
             )
 
             # 중복 거래를 제거 (currency, executedAt, amount 기준)
@@ -182,7 +195,7 @@ with tab2 :
                 'match_count': 'sum',
                 'amount': 'sum'  # 거래량 합계 추가
             }).round(2)
-            currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+            currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수', '총 거래량']
 
             # 거래 성사률 계산
             currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
@@ -209,13 +222,9 @@ with tab2 :
             ignore_index=True
         ).drop_duplicates().reset_index(drop=True)
 
-        st.success("모든 조합 시뮬레이션이 완료되었습니다.")
-        st.subheader("profit")
-        profit = calculate_profit(results_df, adjustment, start_date, end_date)
-        st.dataframe(profit)
-        # 누적된 결과 출력
-        st.subheader('누적된 통화별 목표가 도달 거래 수')
-        st.dataframe(st.session_state.cached_analysis, use_container_width=True)
+        # # 누적된 결과 출력
+        # st.subheader('누적된 통화별 목표가 도달 거래 수')
+        # st.dataframe(st.session_state.cached_analysis, use_container_width=True)
 
 
 
