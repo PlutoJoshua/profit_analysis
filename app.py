@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import plotly.express as px
 from data import load_data
 import itertools
-from profit import analyze_target_prices, calculate_profit, display_metrics
+from profit import analyze_target_prices, calculate_profit, display_metrics, plot_profit_over_time, plot_matching_success, plot_profit_comparison
 
 # 데이터 로드
 final_df, trade_df = load_data()
@@ -230,6 +230,20 @@ with tab2 :
             [st.session_state.cached_analysis, all_buy_simulations_df, all_sell_simulations_df],
             ignore_index=True
         ).drop_duplicates().reset_index(drop=True)
+
+        # 시각화 실행
+        st.header("Profit Over Time")
+        plot_profit_over_time(n_profit_df, "Profit Over Time for N Adjustment")
+        plot_profit_over_time(pre_profit_df, "Profit Over Time for Pre Adjustment")
+
+        st.header("Matching Success Rate")
+        plot_matching_success(n_results_df, "Matching Success for N Adjustment")
+        plot_matching_success(results_df, "Matching Success for Pre Adjustment")
+
+        st.header("Profit Comparison")
+        plot_profit_comparison(buy_profit_df, sell_profit_df)
+        plot_profit_comparison(pre_buy_profit_df, pre_sell_profit_df)
+
 
         # # 누적된 결과 출력
         # st.subheader('누적된 통화별 목표가 도달 거래 수')

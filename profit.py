@@ -1,6 +1,8 @@
 import pandas as pd
 import streamlit as st
 from datetime import datetime, timedelta
+import plotly.express as px
+import plotly.graph_objects as go
 
 
 def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price_adjustment, sell_price_adjustment, date_window):
@@ -120,4 +122,44 @@ def display_metrics(results_df, buy_results_df, sell_results_df, adjustment, tot
         st.metric('총 거래량', f'{int(total_buy_amo + total_sell_amo):,}')
     with col9:
         st.metric('총 수익', f'{int(total_buy_pro + total_sell_pro):,}')            
+
+# 수익률 변화 시각화
+def plot_profit_over_time(profit_df, title):
+    profit_df['date'] = profit_df['executedAt'].dt.date  # 날짜 단위로 그룹화
+    daily_profit = profit_df.groupby(['date', 'order_type'])['amount'].sum().reset_index()
     
+    fig = px.line(
+        daily_profit, 
+        x='date', 
+        y='amount', 
+        color='order_type',
+        title=title,
+        labels={"amount": "Profit Amount", "date": "Date"}
+    )
+    st.plotly_chart(fig)
+
+# 매칭 성공률 파이차트
+def plot_matching_success(results_df, title):
+    found_counts = results_df['found'].value_counts().reset_index()
+    found_counts.columns = ['found', 'count']
+    found_counts['found'] = found_counts['found'].map({True: 'Matched', False: 'Not Matched'})
+
+    fig = px.pie(found_counts, values='count', names='found', title=title)
+    st.plotly_chart(fig)
+
+# 수익률 비교
+def plot_profit_comparison(buy_profit_df, sell_profit_df):
+    buy_total = buy_profit_df['amount'].sum()
+    sell_total = sell_profit_df['amount'].sum()
+
+    fig = go.Figure(data=[
+        go.Bar(name='Buy Profit', x=['Profit'], y=[buy_total], marker_color='blue'),
+        go.Bar(name='Sell Profit', x=['Profit'], y=[sell_total], marker_color='red')
+    ])
+    fig.update_layout(
+        title_text="Buy vs Sell Profit Comparison",
+        yaxis_title="Total Profit",
+        barmode='group'
+    )
+    st.plotly_chart(fig)
+
