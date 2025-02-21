@@ -65,17 +65,31 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
     
     return pd.DataFrame(results), pd.DataFrame(matched_rates)
 
-# Streamlit 앱 메인
-st.title('환율 목표가 분석')
+def calculate_profit(results_df, adjustment, start_date, end_date):
+    # start_date와 end_date를 datetime64[ns]로 변환
+    start_datetime = pd.to_datetime(start_date)
+    end_datetime = pd.to_datetime(end_date)
+    
+    # 'found'가 True인 경우에만 수익 계산
+    profit_df = results_df[
+        (results_df['executedAt'] >= start_datetime) &
+        (results_df['executedAt'] <= end_datetime) &
+        (results_df['found'] == True)
+    ]
+    
+    # 수익 계산 (총 거래량 * 매수/매도 조정값)
+    profit_df['profit'] = profit_df['amount'] * adjustment
+    return profit_df
 
 # 데이터 로드
 final_df, trade_df = load_data()
 
+# Streamlit 앱 메인
+st.title('환율 목표가 분석')
+
 # 사이드바에 필터 추가
 st.sidebar.header('분석 설정')
-
 # 날짜 범위 선택
-# min_date = min(final_df['createdAt'].min(), trade_df['executedAt'].min())
 max_date = max(final_df['createdAt'].max(), trade_df['executedAt'].max())
 # 가장 최근 날짜 기준 일주일 전 계산
 one_week_ago = max_date - timedelta(days=7)
@@ -85,18 +99,15 @@ end_date = st.sidebar.date_input('종료일', max_date)
 
 # 분석 기간 설정
 date_window = st.sidebar.slider('환율 분석 기간(일)', 1, 30, 1)
-
 # 목표가 조정값 선택
 buy_price_adjustment = st.sidebar.slider('매수 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
 sell_price_adjustment = st.sidebar.slider('매도 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
-
 # 통화 선택
 available_currencies = ['USD', 'JPY']
 selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
 
 # 확인 버튼 추가
 if st.sidebar.button('분석 실행'):
-
     # 통화 선택 후 데이터 필터링
     filtered_trade_df = trade_df[
         trade_df.apply(lambda x: 
@@ -114,7 +125,6 @@ if st.sidebar.button('분석 실행'):
 
     # 결과 표시
     st.header('분석 결과')
-
     # 전체 통계
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -185,8 +195,6 @@ if st.sidebar.button('분석 실행'):
     # st.subheader('전체 환율 데이터')
     # st.dataframe(filtered_df)
 
-
-
 # 버튼 클릭 시 여러 시뮬레이션 실행
 if st.sidebar.button('모든 조합 시뮬레이션 실행'):
     # Streamlit 세션 상태 초기화
@@ -232,6 +240,9 @@ if st.sidebar.button('모든 조합 시뮬레이션 실행'):
             date_window
         )
 
+        # 중복 거래를 제거 (currency, executedAt, amount 기준)
+        results_df = results_df.drop_duplicates(subset=['currency', 'executedAt', 'amount'])
+
         # 통화별 분석
         currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
             'found': ['count', 'sum'],
@@ -243,8 +254,6 @@ if st.sidebar.button('모든 조합 시뮬레이션 실행'):
         # 거래 성사률 계산
         currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
         currency_analysis = currency_analysis.reset_index()
-        # 중복 거래를 제거 (currency, executedAt, amount 기준)
-        currency_analysis = currency_analysis.drop_duplicates(subset=['currency', 'executedAt', '총 거래량'])
 
         # 수익 계산 (date_window와 관계없이)
         currency_analysis['profit'] = currency_analysis['총 거래량'] * adjustment
@@ -268,7 +277,9 @@ if st.sidebar.button('모든 조합 시뮬레이션 실행'):
     ).drop_duplicates().reset_index(drop=True)
 
     st.success("모든 조합 시뮬레이션이 완료되었습니다.")
-
+    st.subheader("profit")
+    profit = calculate_profit(results_df, adjustment, start_date, end_date)
+    st.dataframe(profit)
     # 누적된 결과 출력
     st.subheader('누적된 통화별 목표가 도달 거래 수')
     st.dataframe(st.session_state.cached_analysis, use_container_width=True)
