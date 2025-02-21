@@ -243,6 +243,8 @@ if st.sidebar.button('모든 조합 시뮬레이션 실행'):
         # 거래 성사률 계산
         currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
         currency_analysis = currency_analysis.reset_index()
+        # 중복 거래를 제거 (currency, executedAt, amount 기준)
+        currency_analysis = currency_analysis.drop_duplicates(subset=['currency', 'executedAt', '총 거래량'])
 
         # 수익 계산 (date_window와 관계없이)
         currency_analysis['profit'] = currency_analysis['총 거래량'] * adjustment
