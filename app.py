@@ -4,7 +4,7 @@ import json
 from datetime import datetime, timedelta
 import plotly.express as px
 from data import load_data
-
+import itertools
             # matching_rates = filtered_df[
             #     (filtered_df['currencyCode'] == currency) & 
             #     (filtered_df['basePrice'] <= target_price)  
@@ -219,3 +219,62 @@ if st.sidebar.button('분석 실행'):
     # 누적된 결과 출력
     st.subheader('누적된 통화별 목표가 도달 거래 수')
     st.dataframe(st.session_state.cached_analysis, use_container_width=True)
+
+# 버튼 클릭 시 여러 시뮬레이션 실행
+if st.sidebar.button('모든 조합 시뮬레이션 실행'):
+    # 가능한 모든 조합 생성
+    date_windows = range(1, 8)  # 1일부터 7일까지
+    buy_adjustments = [i * 1.0 for i in range(1, 6)]  # 매수 목표가: 1.0 ~ 5.0
+    sell_adjustments = [i * 1.0 for i in range(1, 6)]  # 매도 목표가: 1.0 ~ 5.0
+
+    # 모든 조합 생성
+    all_combinations = itertools.product(date_windows, buy_adjustments, sell_adjustments)
+
+    # 결과 저장용 리스트
+    simulation_results = []
+
+    # 각 조합에 대해 분석 실행
+    for date_window, buy_adjustment, sell_adjustment in all_combinations:
+        # 분석 실행
+        results_df, _ = analyze_target_prices(
+            filtered_df, 
+            filtered_trade_df, 
+            start_datetime, 
+            end_datetime, 
+            buy_adjustment, 
+            sell_adjustment, 
+            date_window
+        )
+
+        # 현재 조합에 대한 설명
+        analysis_description = f"date_window={date_window}, 매수 목표가={buy_adjustment}, 매도 목표가={sell_adjustment}"
+
+        # 통화별 분석
+        currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
+            'found': ['count', 'sum'],
+            'match_count': 'sum'
+        }).round(2)
+        currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
+        currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
+        currency_analysis = currency_analysis.reset_index()
+
+        # 설명 추가
+        currency_analysis['분석 설명'] = analysis_description
+
+        # 결과 누적
+        simulation_results.append(currency_analysis)
+
+    # 모든 결과를 하나의 DataFrame으로 병합
+    all_simulations_df = pd.concat(simulation_results, ignore_index=True)
+
+    # 기존 누적된 데이터에 병합
+    st.session_state.cached_analysis = pd.concat(
+        [st.session_state.cached_analysis, all_simulations_df],
+        ignore_index=True
+    ).drop_duplicates().reset_index(drop=True)
+
+    st.success("모든 조합 시뮬레이션이 완료되었습니다.")
+
+# 누적된 결과 출력
+st.subheader('누적된 통화별 목표가 도달 거래 수')
+st.dataframe(st.session_state.cached_analysis, use_container_width=True)
