@@ -9,9 +9,9 @@ import itertools
 def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price_adjustment, sell_price_adjustment, date_window):
     # 날짜 필터링
     filtered_df = filtered_df[(filtered_df['createdAt'] >= start_date) & 
-                             (filtered_df['createdAt'] <= end_date)]
+                             (filtered_df['createdAt'] <= end_date + timedelta(days=date_window))]
     trade_df = trade_df[(trade_df['executedAt'] >= start_date) & 
-                        (trade_df['executedAt'] <= end_date)]
+                        (trade_df['executedAt'] <= end_date + timedelta(days=date_window))]
     
     results = []
     matched_rates = []  # 매칭된 환율 데이터 저장
@@ -185,38 +185,7 @@ if st.sidebar.button('분석 실행'):
     # st.subheader('전체 환율 데이터')
     # st.dataframe(filtered_df)
 
-    # Streamlit 세션 상태 초기화
-    if 'cached_analysis' not in st.session_state:
-        st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)', '분석 설명'])
 
-    # 누적된 결과 초기화 버튼
-    if st.button('누적된 결과 초기화'):
-        st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)', '분석 설명'])
-        st.success("누적된 결과가 초기화되었습니다.")
-        # 페이지 리로드로 상태 초기화 반영
-        st.experimental_rerun()
-    # 새 분석 결과 생성
-    currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
-        'found': ['count', 'sum'],
-        'match_count': 'sum'
-    }).round(2)
-    currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수']
-    currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
-    currency_analysis = currency_analysis.reset_index()
-    # 현재 분석에 대한 설명 생성
-    analysis_description = f"date_window={date_window}, 매수 목표가={buy_price_adjustment}, 매도 목표가={sell_price_adjustment}"
-
-    # 설명 컬럼 추가
-    currency_analysis['분석 설명'] = analysis_description
-
-
-    if not currency_analysis.empty:
-        # 기존 데이터와 새 데이터 누적 저장
-        st.session_state.cached_analysis = pd.concat([st.session_state.cached_analysis, currency_analysis], ignore_index=True).drop_duplicates().reset_index(drop=True)
-
-    # 누적된 결과 출력
-    st.subheader('누적된 통화별 목표가 도달 거래 수')
-    st.dataframe(st.session_state.cached_analysis, use_container_width=True)
 
 # 버튼 클릭 시 여러 시뮬레이션 실행
 if st.sidebar.button('모든 조합 시뮬레이션 실행'):
@@ -225,8 +194,8 @@ if st.sidebar.button('모든 조합 시뮬레이션 실행'):
         st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
 
     # 가능한 모든 조합 생성
-    date_windows = range(1, 8) 
-    adjustments = [i * 1.0 for i in range(1, 11)]  # 목표가
+    date_windows = range(1, 3) 
+    adjustments = [i * 1.0 for i in range(1, 3)]  # 목표가
 
     # 모든 조합 생성
     all_combinations = itertools.product(date_windows, adjustments)
@@ -271,16 +240,15 @@ if st.sidebar.button('모든 조합 시뮬레이션 실행'):
         }).round(2)
         currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수', '총 거래량']
 
-        # 거래량 합계를 date_window 별로 추가
-        currency_analysis['총 거래량'] = results_df.groupby(['currency', 'order_type'])['amount'].sum().reset_index(drop=True)
-
+        # 거래 성사률 계산
         currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
         currency_analysis = currency_analysis.reset_index()
-        # profit 계산 추가
+
+        # 수익 계산 (date_window와 관계없이)
         currency_analysis['profit'] = currency_analysis['총 거래량'] * adjustment
+
         # 설명 추가
         currency_analysis[['date_window', 'adjustment']] = date_window, adjustment
-        # 결과 누적
         # 결과 누적
         if '매수' in currency_analysis['order_type'].values:  # 매수 결과
             buy_results.append(currency_analysis[currency_analysis['order_type'] == '매수'])
@@ -302,3 +270,46 @@ if st.sidebar.button('모든 조합 시뮬레이션 실행'):
     # 누적된 결과 출력
     st.subheader('누적된 통화별 목표가 도달 거래 수')
     st.dataframe(st.session_state.cached_analysis, use_container_width=True)
+
+
+
+
+
+
+
+        # # Streamlit 세션 상태 초기화
+    # if 'cached_analysis' not in st.session_state:
+    #     st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
+
+    # # 누적된 결과 초기화 버튼
+    # if st.button('누적된 결과 초기화'):
+    #     st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
+    #     st.success("누적된 결과가 초기화되었습니다.")
+
+    # # 새 분석 결과 생성
+    # currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
+    #     'found': ['count', 'sum'],
+    #     'match_count': 'sum',
+    #     'amount': 'sum'  # 거래량 합계 추가
+    # }).round(2)
+    # currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수', '총 거래량']
+    # currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
+    # currency_analysis = currency_analysis.reset_index()
+
+    # # 거래량 합계를 date_window 별로 추가
+    # currency_analysis['총 거래량'] = results_df.groupby(['currency', 'order_type'])['amount'].sum().reset_index(drop=True)
+
+    # currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
+    # currency_analysis = currency_analysis.reset_index()
+    # # profit 계산 추가
+    # currency_analysis['profit'] = currency_analysis['총 거래량'] * buy_price_adjustment
+    # # 설명 추가
+    # currency_analysis[['date_window', 'adjustment']] = date_window, sell_price_adjustment
+
+    # if not currency_analysis.empty:
+    #     # 기존 데이터와 새 데이터 누적 저장
+    #     st.session_state.cached_analysis = pd.concat([st.session_state.cached_analysis, currency_analysis], ignore_index=True).drop_duplicates().reset_index(drop=True)
+
+    # # 누적된 결과 출력
+    # st.subheader('누적된 통화별 목표가 도달 거래 수')
+    # st.dataframe(st.session_state.cached_analysis, use_container_width=True)
