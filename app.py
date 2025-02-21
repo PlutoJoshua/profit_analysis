@@ -5,10 +5,6 @@ from datetime import datetime, timedelta
 import plotly.express as px
 from data import load_data
 import itertools
-            # matching_rates = filtered_df[
-            #     (filtered_df['currencyCode'] == currency) & 
-            #     (filtered_df['basePrice'] <= target_price)  
-            # ]
 
 def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price_adjustment, sell_price_adjustment, date_window):
     # 날짜 필터링
@@ -222,32 +218,51 @@ if st.sidebar.button('분석 실행'):
 
 # 버튼 클릭 시 여러 시뮬레이션 실행
 if st.sidebar.button('모든 조합 시뮬레이션 실행'):
+    # Streamlit 세션 상태 초기화
+    if 'cached_analysis' not in st.session_state:
+        st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)', '분석 설명'])
+
     # 가능한 모든 조합 생성
     date_windows = range(1, 8)  # 1일부터 7일까지
-    buy_adjustments = [i * 1.0 for i in range(1, 6)]  # 매수 목표가: 1.0 ~ 5.0
-    sell_adjustments = [i * 1.0 for i in range(1, 6)]  # 매도 목표가: 1.0 ~ 5.0
+    adjustments = [i for i in range(1, 6)]  # 매수 목표가: 1.0 ~ 5.0
+    # sell_adjustments = [i for i in range(1, 6)]  # 매도 목표가: 1.0 ~ 5.0
 
     # 모든 조합 생성
-    all_combinations = itertools.product(date_windows, buy_adjustments, sell_adjustments)
+    all_combinations = itertools.product(date_windows, adjustments)
 
     # 결과 저장용 리스트
     simulation_results = []
 
+    # 통화 선택 후 데이터 필터링
+    filtered_trade_df = trade_df[
+        trade_df.apply(lambda x: 
+            (x['currencyCode0'] if x['currencyCode'] == 'KRW' else x['currencyCode']) in selected_currencies, 
+            axis=1
+        )
+    ]
+    filtered_df = final_df[final_df['currencyCode'].isin(selected_currencies)]
+
+    # 분석 실행
+    start_datetime = datetime.combine(start_date, datetime.min.time())
+    end_datetime = datetime.combine(end_date, datetime.max.time())
+
+    results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, buy_price_adjustment, sell_price_adjustment, date_window)
+
     # 각 조합에 대해 분석 실행
-    for date_window, buy_adjustment, sell_adjustment in all_combinations:
+    for date_window, adjustment in all_combinations:
         # 분석 실행
         results_df, _ = analyze_target_prices(
             filtered_df, 
             filtered_trade_df, 
             start_datetime, 
             end_datetime, 
-            buy_adjustment, 
-            sell_adjustment, 
+            adjustment, 
+            adjustment, 
             date_window
         )
 
         # 현재 조합에 대한 설명
-        analysis_description = f"date_window={date_window}, 매수 목표가={buy_adjustment}, 매도 목표가={sell_adjustment}"
+        analysis_description = f"date_window={date_window}, 매수 목표가={adjustment}, 매도 목표가={adjustment}"
 
         # 통화별 분석
         currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
@@ -275,6 +290,6 @@ if st.sidebar.button('모든 조합 시뮬레이션 실행'):
 
     st.success("모든 조합 시뮬레이션이 완료되었습니다.")
 
-# 누적된 결과 출력
-st.subheader('누적된 통화별 목표가 도달 거래 수')
-st.dataframe(st.session_state.cached_analysis, use_container_width=True)
+    # 누적된 결과 출력
+    st.subheader('누적된 통화별 목표가 도달 거래 수')
+    st.dataframe(st.session_state.cached_analysis, use_container_width=True)
