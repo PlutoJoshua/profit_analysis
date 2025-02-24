@@ -134,10 +134,6 @@ with tab2 :
     n_adjustment = st.number_input('현재 조정값', min_value=0, max_value=10, value=1, step=1)
     # 버튼 클릭 시 여러 시뮬레이션 실행
     if st.button('모든 조합 시뮬레이션 실행'):
-        # Streamlit 세션 상태 초기화
-        if 'cached_analysis' not in st.session_state:
-            st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
-
         # 결과 저장용 리스트
         buy_results = []  # 매수 결과 저장
         sell_results = []  # 매도 결과 저장
@@ -176,12 +172,7 @@ with tab2 :
         st.markdown(f"---")        
         pre_profit_df = pd.concat([pre_buy_profit_df, pre_sell_profit_df])
         st.dataframe(pre_profit_df)
-        # st.dataframe(profit_df)
-
         # 시각화 실행
-        st.header("Profit Over Time")
-        plot_profit_over_time(n_profit_df, "Profit Over Time for N Adjustment")
-        plot_profit_over_time(pre_profit_df, "Profit Over Time for Pre Adjustment")
 
         st.header("Matching Success Rate")
         plot_matching_success(n_results_df, "Matching Success for N Adjustment")
@@ -199,7 +190,6 @@ with tab2 :
 
         # 각 조합에 대해 분석 실행
         for i, j in all_combinations:
-            print(f"현재 조합: date_window={i}, adjustment={j}")
             # 분석 실행
             results_df, _ = analyze_target_prices(
                 filtered_df, 
@@ -211,28 +201,35 @@ with tab2 :
                 i   # date_window
             )
 
-            # 중복 거래를 제거 (currency, executedAt, amount 기준)
-            results_df = results_df.drop_duplicates(subset=['currency', 'executedAt', 'amount'])
-            # 거래가 성사된 (`found == True`) 데이터만 필터링
-            valid_trades = results_df[results_df['found']]
+            # calculate_profit 함수 호출하여 수익 계산
+            (buy_profit_df, total_buy_amo, total_buy_pro), (sell_profit_df, total_sell_amo, total_sell_pro) = calculate_profit(
+                results_df, 
+                j,  # 조정값
+                start_datetime, 
+                end_datetime
+            )
 
-            # 수익 계산 (각 거래별 amount * adjustment)
-            valid_trades['profit'] = valid_trades['amount'] * j  # 조정값 적용
+            # 결과 조합 정보 추가
+            profit_results.append({
+                'date_window': i,
+                'adjustment': j,
+                'total_buy_amount': total_buy_amo,
+                'total_buy_profit': total_buy_pro,
+                'total_sell_amount': total_sell_amo,
+                'total_sell_profit': total_sell_pro
+            })
 
-            # 조합 정보 추가
-            valid_trades['date_window'] = i
-            valid_trades['adjustment'] = j
+            # 필요 시 추가적으로 결과 출력
+            print(f"현재 조합: date_window={i}, adjustment={j}")
+            print(f"매수 수익: {total_buy_pro}, 매도 수익: {total_sell_pro}")
+            print(f"매수 거래량: {total_buy_amo}, 매도 거래량: {total_sell_amo}")
 
-            # 필요한 컬럼만 선택하여 리스트에 추가
-            profit_results.extend(valid_trades[['date_window', 'adjustment', 'currency', 'order_type', 'profit']].values.tolist())
-
-        # 리스트 상태 출력
-        print(f"전체 profit_results 길이: {len(profit_results)}")
+        # 결과를 DataFrame으로 변환
+        profit_df = pd.DataFrame(profit_results)
+        profit_df.to_csv("./test.csv")
         # DataFrame 변환
-        profit_df = pd.DataFrame(profit_results, columns=['date_window', 'adjustment', 'currency', 'order_type', 'profit'])
-        # print(profit_df)
         # 조합별 총 수익 계산 (피벗 테이블 생성)
-        heatmap_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="profit", aggfunc="sum")
+        heatmap_data = profit_df.pivot_table(index="date_window", columns="adjustment", values=["total_buy_profit", "total_sell_profit"])
 
         # 열지도 시각화
         plt.figure(figsize=(12, 8))
