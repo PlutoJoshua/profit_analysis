@@ -79,7 +79,8 @@ def calculate_profit(results_df, adjustment, start_date, end_date, date_window):
         (results_df['executedAt'] <= end_datetime + timedelta(days=date_window)) &
         (results_df['found'] == True)
     ]
-    
+    # 🔹 중복 제거 (같은 시간, 통화, 금액이 중복된 거래 제거)
+    profit_df = profit_df.drop_duplicates(subset=['currency', 'executedAt', 'amount'])
     # 매수와 매도에 따른 수익 계산
     # 매수와 매도 데이터 복사본 생성
     buy_profit_df = profit_df[profit_df['order_type'] == '매수'].copy()
