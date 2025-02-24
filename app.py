@@ -16,6 +16,7 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',  # 로그 메시지 포맷
     handlers=[
         logging.FileHandler("app.log"),  # 로그를 파일에 기록
+        # logging.StreamHandler()
     ]
 )
 # 한글 깨짐 방지
@@ -204,7 +205,8 @@ with tab2 :
                 j,  # 목표가 설정 (매수)
                 i   # date_window
             )
-
+            # 결과를 CSV 파일로 저장
+            results_df.to_csv(f'results_date_window_{i}_adjustment_{j}.csv', index=False)
             # calculate_profit 함수 호출하여 수익 계산
             (buy_profit_df, total_buy_amo, total_buy_pro), (sell_profit_df, total_sell_amo, total_sell_pro) = calculate_profit(
                 results_df, 
@@ -246,27 +248,31 @@ with tab2 :
 
         # 매수 거래량 바 그래프 시각화
         buy_volume_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_buy_amo")
-        buy_volume_data.plot(kind='line', figsize=(12, 8))
-        plt.title('매수 거래량 바 그래프')
-        plt.xlabel('날짜 범위')
-        plt.ylabel('거래량')
-        st.pyplot(plt)
+        fig_buy_volume = px.line(buy_volume_data, 
+                                  title='매수 거래량 바 그래프', 
+                                  labels={'value': '거래량', 'date_window': '날짜 범위'})
+        st.plotly_chart(fig_buy_volume)
 
         # 매도 거래량 바 그래프 시각화
         sell_volume_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_sell_amo")
-        sell_volume_data.plot(kind='line', figsize=(12, 8))
-        plt.title('매도 거래량 바 그래프')
-        plt.xlabel('날짜 범위')
-        plt.ylabel('거래량')
-        st.pyplot(plt)
+        fig_sell_volume = px.line(sell_volume_data, 
+                                   title='매도 거래량 바 그래프', 
+                                   labels={'value': '거래량', 'date_window': '날짜 범위'})
+        st.plotly_chart(fig_sell_volume)
 
         # 매수 수익 바 그래프 시각화
         buy_profit_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_buy_pro")
-        buy_profit_data.plot(kind='line', figsize=(12, 8))
-        plt.title('매수 수익 바 그래프')
-        plt.xlabel('날짜 범위')
-        plt.ylabel('수익')
-        st.pyplot(plt)
+        fig_buy_profit = px.line(buy_profit_data, 
+                                  title='매수 수익 바 그래프', 
+                                  labels={'value': '수익', 'date_window': '날짜 범위'})
+        st.plotly_chart(fig_buy_profit)
+
+        # 매도 수익 바 그래프 시각화
+        sell_profit_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_sell_pro")
+        fig_sell_profit = px.line(sell_profit_data, 
+                                   title='매도 수익 바 그래프', 
+                                   labels={'value': '수익', 'date_window': '날짜 범위'})
+        st.plotly_chart(fig_sell_profit)
 
         # 매도 수익 바 그래프 시각화
         sell_profit_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_sell_pro")
@@ -276,4 +282,7 @@ with tab2 :
         plt.ylabel('수익')
         st.pyplot(plt)
 
+        profit_results_df = pd.DataFrame(results_df)
+        profit_results_df.to_csv('./result.csv')
         profit_df.to_csv('./test.csv')
+        logging.info("분석 실행 완료 및 csv 파일 저장")

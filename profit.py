@@ -12,8 +12,9 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
     trade_df = trade_df[(trade_df['executedAt'] >= start_date) & 
                         (trade_df['executedAt'] <= end_date)]
     
-    results = []
+    results = [] # 거래 결과에 대한 정보 저장
     matched_rates = []  # 매칭된 환율 데이터 저장
+
     for idx, trade_row in trade_df.iterrows():
         currency = trade_row['currencyCode0'] if trade_row['currencyCode'] == 'KRW' else trade_row['currencyCode']
         trade_date = trade_row['executedAt']
@@ -144,7 +145,10 @@ def plot_matching_success(results_df, title):
     found_counts.columns = ['found', 'count']
     found_counts['found'] = found_counts['found'].map({True: 'Matched', False: 'Not Matched'})
 
-    fig = px.pie(found_counts, values='count', names='found', title=title)
+    # 범례 순서 지정
+    fig = px.pie(found_counts, values='count', names='found', title=title, 
+                #  category_orders={'found': ['Matched', 'Not Matched']}
+                )
     st.plotly_chart(fig)
 
 
