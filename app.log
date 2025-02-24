@@ -1,0 +1,638 @@
+2025-02-24 14:09:53,358 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.log", inode=5157750, flags=18100, id=85499334): is_created, is_file, is_xattr_mod
+2025-02-24 14:09:53,442 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/app.log', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:09:53,459 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:09:53,459 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.log', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:10:24,121 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/FETCH_HEAD", inode=1573973, flags=10400, id=85502883): is_file, is_inode_meta_mod
+2025-02-24 14:10:24,121 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/FETCH_HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:10:24,921 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/FETCH_HEAD", inode=1573973, flags=11400, id=85503186): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:10:24,921 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/maintenance.lock", inode=5157999, flags=18300, id=85503195): is_coalesced, is_created, is_file, is_removed, is_xattr_mod
+2025-02-24 14:10:24,921 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/FETCH_HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:10:24,921 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:10:24,921 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:10:24,922 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:10:24,922 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:10:24,922 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:10:40,914 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85504640): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:10:40,914 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:11:04,704 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85507559): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:11:04,704 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:12:22,816 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85519057): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:12:22,816 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:12:56,660 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85523531): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:12:56,660 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:12:57,866 - INFO - 시뮬레이션 버튼 클릭
+2025-02-24 14:12:57,887 - INFO - 데이터 필터링 완료
+2025-02-24 14:13:20,143 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85527637): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:13:20,143 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:13:24,122 - INFO - 시뮬레이션 버튼 클릭
+2025-02-24 14:13:24,212 - INFO - 데이터 필터링 완료
+2025-02-24 14:13:37,023 - INFO - 시뮬레이션 실행 완료   date_window  adjustment  total_buy_amo  total_buy_pro  total_sell_amo  total_sell_pro
+0            1         1.0        56917.0        56917.0         59697.0         59697.0
+1            1         2.0        50259.0       100518.0         54918.0        109836.0
+2            1         3.0        48091.0       144273.0         41425.0        124275.0
+3            1         4.0        41793.0       167172.0         31647.0        126588.0
+4            1         5.0        31801.0       159005.0         20584.0        102920.0
+5            2         1.0        61462.0        61462.0         61092.0         61092.0
+6            2         2.0        56774.0       113548.0         56313.0        112626.0
+7            2         3.0        56774.0       170322.0         44503.0        133509.0
+8            2         4.0        51374.0       205496.0         37864.0        151456.0
+9            2         5.0        45924.0       229620.0         26179.0        130895.0
+2025-02-24 14:13:37,032 - DEBUG - locator: <matplotlib.ticker.AutoLocator object at 0x368feb700>
+2025-02-24 14:13:37,321 - INFO - 조건: (date_window: 1, adjustment: 1.0)
+2025-02-24 14:13:37,321 - INFO - 매수 거래량: 56917.0, 매도 거래량: 59697.0
+2025-02-24 14:13:37,321 - INFO - 매수 수익: 56917.0, 매도 수익: 59697.0
+2025-02-24 14:13:38,294 - INFO - 조건: (date_window: 1, adjustment: 2.0)
+2025-02-24 14:13:38,294 - INFO - 매수 거래량: 50259.0, 매도 거래량: 54918.0
+2025-02-24 14:13:38,294 - INFO - 매수 수익: 100518.0, 매도 수익: 109836.0
+2025-02-24 14:13:39,075 - INFO - 조건: (date_window: 1, adjustment: 3.0)
+2025-02-24 14:13:39,075 - INFO - 매수 거래량: 48091.0, 매도 거래량: 41425.0
+2025-02-24 14:13:39,075 - INFO - 매수 수익: 144273.0, 매도 수익: 124275.0
+2025-02-24 14:13:39,692 - INFO - 조건: (date_window: 1, adjustment: 4.0)
+2025-02-24 14:13:39,692 - INFO - 매수 거래량: 41793.0, 매도 거래량: 31647.0
+2025-02-24 14:13:39,692 - INFO - 매수 수익: 167172.0, 매도 수익: 126588.0
+2025-02-24 14:13:40,197 - INFO - 조건: (date_window: 1, adjustment: 5.0)
+2025-02-24 14:13:40,197 - INFO - 매수 거래량: 31801.0, 매도 거래량: 20584.0
+2025-02-24 14:13:40,197 - INFO - 매수 수익: 159005.0, 매도 수익: 102920.0
+2025-02-24 14:13:41,767 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:13:41,770 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:13:41,773 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:13:41,773 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:13:42,766 - INFO - 조건: (date_window: 2, adjustment: 1.0)
+2025-02-24 14:13:42,766 - INFO - 매수 거래량: 61462.0, 매도 거래량: 61092.0
+2025-02-24 14:13:42,766 - INFO - 매수 수익: 61462.0, 매도 수익: 61092.0
+2025-02-24 14:13:44,854 - INFO - 조건: (date_window: 2, adjustment: 2.0)
+2025-02-24 14:13:44,854 - INFO - 매수 거래량: 56774.0, 매도 거래량: 56313.0
+2025-02-24 14:13:44,854 - INFO - 매수 수익: 113548.0, 매도 수익: 112626.0
+2025-02-24 14:13:46,575 - INFO - 조건: (date_window: 2, adjustment: 3.0)
+2025-02-24 14:13:46,575 - INFO - 매수 거래량: 56774.0, 매도 거래량: 44503.0
+2025-02-24 14:13:46,575 - INFO - 매수 수익: 170322.0, 매도 수익: 133509.0
+2025-02-24 14:13:47,940 - INFO - 조건: (date_window: 2, adjustment: 4.0)
+2025-02-24 14:13:47,941 - INFO - 매수 거래량: 51374.0, 매도 거래량: 37864.0
+2025-02-24 14:13:47,941 - INFO - 매수 수익: 205496.0, 매도 수익: 151456.0
+2025-02-24 14:13:49,089 - INFO - 조건: (date_window: 2, adjustment: 5.0)
+2025-02-24 14:13:49,089 - INFO - 매수 거래량: 45924.0, 매도 거래량: 26179.0
+2025-02-24 14:13:49,089 - INFO - 매수 수익: 229620.0, 매도 수익: 130895.0
+2025-02-24 14:13:53,025 - INFO - 조건: (date_window: 3, adjustment: 1.0)
+2025-02-24 14:13:53,025 - INFO - 매수 거래량: 62949.0, 매도 거래량: 61806.0
+2025-02-24 14:13:53,025 - INFO - 매수 수익: 62949.0, 매도 수익: 61806.0
+2025-02-24 14:13:54,945 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/FETCH_HEAD", inode=1573973, flags=10400, id=85533271): is_file, is_inode_meta_mod
+2025-02-24 14:13:54,959 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/FETCH_HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:13:55,867 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/FETCH_HEAD", inode=1573973, flags=11400, id=85533937): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:13:55,879 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/FETCH_HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:13:55,894 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/maintenance.lock", inode=5160020, flags=18300, id=85533958): is_coalesced, is_created, is_file, is_removed, is_xattr_mod
+2025-02-24 14:13:55,894 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:13:55,895 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:13:55,896 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:13:55,896 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:13:55,897 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:13:56,372 - INFO - 조건: (date_window: 3, adjustment: 2.0)
+2025-02-24 14:13:56,372 - INFO - 매수 거래량: 59989.0, 매도 거래량: 57128.0
+2025-02-24 14:13:56,372 - INFO - 매수 수익: 119978.0, 매도 수익: 114256.0
+2025-02-24 14:13:59,083 - INFO - 조건: (date_window: 3, adjustment: 3.0)
+2025-02-24 14:13:59,083 - INFO - 매수 거래량: 59989.0, 매도 거래량: 47785.0
+2025-02-24 14:13:59,083 - INFO - 매수 수익: 179967.0, 매도 수익: 143355.0
+2025-02-24 14:14:01,286 - INFO - 조건: (date_window: 3, adjustment: 4.0)
+2025-02-24 14:14:01,286 - INFO - 매수 거래량: 54920.0, 매도 거래량: 44001.0
+2025-02-24 14:14:01,286 - INFO - 매수 수익: 219680.0, 매도 수익: 176004.0
+2025-02-24 14:14:03,078 - INFO - 조건: (date_window: 3, adjustment: 5.0)
+2025-02-24 14:14:03,079 - INFO - 매수 거래량: 48909.0, 매도 거래량: 29093.0
+2025-02-24 14:14:03,079 - INFO - 매수 수익: 244545.0, 매도 수익: 145465.0
+2025-02-24 14:14:03,081 - INFO - 시뮬레이션 실행 완료   date_window  adjustment  total_buy_amo  total_buy_pro  total_sell_amo  total_sell_pro
+0            1         1.0        56917.0        56917.0         59697.0         59697.0
+1            1         2.0        50259.0       100518.0         54918.0        109836.0
+2            1         3.0        48091.0       144273.0         41425.0        124275.0
+3            1         4.0        41793.0       167172.0         31647.0        126588.0
+4            1         5.0        31801.0       159005.0         20584.0        102920.0
+5            2         1.0        61462.0        61462.0         61092.0         61092.0
+6            2         2.0        56774.0       113548.0         56313.0        112626.0
+7            2         3.0        56774.0       170322.0         44503.0        133509.0
+8            2         4.0        51374.0       205496.0         37864.0        151456.0
+9            2         5.0        45924.0       229620.0         26179.0        130895.0
+2025-02-24 14:14:03,090 - DEBUG - locator: <matplotlib.ticker.AutoLocator object at 0x361a33fd0>
+2025-02-24 14:14:03,199 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:14:03,199 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:14:03,199 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:14:03,199 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:14:03,338 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:14:03,338 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:14:03,338 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:14:03,338 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:14:03,473 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:14:03,473 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:14:03,473 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:14:03,473 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:14:03,610 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:14:03,610 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:14:03,610 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:14:03,610 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:14:03,743 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:14:03,744 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:14:03,744 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:14:03,744 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:14:03,811 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/test.csv", inode=5003460, flags=11400, id=85534822): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:14:03,812 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/test.csv', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:14:55,502 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85542217): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:14:55,502 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:14:57,691 - INFO - 시뮬레이션 버튼 클릭
+2025-02-24 14:14:57,712 - INFO - 데이터 필터링 완료
+2025-02-24 14:15:04,556 - INFO - 조건: (date_window: 1, adjustment: 1.0)
+2025-02-24 14:15:04,556 - INFO - 매수 거래량: 56917.0, 매도 거래량: 59697.0
+2025-02-24 14:15:04,556 - INFO - 매수 수익: 56917.0, 매도 수익: 59697.0
+2025-02-24 14:15:05,481 - INFO - 조건: (date_window: 1, adjustment: 2.0)
+2025-02-24 14:15:05,481 - INFO - 매수 거래량: 50259.0, 매도 거래량: 54918.0
+2025-02-24 14:15:05,481 - INFO - 매수 수익: 100518.0, 매도 수익: 109836.0
+2025-02-24 14:15:06,226 - INFO - 조건: (date_window: 1, adjustment: 3.0)
+2025-02-24 14:15:06,226 - INFO - 매수 거래량: 48091.0, 매도 거래량: 41425.0
+2025-02-24 14:15:06,226 - INFO - 매수 수익: 144273.0, 매도 수익: 124275.0
+2025-02-24 14:15:06,810 - INFO - 조건: (date_window: 1, adjustment: 4.0)
+2025-02-24 14:15:06,810 - INFO - 매수 거래량: 41793.0, 매도 거래량: 31647.0
+2025-02-24 14:15:06,810 - INFO - 매수 수익: 167172.0, 매도 수익: 126588.0
+2025-02-24 14:15:07,271 - INFO - 조건: (date_window: 1, adjustment: 5.0)
+2025-02-24 14:15:07,271 - INFO - 매수 거래량: 31801.0, 매도 거래량: 20584.0
+2025-02-24 14:15:07,271 - INFO - 매수 수익: 159005.0, 매도 수익: 102920.0
+2025-02-24 14:15:09,774 - INFO - 조건: (date_window: 2, adjustment: 1.0)
+2025-02-24 14:15:09,775 - INFO - 매수 거래량: 61462.0, 매도 거래량: 61092.0
+2025-02-24 14:15:09,775 - INFO - 매수 수익: 61462.0, 매도 수익: 61092.0
+2025-02-24 14:15:11,805 - INFO - 조건: (date_window: 2, adjustment: 2.0)
+2025-02-24 14:15:11,806 - INFO - 매수 거래량: 56774.0, 매도 거래량: 56313.0
+2025-02-24 14:15:11,806 - INFO - 매수 수익: 113548.0, 매도 수익: 112626.0
+2025-02-24 14:15:13,471 - INFO - 조건: (date_window: 2, adjustment: 3.0)
+2025-02-24 14:15:13,471 - INFO - 매수 거래량: 56774.0, 매도 거래량: 44503.0
+2025-02-24 14:15:13,471 - INFO - 매수 수익: 170322.0, 매도 수익: 133509.0
+2025-02-24 14:15:14,835 - INFO - 조건: (date_window: 2, adjustment: 4.0)
+2025-02-24 14:15:14,835 - INFO - 매수 거래량: 51374.0, 매도 거래량: 37864.0
+2025-02-24 14:15:14,835 - INFO - 매수 수익: 205496.0, 매도 수익: 151456.0
+2025-02-24 14:15:15,955 - INFO - 조건: (date_window: 2, adjustment: 5.0)
+2025-02-24 14:15:15,955 - INFO - 매수 거래량: 45924.0, 매도 거래량: 26179.0
+2025-02-24 14:15:15,955 - INFO - 매수 수익: 229620.0, 매도 수익: 130895.0
+2025-02-24 14:15:19,817 - INFO - 조건: (date_window: 3, adjustment: 1.0)
+2025-02-24 14:15:19,817 - INFO - 매수 거래량: 62949.0, 매도 거래량: 61806.0
+2025-02-24 14:15:19,817 - INFO - 매수 수익: 62949.0, 매도 수익: 61806.0
+2025-02-24 14:15:23,063 - INFO - 조건: (date_window: 3, adjustment: 2.0)
+2025-02-24 14:15:23,063 - INFO - 매수 거래량: 59989.0, 매도 거래량: 57128.0
+2025-02-24 14:15:23,063 - INFO - 매수 수익: 119978.0, 매도 수익: 114256.0
+2025-02-24 14:15:25,726 - INFO - 조건: (date_window: 3, adjustment: 3.0)
+2025-02-24 14:15:25,726 - INFO - 매수 거래량: 59989.0, 매도 거래량: 47785.0
+2025-02-24 14:15:25,726 - INFO - 매수 수익: 179967.0, 매도 수익: 143355.0
+2025-02-24 14:15:27,921 - INFO - 조건: (date_window: 3, adjustment: 4.0)
+2025-02-24 14:15:27,921 - INFO - 매수 거래량: 54920.0, 매도 거래량: 44001.0
+2025-02-24 14:15:27,921 - INFO - 매수 수익: 219680.0, 매도 수익: 176004.0
+2025-02-24 14:15:29,656 - INFO - 조건: (date_window: 3, adjustment: 5.0)
+2025-02-24 14:15:29,656 - INFO - 매수 거래량: 48909.0, 매도 거래량: 29093.0
+2025-02-24 14:15:29,657 - INFO - 매수 수익: 244545.0, 매도 수익: 145465.0
+2025-02-24 14:15:29,657 - INFO - 시뮬레이션 실행 완료
+2025-02-24 14:15:29,659 - INFO -    date_window  adjustment  total_buy_amo  total_buy_pro  total_sell_amo  total_sell_pro
+0            1         1.0        56917.0        56917.0         59697.0         59697.0
+1            1         2.0        50259.0       100518.0         54918.0        109836.0
+2            1         3.0        48091.0       144273.0         41425.0        124275.0
+3            1         4.0        41793.0       167172.0         31647.0        126588.0
+4            1         5.0        31801.0       159005.0         20584.0        102920.0
+5            2         1.0        61462.0        61462.0         61092.0         61092.0
+6            2         2.0        56774.0       113548.0         56313.0        112626.0
+7            2         3.0        56774.0       170322.0         44503.0        133509.0
+8            2         4.0        51374.0       205496.0         37864.0        151456.0
+9            2         5.0        45924.0       229620.0         26179.0        130895.0
+2025-02-24 14:15:29,669 - DEBUG - locator: <matplotlib.ticker.AutoLocator object at 0x346217d00>
+2025-02-24 14:15:29,780 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:15:29,780 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:15:29,780 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:15:29,780 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:15:29,920 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:15:29,920 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:15:29,920 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:15:29,920 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:15:30,080 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:15:30,080 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:15:30,080 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:15:30,080 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:15:30,216 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:15:30,216 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:15:30,216 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:15:30,216 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:15:30,347 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:15:30,348 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:15:30,348 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:15:30,348 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:15:30,421 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/test.csv", inode=5003460, flags=11400, id=85550193): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:15:30,422 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/test.csv', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:16:55,935 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/FETCH_HEAD", inode=1573973, flags=10400, id=85559494): is_file, is_inode_meta_mod
+2025-02-24 14:16:55,935 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/FETCH_HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:16:56,867 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/FETCH_HEAD", inode=1573973, flags=11400, id=85559779): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:16:56,867 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/maintenance.lock", inode=5161730, flags=18300, id=85559788): is_coalesced, is_created, is_file, is_removed, is_xattr_mod
+2025-02-24 14:16:56,867 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/FETCH_HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:16:56,867 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:16:56,867 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:16:56,867 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:16:56,867 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:16:56,867 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:18:11,838 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85570726): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:18:11,838 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:18:38,530 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85574433): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:18:38,530 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:18:40,121 - INFO - 시뮬레이션 버튼 클릭
+2025-02-24 14:18:40,143 - INFO - 데이터 필터링 완료
+2025-02-24 14:18:46,896 - INFO - 조건: (date_window: 1, adjustment: 1.0)
+2025-02-24 14:18:46,896 - INFO - 매수 거래량: 56917.0, 매도 거래량: 59697.0
+2025-02-24 14:18:46,896 - INFO - 매수 수익: 56917.0, 매도 수익: 59697.0
+2025-02-24 14:18:47,824 - INFO - 조건: (date_window: 1, adjustment: 2.0)
+2025-02-24 14:18:47,824 - INFO - 매수 거래량: 50259.0, 매도 거래량: 54918.0
+2025-02-24 14:18:47,824 - INFO - 매수 수익: 100518.0, 매도 수익: 109836.0
+2025-02-24 14:18:48,557 - INFO - 조건: (date_window: 1, adjustment: 3.0)
+2025-02-24 14:18:48,557 - INFO - 매수 거래량: 48091.0, 매도 거래량: 41425.0
+2025-02-24 14:18:48,557 - INFO - 매수 수익: 144273.0, 매도 수익: 124275.0
+2025-02-24 14:18:49,134 - INFO - 조건: (date_window: 1, adjustment: 4.0)
+2025-02-24 14:18:49,134 - INFO - 매수 거래량: 41793.0, 매도 거래량: 31647.0
+2025-02-24 14:18:49,134 - INFO - 매수 수익: 167172.0, 매도 수익: 126588.0
+2025-02-24 14:18:49,593 - INFO - 조건: (date_window: 1, adjustment: 5.0)
+2025-02-24 14:18:49,593 - INFO - 매수 거래량: 31801.0, 매도 거래량: 20584.0
+2025-02-24 14:18:49,594 - INFO - 매수 수익: 159005.0, 매도 수익: 102920.0
+2025-02-24 14:18:52,091 - INFO - 조건: (date_window: 2, adjustment: 1.0)
+2025-02-24 14:18:52,092 - INFO - 매수 거래량: 61462.0, 매도 거래량: 61092.0
+2025-02-24 14:18:52,092 - INFO - 매수 수익: 61462.0, 매도 수익: 61092.0
+2025-02-24 14:18:54,150 - INFO - 조건: (date_window: 2, adjustment: 2.0)
+2025-02-24 14:18:54,150 - INFO - 매수 거래량: 56774.0, 매도 거래량: 56313.0
+2025-02-24 14:18:54,150 - INFO - 매수 수익: 113548.0, 매도 수익: 112626.0
+2025-02-24 14:18:55,775 - INFO - 조건: (date_window: 2, adjustment: 3.0)
+2025-02-24 14:18:55,775 - INFO - 매수 거래량: 56774.0, 매도 거래량: 44503.0
+2025-02-24 14:18:55,775 - INFO - 매수 수익: 170322.0, 매도 수익: 133509.0
+2025-02-24 14:18:57,138 - INFO - 조건: (date_window: 2, adjustment: 4.0)
+2025-02-24 14:18:57,138 - INFO - 매수 거래량: 51374.0, 매도 거래량: 37864.0
+2025-02-24 14:18:57,138 - INFO - 매수 수익: 205496.0, 매도 수익: 151456.0
+2025-02-24 14:18:58,290 - INFO - 조건: (date_window: 2, adjustment: 5.0)
+2025-02-24 14:18:58,290 - INFO - 매수 거래량: 45924.0, 매도 거래량: 26179.0
+2025-02-24 14:18:58,290 - INFO - 매수 수익: 229620.0, 매도 수익: 130895.0
+2025-02-24 14:19:02,204 - INFO - 조건: (date_window: 3, adjustment: 1.0)
+2025-02-24 14:19:02,204 - INFO - 매수 거래량: 62949.0, 매도 거래량: 61806.0
+2025-02-24 14:19:02,204 - INFO - 매수 수익: 62949.0, 매도 수익: 61806.0
+2025-02-24 14:19:05,539 - INFO - 조건: (date_window: 3, adjustment: 2.0)
+2025-02-24 14:19:05,539 - INFO - 매수 거래량: 59989.0, 매도 거래량: 57128.0
+2025-02-24 14:19:05,540 - INFO - 매수 수익: 119978.0, 매도 수익: 114256.0
+2025-02-24 14:19:08,257 - INFO - 조건: (date_window: 3, adjustment: 3.0)
+2025-02-24 14:19:08,257 - INFO - 매수 거래량: 59989.0, 매도 거래량: 47785.0
+2025-02-24 14:19:08,257 - INFO - 매수 수익: 179967.0, 매도 수익: 143355.0
+2025-02-24 14:19:10,404 - INFO - 조건: (date_window: 3, adjustment: 4.0)
+2025-02-24 14:19:10,404 - INFO - 매수 거래량: 54920.0, 매도 거래량: 44001.0
+2025-02-24 14:19:10,404 - INFO - 매수 수익: 219680.0, 매도 수익: 176004.0
+2025-02-24 14:19:12,171 - INFO - 조건: (date_window: 3, adjustment: 5.0)
+2025-02-24 14:19:12,171 - INFO - 매수 거래량: 48909.0, 매도 거래량: 29093.0
+2025-02-24 14:19:12,171 - INFO - 매수 수익: 244545.0, 매도 수익: 145465.0
+2025-02-24 14:19:12,171 - INFO - 시뮬레이션 실행 완료
+2025-02-24 14:19:12,173 - INFO -    date_window  adjustment  total_buy_amo  total_buy_pro  total_sell_amo  total_sell_pro
+0            1         1.0        56917.0        56917.0         59697.0         59697.0
+1            1         2.0        50259.0       100518.0         54918.0        109836.0
+2            1         3.0        48091.0       144273.0         41425.0        124275.0
+3            1         4.0        41793.0       167172.0         31647.0        126588.0
+4            1         5.0        31801.0       159005.0         20584.0        102920.0
+5            2         1.0        61462.0        61462.0         61092.0         61092.0
+6            2         2.0        56774.0       113548.0         56313.0        112626.0
+7            2         3.0        56774.0       170322.0         44503.0        133509.0
+8            2         4.0        51374.0       205496.0         37864.0        151456.0
+9            2         5.0        45924.0       229620.0         26179.0        130895.0
+2025-02-24 14:19:12,204 - DEBUG - locator: <matplotlib.ticker.AutoLocator object at 0x3618322e0>
+2025-02-24 14:19:12,313 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:19:12,313 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:19:12,313 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:19:12,313 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:19:12,451 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:19:12,451 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:19:12,451 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:19:12,451 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:19:12,583 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:19:12,583 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:19:12,583 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:19:12,583 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:19:12,717 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:19:12,717 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:19:12,717 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:19:12,717 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:19:12,849 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:19:12,849 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:19:12,849 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:19:12,849 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:19:12,915 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/test.csv", inode=5003460, flags=11400, id=85582693): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:19:12,915 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/test.csv', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:19:58,918 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/FETCH_HEAD", inode=1573973, flags=10400, id=85589953): is_file, is_inode_meta_mod
+2025-02-24 14:19:58,918 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/FETCH_HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:19:59,135 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=10400, id=85590100): is_file, is_inode_meta_mod
+2025-02-24 14:19:59,138 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:19:59,151 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85590103): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:19:59,180 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:19:59,668 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/FETCH_HEAD", inode=1573973, flags=11400, id=85590466): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:19:59,668 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/maintenance.lock", inode=5163805, flags=18300, id=85590475): is_coalesced, is_created, is_file, is_removed, is_xattr_mod
+2025-02-24 14:19:59,668 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/FETCH_HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:19:59,668 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:19:59,668 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:19:59,668 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:19:59,669 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:19:59,669 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:20:02,584 - INFO - 시뮬레이션 버튼 클릭
+2025-02-24 14:20:02,607 - INFO - 데이터 필터링 완료
+2025-02-24 14:20:09,498 - INFO - 조건: (date_window: 1, adjustment: 1.0)
+2025-02-24 14:20:09,498 - INFO - 매수 거래량: 56917.0, 매도 거래량: 59697.0
+2025-02-24 14:20:09,498 - INFO - 매수 수익: 56917.0, 매도 수익: 59697.0
+2025-02-24 14:20:10,431 - INFO - 조건: (date_window: 1, adjustment: 2.0)
+2025-02-24 14:20:10,431 - INFO - 매수 거래량: 50259.0, 매도 거래량: 54918.0
+2025-02-24 14:20:10,431 - INFO - 매수 수익: 100518.0, 매도 수익: 109836.0
+2025-02-24 14:20:11,177 - INFO - 조건: (date_window: 1, adjustment: 3.0)
+2025-02-24 14:20:11,177 - INFO - 매수 거래량: 48091.0, 매도 거래량: 41425.0
+2025-02-24 14:20:11,177 - INFO - 매수 수익: 144273.0, 매도 수익: 124275.0
+2025-02-24 14:20:11,766 - INFO - 조건: (date_window: 1, adjustment: 4.0)
+2025-02-24 14:20:11,766 - INFO - 매수 거래량: 41793.0, 매도 거래량: 31647.0
+2025-02-24 14:20:11,766 - INFO - 매수 수익: 167172.0, 매도 수익: 126588.0
+2025-02-24 14:20:12,236 - INFO - 조건: (date_window: 1, adjustment: 5.0)
+2025-02-24 14:20:12,236 - INFO - 매수 거래량: 31801.0, 매도 거래량: 20584.0
+2025-02-24 14:20:12,236 - INFO - 매수 수익: 159005.0, 매도 수익: 102920.0
+2025-02-24 14:20:14,759 - INFO - 조건: (date_window: 2, adjustment: 1.0)
+2025-02-24 14:20:14,759 - INFO - 매수 거래량: 61462.0, 매도 거래량: 61092.0
+2025-02-24 14:20:14,759 - INFO - 매수 수익: 61462.0, 매도 수익: 61092.0
+2025-02-24 14:20:16,829 - INFO - 조건: (date_window: 2, adjustment: 2.0)
+2025-02-24 14:20:16,829 - INFO - 매수 거래량: 56774.0, 매도 거래량: 56313.0
+2025-02-24 14:20:16,829 - INFO - 매수 수익: 113548.0, 매도 수익: 112626.0
+2025-02-24 14:20:18,509 - INFO - 조건: (date_window: 2, adjustment: 3.0)
+2025-02-24 14:20:18,509 - INFO - 매수 거래량: 56774.0, 매도 거래량: 44503.0
+2025-02-24 14:20:18,509 - INFO - 매수 수익: 170322.0, 매도 수익: 133509.0
+2025-02-24 14:20:19,876 - INFO - 조건: (date_window: 2, adjustment: 4.0)
+2025-02-24 14:20:19,876 - INFO - 매수 거래량: 51374.0, 매도 거래량: 37864.0
+2025-02-24 14:20:19,876 - INFO - 매수 수익: 205496.0, 매도 수익: 151456.0
+2025-02-24 14:20:21,006 - INFO - 조건: (date_window: 2, adjustment: 5.0)
+2025-02-24 14:20:21,006 - INFO - 매수 거래량: 45924.0, 매도 거래량: 26179.0
+2025-02-24 14:20:21,006 - INFO - 매수 수익: 229620.0, 매도 수익: 130895.0
+2025-02-24 14:20:24,929 - INFO - 조건: (date_window: 3, adjustment: 1.0)
+2025-02-24 14:20:24,929 - INFO - 매수 거래량: 62949.0, 매도 거래량: 61806.0
+2025-02-24 14:20:24,929 - INFO - 매수 수익: 62949.0, 매도 수익: 61806.0
+2025-02-24 14:20:28,249 - INFO - 조건: (date_window: 3, adjustment: 2.0)
+2025-02-24 14:20:28,249 - INFO - 매수 거래량: 59989.0, 매도 거래량: 57128.0
+2025-02-24 14:20:28,249 - INFO - 매수 수익: 119978.0, 매도 수익: 114256.0
+2025-02-24 14:20:30,955 - INFO - 조건: (date_window: 3, adjustment: 3.0)
+2025-02-24 14:20:30,955 - INFO - 매수 거래량: 59989.0, 매도 거래량: 47785.0
+2025-02-24 14:20:30,955 - INFO - 매수 수익: 179967.0, 매도 수익: 143355.0
+2025-02-24 14:20:33,154 - INFO - 조건: (date_window: 3, adjustment: 4.0)
+2025-02-24 14:20:33,154 - INFO - 매수 거래량: 54920.0, 매도 거래량: 44001.0
+2025-02-24 14:20:33,154 - INFO - 매수 수익: 219680.0, 매도 수익: 176004.0
+2025-02-24 14:20:34,904 - INFO - 조건: (date_window: 3, adjustment: 5.0)
+2025-02-24 14:20:34,904 - INFO - 매수 거래량: 48909.0, 매도 거래량: 29093.0
+2025-02-24 14:20:34,904 - INFO - 매수 수익: 244545.0, 매도 수익: 145465.0
+2025-02-24 14:20:34,904 - INFO - 시뮬레이션 실행 완료
+2025-02-24 14:20:34,907 - INFO -    date_window  adjustment  total_buy_amo  total_buy_pro  total_sell_amo  total_sell_pro
+0            1         1.0        56917.0        56917.0         59697.0         59697.0
+1            1         2.0        50259.0       100518.0         54918.0        109836.0
+2            1         3.0        48091.0       144273.0         41425.0        124275.0
+3            1         4.0        41793.0       167172.0         31647.0        126588.0
+4            1         5.0        31801.0       159005.0         20584.0        102920.0
+5            2         1.0        61462.0        61462.0         61092.0         61092.0
+6            2         2.0        56774.0       113548.0         56313.0        112626.0
+7            2         3.0        56774.0       170322.0         44503.0        133509.0
+8            2         4.0        51374.0       205496.0         37864.0        151456.0
+9            2         5.0        45924.0       229620.0         26179.0        130895.0
+2025-02-24 14:20:34,915 - DEBUG - locator: <matplotlib.ticker.AutoLocator object at 0x363609bb0>
+2025-02-24 14:20:35,023 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:20:35,023 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:20:35,023 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:20:35,023 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:20:35,160 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:20:35,161 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:20:35,161 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:20:35,161 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:20:35,316 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:20:35,316 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:20:35,316 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:20:35,316 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:20:35,452 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:20:35,452 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:20:35,452 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:20:35,452 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:20:35,585 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:20:35,585 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:20:35,585 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:20:35,585 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:20:35,651 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/test.csv", inode=5003460, flags=11400, id=85597947): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:20:35,651 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/test.csv', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:21:16,584 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85605681): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:21:16,584 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:21:18,339 - INFO - 시뮬레이션 버튼 클릭
+2025-02-24 14:21:18,360 - INFO - 데이터 필터링 완료
+2025-02-24 14:21:25,212 - INFO - 조건: (date_window: 1, adjustment: 1.0)
+2025-02-24 14:21:25,212 - INFO - 매수 거래량: 56917.0, 매도 거래량: 59697.0
+2025-02-24 14:21:25,212 - INFO - 매수 수익: 56917.0, 매도 수익: 59697.0
+2025-02-24 14:21:26,145 - INFO - 조건: (date_window: 1, adjustment: 2.0)
+2025-02-24 14:21:26,145 - INFO - 매수 거래량: 50259.0, 매도 거래량: 54918.0
+2025-02-24 14:21:26,145 - INFO - 매수 수익: 100518.0, 매도 수익: 109836.0
+2025-02-24 14:21:26,889 - INFO - 조건: (date_window: 1, adjustment: 3.0)
+2025-02-24 14:21:26,889 - INFO - 매수 거래량: 48091.0, 매도 거래량: 41425.0
+2025-02-24 14:21:26,889 - INFO - 매수 수익: 144273.0, 매도 수익: 124275.0
+2025-02-24 14:21:27,471 - INFO - 조건: (date_window: 1, adjustment: 4.0)
+2025-02-24 14:21:27,471 - INFO - 매수 거래량: 41793.0, 매도 거래량: 31647.0
+2025-02-24 14:21:27,471 - INFO - 매수 수익: 167172.0, 매도 수익: 126588.0
+2025-02-24 14:21:27,934 - INFO - 조건: (date_window: 1, adjustment: 5.0)
+2025-02-24 14:21:27,935 - INFO - 매수 거래량: 31801.0, 매도 거래량: 20584.0
+2025-02-24 14:21:27,935 - INFO - 매수 수익: 159005.0, 매도 수익: 102920.0
+2025-02-24 14:21:30,456 - INFO - 조건: (date_window: 2, adjustment: 1.0)
+2025-02-24 14:21:30,456 - INFO - 매수 거래량: 61462.0, 매도 거래량: 61092.0
+2025-02-24 14:21:30,456 - INFO - 매수 수익: 61462.0, 매도 수익: 61092.0
+2025-02-24 14:21:32,521 - INFO - 조건: (date_window: 2, adjustment: 2.0)
+2025-02-24 14:21:32,521 - INFO - 매수 거래량: 56774.0, 매도 거래량: 56313.0
+2025-02-24 14:21:32,521 - INFO - 매수 수익: 113548.0, 매도 수익: 112626.0
+2025-02-24 14:21:34,230 - INFO - 조건: (date_window: 2, adjustment: 3.0)
+2025-02-24 14:21:34,230 - INFO - 매수 거래량: 56774.0, 매도 거래량: 44503.0
+2025-02-24 14:21:34,230 - INFO - 매수 수익: 170322.0, 매도 수익: 133509.0
+2025-02-24 14:21:35,614 - INFO - 조건: (date_window: 2, adjustment: 4.0)
+2025-02-24 14:21:35,617 - INFO - 매수 거래량: 51374.0, 매도 거래량: 37864.0
+2025-02-24 14:21:35,617 - INFO - 매수 수익: 205496.0, 매도 수익: 151456.0
+2025-02-24 14:21:36,774 - INFO - 조건: (date_window: 2, adjustment: 5.0)
+2025-02-24 14:21:36,774 - INFO - 매수 거래량: 45924.0, 매도 거래량: 26179.0
+2025-02-24 14:21:36,775 - INFO - 매수 수익: 229620.0, 매도 수익: 130895.0
+2025-02-24 14:21:40,805 - INFO - 조건: (date_window: 3, adjustment: 1.0)
+2025-02-24 14:21:40,805 - INFO - 매수 거래량: 62949.0, 매도 거래량: 61806.0
+2025-02-24 14:21:40,805 - INFO - 매수 수익: 62949.0, 매도 수익: 61806.0
+2025-02-24 14:21:44,148 - INFO - 조건: (date_window: 3, adjustment: 2.0)
+2025-02-24 14:21:44,148 - INFO - 매수 거래량: 59989.0, 매도 거래량: 57128.0
+2025-02-24 14:21:44,148 - INFO - 매수 수익: 119978.0, 매도 수익: 114256.0
+2025-02-24 14:21:46,876 - INFO - 조건: (date_window: 3, adjustment: 3.0)
+2025-02-24 14:21:46,876 - INFO - 매수 거래량: 59989.0, 매도 거래량: 47785.0
+2025-02-24 14:21:46,876 - INFO - 매수 수익: 179967.0, 매도 수익: 143355.0
+2025-02-24 14:21:48,972 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85611625): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:21:48,991 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:21:49,232 - INFO - 조건: (date_window: 3, adjustment: 4.0)
+2025-02-24 14:21:49,233 - INFO - 매수 거래량: 54920.0, 매도 거래량: 44001.0
+2025-02-24 14:21:49,233 - INFO - 매수 수익: 219680.0, 매도 수익: 176004.0
+2025-02-24 14:21:50,607 - INFO - 시뮬레이션 버튼 클릭
+2025-02-24 14:21:50,674 - INFO - 데이터 필터링 완료
+2025-02-24 14:21:51,952 - INFO - 조건: (date_window: 3, adjustment: 5.0)
+2025-02-24 14:21:51,964 - INFO - 매수 거래량: 48909.0, 매도 거래량: 29093.0
+2025-02-24 14:21:51,967 - INFO - 매수 수익: 244545.0, 매도 수익: 145465.0
+2025-02-24 14:21:51,967 - INFO - 시뮬레이션 실행 완료
+2025-02-24 14:21:51,977 - INFO -    date_window  adjustment  total_buy_amo  total_buy_pro  total_sell_amo  total_sell_pro
+0            1         1.0        56917.0        56917.0         59697.0         59697.0
+1            1         2.0        50259.0       100518.0         54918.0        109836.0
+2            1         3.0        48091.0       144273.0         41425.0        124275.0
+3            1         4.0        41793.0       167172.0         31647.0        126588.0
+4            1         5.0        31801.0       159005.0         20584.0        102920.0
+5            2         1.0        61462.0        61462.0         61092.0         61092.0
+6            2         2.0        56774.0       113548.0         56313.0        112626.0
+7            2         3.0        56774.0       170322.0         44503.0        133509.0
+8            2         4.0        51374.0       205496.0         37864.0        151456.0
+9            2         5.0        45924.0       229620.0         26179.0        130895.0
+2025-02-24 14:21:51,987 - DEBUG - locator: <matplotlib.ticker.AutoLocator object at 0x355bf3bb0>
+2025-02-24 14:21:58,386 - INFO - 조건: (date_window: 1, adjustment: 1.0)
+2025-02-24 14:21:58,387 - INFO - 매수 거래량: 56917.0, 매도 거래량: 59697.0
+2025-02-24 14:21:58,387 - INFO - 매수 수익: 56917.0, 매도 수익: 59697.0
+2025-02-24 14:21:59,365 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:21:59,365 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:21:59,365 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:21:59,365 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:21:59,372 - INFO - 조건: (date_window: 1, adjustment: 2.0)
+2025-02-24 14:21:59,372 - INFO - 매수 거래량: 50259.0, 매도 거래량: 54918.0
+2025-02-24 14:21:59,372 - INFO - 매수 수익: 100518.0, 매도 수익: 109836.0
+2025-02-24 14:22:00,162 - INFO - 조건: (date_window: 1, adjustment: 3.0)
+2025-02-24 14:22:00,162 - INFO - 매수 거래량: 48091.0, 매도 거래량: 41425.0
+2025-02-24 14:22:00,162 - INFO - 매수 수익: 144273.0, 매도 수익: 124275.0
+2025-02-24 14:22:00,777 - INFO - 조건: (date_window: 1, adjustment: 4.0)
+2025-02-24 14:22:00,777 - INFO - 매수 거래량: 41793.0, 매도 거래량: 31647.0
+2025-02-24 14:22:00,777 - INFO - 매수 수익: 167172.0, 매도 수익: 126588.0
+2025-02-24 14:22:01,258 - INFO - 조건: (date_window: 1, adjustment: 5.0)
+2025-02-24 14:22:01,258 - INFO - 매수 거래량: 31801.0, 매도 거래량: 20584.0
+2025-02-24 14:22:01,258 - INFO - 매수 수익: 159005.0, 매도 수익: 102920.0
+2025-02-24 14:22:03,866 - INFO - 조건: (date_window: 2, adjustment: 1.0)
+2025-02-24 14:22:03,866 - INFO - 매수 거래량: 61462.0, 매도 거래량: 61092.0
+2025-02-24 14:22:03,866 - INFO - 매수 수익: 61462.0, 매도 수익: 61092.0
+2025-02-24 14:22:05,211 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/app.py", inode=4084319, flags=11400, id=85617296): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:22:05,215 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/app.py', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:22:06,154 - INFO - 조건: (date_window: 2, adjustment: 2.0)
+2025-02-24 14:22:06,155 - INFO - 매수 거래량: 56774.0, 매도 거래량: 56313.0
+2025-02-24 14:22:06,155 - INFO - 매수 수익: 113548.0, 매도 수익: 112626.0
+2025-02-24 14:22:06,772 - INFO - 시뮬레이션 버튼 클릭
+2025-02-24 14:22:06,850 - INFO - 데이터 필터링 완료
+2025-02-24 14:22:09,910 - INFO - 조건: (date_window: 2, adjustment: 3.0)
+2025-02-24 14:22:09,910 - INFO - 매수 거래량: 56774.0, 매도 거래량: 44503.0
+2025-02-24 14:22:09,916 - INFO - 매수 수익: 170322.0, 매도 수익: 133509.0
+2025-02-24 14:22:13,524 - INFO - 조건: (date_window: 2, adjustment: 4.0)
+2025-02-24 14:22:13,524 - INFO - 매수 거래량: 51374.0, 매도 거래량: 37864.0
+2025-02-24 14:22:13,524 - INFO - 매수 수익: 205496.0, 매도 수익: 151456.0
+2025-02-24 14:22:16,229 - INFO - 조건: (date_window: 2, adjustment: 5.0)
+2025-02-24 14:22:16,242 - INFO - 매수 거래량: 45924.0, 매도 거래량: 26179.0
+2025-02-24 14:22:16,248 - INFO - 매수 수익: 229620.0, 매도 수익: 130895.0
+2025-02-24 14:22:20,108 - INFO - 조건: (date_window: 1, adjustment: 1.0)
+2025-02-24 14:22:20,108 - INFO - 매수 거래량: 56917.0, 매도 거래량: 59697.0
+2025-02-24 14:22:20,121 - INFO - 매수 수익: 56917.0, 매도 수익: 59697.0
+2025-02-24 14:22:22,616 - INFO - 조건: (date_window: 3, adjustment: 1.0)
+2025-02-24 14:22:22,619 - INFO - 매수 거래량: 62949.0, 매도 거래량: 61806.0
+2025-02-24 14:22:22,619 - INFO - 매수 수익: 62949.0, 매도 수익: 61806.0
+2025-02-24 14:22:22,849 - INFO - 조건: (date_window: 1, adjustment: 2.0)
+2025-02-24 14:22:22,850 - INFO - 매수 거래량: 50259.0, 매도 거래량: 54918.0
+2025-02-24 14:22:22,850 - INFO - 매수 수익: 100518.0, 매도 수익: 109836.0
+2025-02-24 14:22:25,325 - INFO - 조건: (date_window: 1, adjustment: 3.0)
+2025-02-24 14:22:25,329 - INFO - 매수 거래량: 48091.0, 매도 거래량: 41425.0
+2025-02-24 14:22:25,330 - INFO - 매수 수익: 144273.0, 매도 수익: 124275.0
+2025-02-24 14:22:27,502 - INFO - 조건: (date_window: 1, adjustment: 4.0)
+2025-02-24 14:22:27,518 - INFO - 조건: (date_window: 3, adjustment: 2.0)
+2025-02-24 14:22:27,518 - INFO - 매수 거래량: 41793.0, 매도 거래량: 31647.0
+2025-02-24 14:22:27,518 - INFO - 매수 거래량: 59989.0, 매도 거래량: 57128.0
+2025-02-24 14:22:27,518 - INFO - 매수 수익: 167172.0, 매도 수익: 126588.0
+2025-02-24 14:22:27,518 - INFO - 매수 수익: 119978.0, 매도 수익: 114256.0
+2025-02-24 14:22:29,395 - INFO - 조건: (date_window: 1, adjustment: 5.0)
+2025-02-24 14:22:29,401 - INFO - 매수 거래량: 31801.0, 매도 거래량: 20584.0
+2025-02-24 14:22:29,412 - INFO - 매수 수익: 159005.0, 매도 수익: 102920.0
+2025-02-24 14:22:32,081 - INFO - 조건: (date_window: 3, adjustment: 3.0)
+2025-02-24 14:22:32,087 - INFO - 매수 거래량: 59989.0, 매도 거래량: 47785.0
+2025-02-24 14:22:32,087 - INFO - 매수 수익: 179967.0, 매도 수익: 143355.0
+2025-02-24 14:22:34,664 - INFO - 조건: (date_window: 2, adjustment: 1.0)
+2025-02-24 14:22:34,664 - INFO - 매수 거래량: 61462.0, 매도 거래량: 61092.0
+2025-02-24 14:22:34,669 - INFO - 매수 수익: 61462.0, 매도 수익: 61092.0
+2025-02-24 14:22:36,575 - INFO - 조건: (date_window: 3, adjustment: 4.0)
+2025-02-24 14:22:36,588 - INFO - 매수 거래량: 54920.0, 매도 거래량: 44001.0
+2025-02-24 14:22:36,589 - INFO - 매수 수익: 219680.0, 매도 수익: 176004.0
+2025-02-24 14:22:38,816 - INFO - 조건: (date_window: 2, adjustment: 2.0)
+2025-02-24 14:22:38,818 - INFO - 매수 거래량: 56774.0, 매도 거래량: 56313.0
+2025-02-24 14:22:38,818 - INFO - 매수 수익: 113548.0, 매도 수익: 112626.0
+2025-02-24 14:22:40,250 - INFO - 조건: (date_window: 3, adjustment: 5.0)
+2025-02-24 14:22:40,250 - INFO - 매수 거래량: 48909.0, 매도 거래량: 29093.0
+2025-02-24 14:22:40,261 - INFO - 매수 수익: 244545.0, 매도 수익: 145465.0
+2025-02-24 14:22:40,262 - INFO - 시뮬레이션 실행 완료
+2025-02-24 14:22:40,265 - INFO -    date_window  adjustment  total_buy_amo  total_buy_pro  total_sell_amo  total_sell_pro
+0            1         1.0        56917.0        56917.0         59697.0         59697.0
+1            1         2.0        50259.0       100518.0         54918.0        109836.0
+2            1         3.0        48091.0       144273.0         41425.0        124275.0
+3            1         4.0        41793.0       167172.0         31647.0        126588.0
+4            1         5.0        31801.0       159005.0         20584.0        102920.0
+5            2         1.0        61462.0        61462.0         61092.0         61092.0
+6            2         2.0        56774.0       113548.0         56313.0        112626.0
+7            2         3.0        56774.0       170322.0         44503.0        133509.0
+8            2         4.0        51374.0       205496.0         37864.0        151456.0
+9            2         5.0        45924.0       229620.0         26179.0        130895.0
+2025-02-24 14:22:40,287 - DEBUG - locator: <matplotlib.ticker.AutoLocator object at 0x3511fdf40>
+2025-02-24 14:22:41,352 - INFO - 조건: (date_window: 2, adjustment: 3.0)
+2025-02-24 14:22:41,353 - INFO - 매수 거래량: 56774.0, 매도 거래량: 44503.0
+2025-02-24 14:22:41,353 - INFO - 매수 수익: 170322.0, 매도 수익: 133509.0
+2025-02-24 14:22:42,738 - INFO - 조건: (date_window: 2, adjustment: 4.0)
+2025-02-24 14:22:42,738 - INFO - 매수 거래량: 51374.0, 매도 거래량: 37864.0
+2025-02-24 14:22:42,738 - INFO - 매수 수익: 205496.0, 매도 수익: 151456.0
+2025-02-24 14:22:43,928 - INFO - 조건: (date_window: 2, adjustment: 5.0)
+2025-02-24 14:22:43,928 - INFO - 매수 거래량: 45924.0, 매도 거래량: 26179.0
+2025-02-24 14:22:43,928 - INFO - 매수 수익: 229620.0, 매도 수익: 130895.0
+2025-02-24 14:22:47,597 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:22:47,609 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:22:47,615 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:22:47,615 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:22:48,030 - INFO - 조건: (date_window: 3, adjustment: 1.0)
+2025-02-24 14:22:48,030 - INFO - 매수 거래량: 62949.0, 매도 거래량: 61806.0
+2025-02-24 14:22:48,030 - INFO - 매수 수익: 62949.0, 매도 수익: 61806.0
+2025-02-24 14:22:51,292 - INFO - 조건: (date_window: 3, adjustment: 2.0)
+2025-02-24 14:22:51,292 - INFO - 매수 거래량: 59989.0, 매도 거래량: 57128.0
+2025-02-24 14:22:51,292 - INFO - 매수 수익: 119978.0, 매도 수익: 114256.0
+2025-02-24 14:22:54,043 - INFO - 조건: (date_window: 3, adjustment: 3.0)
+2025-02-24 14:22:54,043 - INFO - 매수 거래량: 59989.0, 매도 거래량: 47785.0
+2025-02-24 14:22:54,043 - INFO - 매수 수익: 179967.0, 매도 수익: 143355.0
+2025-02-24 14:22:56,277 - INFO - 조건: (date_window: 3, adjustment: 4.0)
+2025-02-24 14:22:56,277 - INFO - 매수 거래량: 54920.0, 매도 거래량: 44001.0
+2025-02-24 14:22:56,277 - INFO - 매수 수익: 219680.0, 매도 수익: 176004.0
+2025-02-24 14:22:58,078 - INFO - 조건: (date_window: 3, adjustment: 5.0)
+2025-02-24 14:22:58,078 - INFO - 매수 거래량: 48909.0, 매도 거래량: 29093.0
+2025-02-24 14:22:58,078 - INFO - 매수 수익: 244545.0, 매도 수익: 145465.0
+2025-02-24 14:22:58,078 - INFO - 시뮬레이션 실행 완료
+2025-02-24 14:22:58,081 - INFO -    date_window  adjustment  total_buy_amo  total_buy_pro  total_sell_amo  total_sell_pro
+0            1         1.0        56917.0        56917.0         59697.0         59697.0
+1            1         2.0        50259.0       100518.0         54918.0        109836.0
+2            1         3.0        48091.0       144273.0         41425.0        124275.0
+3            1         4.0        41793.0       167172.0         31647.0        126588.0
+4            1         5.0        31801.0       159005.0         20584.0        102920.0
+5            2         1.0        61462.0        61462.0         61092.0         61092.0
+6            2         2.0        56774.0       113548.0         56313.0        112626.0
+7            2         3.0        56774.0       170322.0         44503.0        133509.0
+8            2         4.0        51374.0       205496.0         37864.0        151456.0
+9            2         5.0        45924.0       229620.0         26179.0        130895.0
+2025-02-24 14:22:58,090 - DEBUG - locator: <matplotlib.ticker.AutoLocator object at 0x35d226e80>
+2025-02-24 14:22:58,202 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:22:58,202 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:22:58,202 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:22:58,202 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:22:58,343 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:22:58,343 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:22:58,343 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:22:58,343 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:22:58,479 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:22:58,479 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:22:58,479 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:22:58,479 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:22:58,618 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:22:58,618 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:22:58,618 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:22:58,618 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:22:58,752 - DEBUG - STREAM b'IHDR' 16 13
+2025-02-24 14:22:58,752 - DEBUG - STREAM b'tEXt' 41 57
+2025-02-24 14:22:58,752 - DEBUG - STREAM b'pHYs' 110 9
+2025-02-24 14:22:58,752 - DEBUG - STREAM b'IDAT' 131 65536
+2025-02-24 14:22:58,819 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/test.csv", inode=5003460, flags=11400, id=85625103): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:22:58,819 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/test.csv', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:23:12,184 - INFO - 분석 실행 버튼 클릭됨
+2025-02-24 14:23:12,205 - INFO - 데이터 필터링 완료
+2025-02-24 14:23:16,774 - INFO - 분석 실행 완료
+2025-02-24 14:24:29,842 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/FETCH_HEAD", inode=1573973, flags=10400, id=85644766): is_file, is_inode_meta_mod
+2025-02-24 14:24:29,842 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/FETCH_HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:24:30,628 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/FETCH_HEAD", inode=1573973, flags=11400, id=85645224): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:24:30,628 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/maintenance.lock", inode=5167445, flags=18300, id=85645245): is_coalesced, is_created, is_file, is_removed, is_xattr_mod
+2025-02-24 14:24:30,628 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/FETCH_HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:24:30,628 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:24:30,628 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:24:30,629 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:24:30,629 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:24:30,629 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)

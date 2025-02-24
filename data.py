@@ -61,3 +61,13 @@ def load_yh_data():
     final_df['Date'] = pd.to_datetime(final_df['Date'], format='%Y-%m-%d') + pd.Timedelta(hours=9) # UTC -> KST
 
     return final_df
+
+
+def filter_trade_data(trade_df, selected_currencies):
+    """주어진 통화에 따라 거래 데이터를 필터링하는 함수"""
+    return trade_df[
+        trade_df.apply(lambda x: 
+            (x['currencyCode0'] if x['currencyCode'] == 'KRW' else x['currencyCode']) in selected_currencies, 
+            axis=1
+        )
+    ]

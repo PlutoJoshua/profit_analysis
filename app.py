@@ -2,59 +2,71 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 import plotly.express as px
-from data import load_data
+from data import load_data, filter_trade_data
 import itertools
-from profit import analyze_target_prices, calculate_profit, display_metrics, plot_profit_over_time, plot_matching_success
-
+from profit import analyze_target_prices, calculate_profit, display_metrics, plot_matching_success
 import matplotlib.pyplot as plt
 import matplotlib as rc
-rc.rcParams['font.family'] = 'AppleGothic'
 import seaborn as sns
+import logging
 
+# 로깅 설정
+logging.basicConfig(
+    level=logging.INFO,  # 로깅 레벨 설정 (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    format='%(asctime)s - %(levelname)s - %(message)s',  # 로그 메시지 포맷
+    handlers=[
+        logging.FileHandler("app.log"),  # 로그를 파일에 기록
+    ]
+)
+# 한글 깨짐 방지
+rc.rcParams['font.family'] = 'AppleGothic'
 
 # 데이터 로드
 final_df, trade_df = load_data()
+
 # Streamlit 앱 메인
 st.title('환율 목표가 분석')
+
+# 탭 분리
 tab1, tab2 = st.tabs(['analysis', 'simulation'])
+# 사이드 바 설정
+st.sidebar.header('분석 설정')
+# 날짜 범위 선택
+max_date = max(final_df['createdAt'].max(), trade_df['executedAt'].max())
+
+# 가장 최근 날짜 기준 일주일 전 계산
+one_week_ago = max_date - timedelta(days=7)
+
+# 기본 날짜 사이드바
+start_date = st.sidebar.date_input('시작일', one_week_ago)
+end_date = st.sidebar.date_input('종료일', max_date)
+
+# 통화 선택
+available_currencies = ['USD', 'JPY']
+selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
 
 with tab1 : 
-    # 사이드바에 필터 추가
-    st.sidebar.header('분석 설정')
-    # 날짜 범위 선택
-    max_date = max(final_df['createdAt'].max(), trade_df['executedAt'].max())
-    # 가장 최근 날짜 기준 일주일 전 계산
-    one_week_ago = max_date - timedelta(days=7)
-
-    start_date = st.sidebar.date_input('시작일', one_week_ago)
-    end_date = st.sidebar.date_input('종료일', max_date)
-
     # 분석 기간 설정
     date_window = st.slider('환율 분석 기간(일)', 1, 30, 1)
+
     # 목표가 조정값 선택
     buy_price_adjustment = st.slider('매수 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
     sell_price_adjustment = st.slider('매도 목표가 조정값', 0.0, 10.0, 1.0, 0.5)
-    # 통화 선택
-    available_currencies = ['USD', 'JPY']
-    selected_currencies = st.sidebar.multiselect('통화 선택', available_currencies, default=available_currencies)
 
-    # 확인 버튼 추가
+    # 분석 실행 버튼
     if st.button('분석 실행'):
-        # 통화 선택 후 데이터 필터링
-        filtered_trade_df = trade_df[
-            trade_df.apply(lambda x: 
-                (x['currencyCode0'] if x['currencyCode'] == 'KRW' else x['currencyCode']) in selected_currencies, 
-                axis=1
-            )
-        ]
-        filtered_df = final_df[final_df['currencyCode'].isin(selected_currencies)]
+        logging.info("분석 실행 버튼 클릭됨")
 
+        # 통화 선택 후 데이터 필터링
+        filtered_trade_df = filter_trade_data(trade_df, selected_currencies)
+        filtered_df = final_df[final_df['currencyCode'].isin(selected_currencies)]
+        logging.info("데이터 필터링 완료")
         # 분석 실행
         start_datetime = datetime.combine(start_date, datetime.min.time())
         end_datetime = datetime.combine(end_date, datetime.max.time())
-
+        st.markdown(f"{start_datetime}부터 {end_datetime}까지의 자료를 분석합니다...")
         results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, buy_price_adjustment, sell_price_adjustment, date_window)
-
+        logging.info("분석 실행 완료")
         # 결과 표시
         st.header('분석 결과')
         # 전체 통계
@@ -123,10 +135,6 @@ with tab1 :
         else:
             st.warning('목표가 도달 못한 거래 데이터가 없습니다.')
 
-        # # 환율 데이터 표시
-        # st.subheader('전체 환율 데이터')
-        # st.dataframe(filtered_df)
-
 with tab2 :
     # 사용자 입력 받기
     date_window = st.number_input('환율 분석 기간(일)', min_value=1, max_value=30, value=1)
@@ -134,23 +142,19 @@ with tab2 :
     n_adjustment = st.number_input('현재 조정값', min_value=0, max_value=10, value=1, step=1)
     # 버튼 클릭 시 여러 시뮬레이션 실행
     if st.button('모든 조합 시뮬레이션 실행'):
+        logging.info("시뮬레이션 버튼 클릭")
         # 결과 저장용 리스트
         buy_results = []  # 매수 결과 저장
         sell_results = []  # 매도 결과 저장
 
         # 통화 선택 후 데이터 필터링
-        filtered_trade_df = trade_df[
-            trade_df.apply(lambda x: 
-                (x['currencyCode0'] if x['currencyCode'] == 'KRW' else x['currencyCode']) in selected_currencies, 
-                axis=1
-            )
-        ]
+        filtered_trade_df = filter_trade_data(trade_df, selected_currencies)
         filtered_df = final_df[final_df['currencyCode'].isin(selected_currencies)]
-
+        logging.info("데이터 필터링 완료")
         # 분석 실행
         start_datetime = datetime.combine(start_date, datetime.min.time())
         end_datetime = datetime.combine(end_date, datetime.max.time())
-
+        st.markdown(f"{start_datetime}부터 {end_datetime}까지의 자료를 분석합니다...")
         n_results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, n_adjustment, n_adjustment, date_window)
         st.success("모든 조합 시뮬레이션이 완료되었습니다.")
         st.markdown(f"---")
@@ -160,9 +164,9 @@ with tab2 :
         display_metrics(n_results_df, buy_profit_df, sell_profit_df, n_adjustment, total_buy_amo, total_buy_pro, total_sell_amo, total_sell_pro)   
         st.markdown(f"---")        
         n_profit_df = pd.concat([buy_profit_df, sell_profit_df])
-        st.dataframe(n_profit_df)
+        # st.dataframe(n_profit_df)
 
-        st.markdown(f"---")
+        # st.markdown(f"---")
         st.subheader("profit")
         results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, adjustment, adjustment, date_window)
         (pre_buy_profit_df, pre_total_buy_amo, pre_total_buy_pro), (pre_sell_profit_df, pre_total_sell_amo, pre_total_sell_pro) = calculate_profit(results_df, adjustment, start_date, end_date)
@@ -171,7 +175,7 @@ with tab2 :
         display_metrics(results_df, pre_buy_profit_df, pre_sell_profit_df, adjustment, pre_total_buy_amo, pre_total_buy_pro, pre_total_sell_amo, pre_total_sell_pro)   
         st.markdown(f"---")        
         pre_profit_df = pd.concat([pre_buy_profit_df, pre_sell_profit_df])
-        st.dataframe(pre_profit_df)
+        # st.dataframe(pre_profit_df)
         # 시각화 실행
 
         st.header("Matching Success Rate")
@@ -220,14 +224,15 @@ with tab2 :
             })
 
             # 결과 출력 (각 조건별로 변동되는 수익과 거래량을 확인)
-            print(f"조건: (date_window: {i}, adjustment: {j})")
-            print(f"매수 거래량: {total_buy_amo}, 매도 거래량: {total_sell_amo}")
-            print(f"매수 수익: {total_buy_pro}, 매도 수익: {total_sell_pro}")
+            logging.info(f"조건: (date_window: {i}, adjustment: {j})")
+            logging.info(f"매수 거래량: {total_buy_amo}, 매도 거래량: {total_sell_amo}")
+            logging.info(f"매수 수익: {total_buy_pro}, 매도 수익: {total_sell_pro}")
 
 
         # 결과를 DataFrame으로 변환
         profit_df = pd.DataFrame(profit_results)
-
+        logging.info(f"시뮬레이션 실행 완료")
+        logging.info(f"{profit_df.head(10)}")
         # 피벗 테이블 생성
         heatmap_data = profit_df.pivot_table(index="date_window", columns="adjustment", values=["total_buy_pro", "total_sell_pro"])
 
@@ -238,3 +243,37 @@ with tab2 :
         plt.xlabel('조정 값')
         plt.ylabel('날짜 범위')
         st.pyplot(plt)
+
+        # 매수 거래량 바 그래프 시각화
+        buy_volume_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_buy_amo")
+        buy_volume_data.plot(kind='line', figsize=(12, 8))
+        plt.title('매수 거래량 바 그래프')
+        plt.xlabel('날짜 범위')
+        plt.ylabel('거래량')
+        st.pyplot(plt)
+
+        # 매도 거래량 바 그래프 시각화
+        sell_volume_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_sell_amo")
+        sell_volume_data.plot(kind='line', figsize=(12, 8))
+        plt.title('매도 거래량 바 그래프')
+        plt.xlabel('날짜 범위')
+        plt.ylabel('거래량')
+        st.pyplot(plt)
+
+        # 매수 수익 바 그래프 시각화
+        buy_profit_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_buy_pro")
+        buy_profit_data.plot(kind='line', figsize=(12, 8))
+        plt.title('매수 수익 바 그래프')
+        plt.xlabel('날짜 범위')
+        plt.ylabel('수익')
+        st.pyplot(plt)
+
+        # 매도 수익 바 그래프 시각화
+        sell_profit_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_sell_pro")
+        sell_profit_data.plot(kind='line', figsize=(12, 8))
+        plt.title('매도 수익 바 그래프')
+        plt.xlabel('날짜 범위')
+        plt.ylabel('수익')
+        st.pyplot(plt)
+
+        profit_df.to_csv('./test.csv')
