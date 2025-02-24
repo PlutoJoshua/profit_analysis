@@ -147,19 +147,4 @@ def plot_matching_success(results_df, title):
     fig = px.pie(found_counts, values='count', names='found', title=title)
     st.plotly_chart(fig)
 
-# 수익률 비교
-def plot_profit_comparison(buy_profit_df, sell_profit_df):
-    buy_total = buy_profit_df['amount'].sum()
-    sell_total = sell_profit_df['amount'].sum()
-
-    fig = go.Figure(data=[
-        go.Bar(name='Buy Profit', x=['Profit'], y=[buy_total], marker_color='blue'),
-        go.Bar(name='Sell Profit', x=['Profit'], y=[sell_total], marker_color='red')
-    ])
-    fig.update_layout(
-        title_text="Buy vs Sell Profit Comparison",
-        yaxis_title="Total Profit",
-        barmode='group'
-    )
-    st.plotly_chart(fig)
 

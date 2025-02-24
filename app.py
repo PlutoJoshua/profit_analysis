@@ -4,7 +4,13 @@ from datetime import datetime, timedelta
 import plotly.express as px
 from data import load_data
 import itertools
-from profit import analyze_target_prices, calculate_profit, display_metrics, plot_profit_over_time, plot_matching_success, plot_profit_comparison
+from profit import analyze_target_prices, calculate_profit, display_metrics, plot_profit_over_time, plot_matching_success
+
+import matplotlib.pyplot as plt
+import matplotlib as rc
+rc.rcParams['font.family'] = 'AppleGothic'
+import seaborn as sns
+
 
 # 데이터 로드
 final_df, trade_df = load_data()
@@ -128,8 +134,6 @@ with tab2 :
     n_adjustment = st.number_input('현재 조정값', min_value=0, max_value=10, value=1, step=1)
     # 버튼 클릭 시 여러 시뮬레이션 실행
     if st.button('모든 조합 시뮬레이션 실행'):
-
-
         # Streamlit 세션 상태 초기화
         if 'cached_analysis' not in st.session_state:
             st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
@@ -153,7 +157,6 @@ with tab2 :
 
         n_results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, n_adjustment, n_adjustment, date_window)
         st.success("모든 조합 시뮬레이션이 완료되었습니다.")
-        st.dataframe(n_results_df)
         st.markdown(f"---")
         (buy_profit_df, total_buy_amo, total_buy_pro), (sell_profit_df, total_sell_amo, total_sell_pro) = calculate_profit(n_results_df, n_adjustment, start_date, end_date)
         # n_success_rate = (n_results_df['found'].sum() / len(n_results_df)) * 100
@@ -171,65 +174,9 @@ with tab2 :
         # success_rate = (results_df['found'].sum() / len(results_df)) * 100
         display_metrics(results_df, pre_buy_profit_df, pre_sell_profit_df, adjustment, pre_total_buy_amo, pre_total_buy_pro, pre_total_sell_amo, pre_total_sell_pro)   
         st.markdown(f"---")        
-        pre_profit_df = pd.concat([buy_profit_df, sell_profit_df])
+        pre_profit_df = pd.concat([pre_buy_profit_df, pre_sell_profit_df])
         st.dataframe(pre_profit_df)
         # st.dataframe(profit_df)
-
-        # 가능한 모든 조합 생성
-        date_windows = range(1, date_window + 1) 
-        adjustments = [i * 1.0 for i in range(1, adjustment + 1)]  # 목표가
-
-        # 모든 조합 생성
-        all_combinations = itertools.product(date_windows, adjustments)
-
-        # 각 조합에 대해 분석 실행
-        for i, j in all_combinations:
-            # 분석 실행
-            results_df, _ = analyze_target_prices(
-                filtered_df, 
-                filtered_trade_df, 
-                start_datetime, 
-                end_datetime, 
-                j, 
-                j, 
-                i
-            )
-
-            # 중복 거래를 제거 (currency, executedAt, amount 기준)
-            results_df = results_df.drop_duplicates(subset=['currency', 'executedAt', 'amount'])
-
-            # 통화별 분석
-            currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
-                'found': ['count', 'sum'],
-                'match_count': 'sum',
-                'amount': 'sum'  # 거래량 합계 추가
-            }).round(2)
-            currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수', '총 거래량']
-
-            # 거래 성사률 계산
-            currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
-            currency_analysis = currency_analysis.reset_index()
-
-            # 수익 계산 (date_window와 관계없이)
-            currency_analysis['profit'] = currency_analysis['총 거래량'] * adjustment
-
-            # 설명 추가
-            currency_analysis[['date_window', 'adjustment']] = date_window, adjustment
-            # 결과 누적
-            if '매수' in currency_analysis['order_type'].values:  # 매수 결과
-                buy_results.append(currency_analysis[currency_analysis['order_type'] == '매수'])
-            if '매도' in currency_analysis['order_type'].values:  # 매도 결과
-                sell_results.append(currency_analysis[currency_analysis['order_type'] == '매도'])
-
-        # 모든 결과를 하나의 DataFrame으로 병합
-        all_buy_simulations_df = pd.concat(buy_results, ignore_index=True)
-        all_sell_simulations_df = pd.concat(sell_results, ignore_index=True)
-
-        # 기존 누적된 데이터에 병합
-        st.session_state.cached_analysis = pd.concat(
-            [st.session_state.cached_analysis, all_buy_simulations_df, all_sell_simulations_df],
-            ignore_index=True
-        ).drop_duplicates().reset_index(drop=True)
 
         # 시각화 실행
         st.header("Profit Over Time")
@@ -240,54 +187,57 @@ with tab2 :
         plot_matching_success(n_results_df, "Matching Success for N Adjustment")
         plot_matching_success(results_df, "Matching Success for Pre Adjustment")
 
-        st.header("Profit Comparison")
-        plot_profit_comparison(buy_profit_df, sell_profit_df)
-        plot_profit_comparison(pre_buy_profit_df, pre_sell_profit_df)
+        # 가능한 모든 조합 생성
+        date_windows = range(1, date_window + 1) 
+        adjustments = [i * 1.0 for i in range(1, adjustment + 1)]  # 목표가
 
+        # 수익 기록을 위한 리스트
+        profit_results = []
 
-        # # 누적된 결과 출력
-        # st.subheader('누적된 통화별 목표가 도달 거래 수')
-        # st.dataframe(st.session_state.cached_analysis, use_container_width=True)
+        # 모든 조합 생성
+        all_combinations = itertools.product(date_windows, adjustments)
 
+        # 각 조합에 대해 분석 실행
+        for i, j in all_combinations:
+            print(f"현재 조합: date_window={i}, adjustment={j}")
+            # 분석 실행
+            results_df, _ = analyze_target_prices(
+                filtered_df, 
+                filtered_trade_df, 
+                start_datetime, 
+                end_datetime, 
+                j,  # 목표가 설정 (매도)
+                j,  # 목표가 설정 (매수)
+                i   # date_window
+            )
 
+            # 중복 거래를 제거 (currency, executedAt, amount 기준)
+            results_df = results_df.drop_duplicates(subset=['currency', 'executedAt', 'amount'])
+            # 거래가 성사된 (`found == True`) 데이터만 필터링
+            valid_trades = results_df[results_df['found']]
 
+            # 수익 계산 (각 거래별 amount * adjustment)
+            valid_trades['profit'] = valid_trades['amount'] * j  # 조정값 적용
 
+            # 조합 정보 추가
+            valid_trades['date_window'] = i
+            valid_trades['adjustment'] = j
 
+            # 필요한 컬럼만 선택하여 리스트에 추가
+            profit_results.extend(valid_trades[['date_window', 'adjustment', 'currency', 'order_type', 'profit']].values.tolist())
 
+        # 리스트 상태 출력
+        print(f"전체 profit_results 길이: {len(profit_results)}")
+        # DataFrame 변환
+        profit_df = pd.DataFrame(profit_results, columns=['date_window', 'adjustment', 'currency', 'order_type', 'profit'])
+        # print(profit_df)
+        # 조합별 총 수익 계산 (피벗 테이블 생성)
+        heatmap_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="profit", aggfunc="sum")
 
-        # # Streamlit 세션 상태 초기화
-    # if 'cached_analysis' not in st.session_state:
-    #     st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
-
-    # # 누적된 결과 초기화 버튼
-    # if st.button('누적된 결과 초기화'):
-    #     st.session_state.cached_analysis = pd.DataFrame(columns=['currency', 'order_type', '전체 거래', '목표가 도달', '총 매칭 횟수', '거래 성사률 (%)'])
-    #     st.success("누적된 결과가 초기화되었습니다.")
-
-    # # 새 분석 결과 생성
-    # currency_analysis = results_df.groupby(['currency', 'order_type']).agg({
-    #     'found': ['count', 'sum'],
-    #     'match_count': 'sum',
-    #     'amount': 'sum'  # 거래량 합계 추가
-    # }).round(2)
-    # currency_analysis.columns = ['전체 거래', '목표가 도달', '총 매칭 횟수', '총 거래량']
-    # currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
-    # currency_analysis = currency_analysis.reset_index()
-
-    # # 거래량 합계를 date_window 별로 추가
-    # currency_analysis['총 거래량'] = results_df.groupby(['currency', 'order_type'])['amount'].sum().reset_index(drop=True)
-
-    # currency_analysis['거래 성사률 (%)'] = ((currency_analysis['목표가 도달'] / currency_analysis['전체 거래']) * 100).round(2)
-    # currency_analysis = currency_analysis.reset_index()
-    # # profit 계산 추가
-    # currency_analysis['profit'] = currency_analysis['총 거래량'] * buy_price_adjustment
-    # # 설명 추가
-    # currency_analysis[['date_window', 'adjustment']] = date_window, sell_price_adjustment
-
-    # if not currency_analysis.empty:
-    #     # 기존 데이터와 새 데이터 누적 저장
-    #     st.session_state.cached_analysis = pd.concat([st.session_state.cached_analysis, currency_analysis], ignore_index=True).drop_duplicates().reset_index(drop=True)
-
-    # # 누적된 결과 출력
-    # st.subheader('누적된 통화별 목표가 도달 거래 수')
-    # st.dataframe(st.session_state.cached_analysis, use_container_width=True)
+        # 열지도 시각화
+        plt.figure(figsize=(12, 8))
+        sns.heatmap(heatmap_data, annot=True, fmt=".1f", cmap="YlGnBu")
+        plt.title('수익 변화 열지도')
+        plt.xlabel('조정 값')
+        plt.ylabel('날짜 범위')
+        st.pyplot(plt)
