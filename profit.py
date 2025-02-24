@@ -68,7 +68,7 @@ def analyze_target_prices(filtered_df, trade_df, start_date, end_date, buy_price
 
 @st.cache_data
 # 수익 계산 함수
-def calculate_profit(results_df, adjustment, start_date, end_date):
+def calculate_profit(results_df, adjustment, start_date, end_date, date_window):
     # start_date와 end_date를 datetime64[ns]로 변환
     start_datetime = pd.to_datetime(start_date)
     end_datetime = pd.to_datetime(end_date)
@@ -76,13 +76,14 @@ def calculate_profit(results_df, adjustment, start_date, end_date):
     # 'found'가 True인 경우에만 수익 계산
     profit_df = results_df[
         (results_df['executedAt'] >= start_datetime) &
-        (results_df['executedAt'] <= end_datetime) &
+        (results_df['executedAt'] <= end_datetime + timedelta(days=date_window)) &
         (results_df['found'] == True)
     ]
     
     # 매수와 매도에 따른 수익 계산
-    buy_profit_df = profit_df[profit_df['order_type'] == '매수']
-    sell_profit_df = profit_df[profit_df['order_type'] == '매도']
+    # 매수와 매도 데이터 복사본 생성
+    buy_profit_df = profit_df[profit_df['order_type'] == '매수'].copy()
+    sell_profit_df = profit_df[profit_df['order_type'] == '매도'].copy()
     
     buy_profit_df['profit'] = buy_profit_df['amount'] * adjustment
     sell_profit_df['profit'] = sell_profit_df['amount'] * adjustment
@@ -103,7 +104,7 @@ def display_metrics(results_df, buy_results_df, sell_results_df, adjustment, tot
     with col1:
         st.metric('전체 거래 수', len(results_df))
     with col2:
-        total_found = buy_results_df['found'].sum() + sell_results_df['found'].sum()
+        total_found = results_df['found'].sum()
         st.metric('목표가 도달 거래 수', total_found)
     with col3:
         total_buy_results = buy_results_df['found'].sum()

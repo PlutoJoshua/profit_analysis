@@ -159,7 +159,7 @@ with tab2 :
         n_results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, n_adjustment, n_adjustment, date_window)
         st.success("모든 조합 시뮬레이션이 완료되었습니다.")
         st.markdown(f"---")
-        (buy_profit_df, total_buy_amo, total_buy_pro), (sell_profit_df, total_sell_amo, total_sell_pro) = calculate_profit(n_results_df, n_adjustment, start_date, end_date)
+        (buy_profit_df, total_buy_amo, total_buy_pro), (sell_profit_df, total_sell_amo, total_sell_pro) = calculate_profit(n_results_df, n_adjustment, start_date, end_date, date_window)
         # n_success_rate = (n_results_df['found'].sum() / len(n_results_df)) * 100
          # 전체 통계
         display_metrics(n_results_df, buy_profit_df, sell_profit_df, n_adjustment, total_buy_amo, total_buy_pro, total_sell_amo, total_sell_pro)   
@@ -170,7 +170,7 @@ with tab2 :
         # st.markdown(f"---")
         st.subheader("profit")
         results_df, matched_rates_df = analyze_target_prices(filtered_df, filtered_trade_df, start_datetime, end_datetime, adjustment, adjustment, date_window)
-        (pre_buy_profit_df, pre_total_buy_amo, pre_total_buy_pro), (pre_sell_profit_df, pre_total_sell_amo, pre_total_sell_pro) = calculate_profit(results_df, adjustment, start_date, end_date)
+        (pre_buy_profit_df, pre_total_buy_amo, pre_total_buy_pro), (pre_sell_profit_df, pre_total_sell_amo, pre_total_sell_pro) = calculate_profit(results_df, adjustment, start_date, end_date, date_window)
         
         # success_rate = (results_df['found'].sum() / len(results_df)) * 100
         display_metrics(results_df, pre_buy_profit_df, pre_sell_profit_df, adjustment, pre_total_buy_amo, pre_total_buy_pro, pre_total_sell_amo, pre_total_sell_pro)   
@@ -205,14 +205,15 @@ with tab2 :
                 j,  # 목표가 설정 (매수)
                 i   # date_window
             )
-            # 결과를 CSV 파일로 저장
-            results_df.to_csv(f'results_date_window_{i}_adjustment_{j}.csv', index=False)
+            logging.info(f"{i, j}조합 분석 실행중 ... ")
+            logging.info(f"{results_df.head(10)}")
             # calculate_profit 함수 호출하여 수익 계산
             (buy_profit_df, total_buy_amo, total_buy_pro), (sell_profit_df, total_sell_amo, total_sell_pro) = calculate_profit(
                 results_df, 
                 j,  # 조정값
                 start_datetime, 
                 end_datetime,
+                i   # date_window                
             )
 
             # 결과 조합 정보 추가
@@ -273,14 +274,6 @@ with tab2 :
                                    title='매도 수익 바 그래프', 
                                    labels={'value': '수익', 'date_window': '날짜 범위'})
         st.plotly_chart(fig_sell_profit)
-
-        # 매도 수익 바 그래프 시각화
-        sell_profit_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_sell_pro")
-        sell_profit_data.plot(kind='line', figsize=(12, 8))
-        plt.title('매도 수익 바 그래프')
-        plt.xlabel('날짜 범위')
-        plt.ylabel('수익')
-        st.pyplot(plt)
 
         profit_results_df = pd.DataFrame(results_df)
         profit_results_df.to_csv('./result.csv')
