@@ -154,14 +154,14 @@ def plot_matching_success(results_df, title):
     found_counts = results_df['found'].value_counts().reset_index()
     found_counts.columns = ['found', 'count']
     found_counts['found'] = found_counts['found'].map({True: 'Matched', False: 'Not Matched'})
-
+    found_counts = found_counts.to_pandas()
     fig = px.pie(
         found_counts, 
         values='count', 
         names='found', 
         title=title,
-        category_orders={'found':["Matched", "Not Matched"]}  # 범례 순서 고정
     )
+
 
     st.plotly_chart(fig)
 
