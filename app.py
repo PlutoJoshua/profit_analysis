@@ -190,7 +190,7 @@ with tab2 :
 
         # 각 조합에 대해 분석 실행
         for i, j in all_combinations:
-            # 분석 실행
+            # 분석 실행 (각 조정값별로)
             results_df, _ = analyze_target_prices(
                 filtered_df, 
                 filtered_trade_df, 
@@ -206,32 +206,32 @@ with tab2 :
                 results_df, 
                 j,  # 조정값
                 start_datetime, 
-                end_datetime
+                end_datetime,
             )
 
             # 결과 조합 정보 추가
             profit_results.append({
                 'date_window': i,
                 'adjustment': j,
-                'total_buy_amount': total_buy_amo,
-                'total_buy_profit': total_buy_pro,
-                'total_sell_amount': total_sell_amo,
-                'total_sell_profit': total_sell_pro
+                'total_buy_amo': total_buy_amo,
+                'total_buy_pro': total_buy_pro,
+                'total_sell_amo': total_sell_amo,
+                'total_sell_pro': total_sell_pro
             })
 
-            # 필요 시 추가적으로 결과 출력
-            print(f"현재 조합: date_window={i}, adjustment={j}")
-            print(f"매수 수익: {total_buy_pro}, 매도 수익: {total_sell_pro}")
+            # 결과 출력 (각 조건별로 변동되는 수익과 거래량을 확인)
+            print(f"조건: (date_window: {i}, adjustment: {j})")
             print(f"매수 거래량: {total_buy_amo}, 매도 거래량: {total_sell_amo}")
+            print(f"매수 수익: {total_buy_pro}, 매도 수익: {total_sell_pro}")
+
 
         # 결과를 DataFrame으로 변환
         profit_df = pd.DataFrame(profit_results)
-        profit_df.to_csv("./test.csv")
-        # DataFrame 변환
-        # 조합별 총 수익 계산 (피벗 테이블 생성)
-        heatmap_data = profit_df.pivot_table(index="date_window", columns="adjustment", values=["total_buy_profit", "total_sell_profit"])
 
-        # 열지도 시각화
+        # 피벗 테이블 생성
+        heatmap_data = profit_df.pivot_table(index="date_window", columns="adjustment", values=["total_buy_pro", "total_sell_pro"])
+
+        # 열지도 그리기
         plt.figure(figsize=(12, 8))
         sns.heatmap(heatmap_data, annot=True, fmt=".1f", cmap="YlGnBu")
         plt.title('수익 변화 열지도')
