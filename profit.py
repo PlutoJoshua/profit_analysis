@@ -141,16 +141,28 @@ def plot_profit_over_time(profit_df, title):
     )
     st.plotly_chart(fig)
 
+import pandas as pd
+import plotly.express as px
+import streamlit as st
+
 # 매칭 성공률 파이차트
 def plot_matching_success(results_df, title):
+    # 만약 'narwhals' 데이터프레임이라면 pandas로 변환
+    if isinstance(results_df, pd.DataFrame) is False:
+        results_df = results_df.to_pandas()
+
     found_counts = results_df['found'].value_counts().reset_index()
     found_counts.columns = ['found', 'count']
     found_counts['found'] = found_counts['found'].map({True: 'Matched', False: 'Not Matched'})
 
-    # 범례 순서 지정
-    fig = px.pie(found_counts, values='count', names='found', title=title, 
-                #  category_orders={'found': ['Matched', 'Not Matched']}
-                )
+    fig = px.pie(
+        found_counts, 
+        values='count', 
+        names='found', 
+        title=title,
+        category_orders={'found':["Matched", "Not Matched"]}  # 범례 순서 고정
+    )
+
     st.plotly_chart(fig)
 
 
