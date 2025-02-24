@@ -636,3 +636,121 @@
 2025-02-24 14:24:30,629 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
 2025-02-24 14:24:30,629 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
 2025-02-24 14:24:30,629 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,849 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/30/3f5697955f47b1112facdad2380249d1c40a32", inode=5167771, flags=110100, id=85650071): is_created, is_file, is_hardlink
+2025-02-24 14:25:04,849 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/30", inode=5167770, flags=28500, id=85650074): is_created, is_directory, is_inode_meta_mod, is_xattr_mod
+2025-02-24 14:25:04,849 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/30/tmp_obj_AS0Ux5", inode=5167771, flags=119300, id=85650077): is_coalesced, is_created, is_file, is_hardlink, is_modified, is_removed, is_xattr_mod
+2025-02-24 14:25:04,849 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/0f/bc5f1525e17bd8914c96bd90f5bfad133f97c8", inode=5167774, flags=110100, id=85650089): is_created, is_file, is_hardlink
+2025-02-24 14:25:04,849 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/0f", inode=1573990, flags=20400, id=85650092): is_directory, is_inode_meta_mod
+2025-02-24 14:25:04,849 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/0f/tmp_obj_w5UNcU", inode=5167774, flags=119300, id=85650095): is_coalesced, is_created, is_file, is_hardlink, is_modified, is_removed, is_xattr_mod
+2025-02-24 14:25:04,849 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/a1/1cb051d2e884c051ff1c48a971e7969bc750b5", inode=5167777, flags=110100, id=85650107): is_created, is_file, is_hardlink
+2025-02-24 14:25:04,849 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/a1", inode=3098018, flags=20400, id=85650110): is_directory, is_inode_meta_mod
+2025-02-24 14:25:04,849 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/a1/tmp_obj_WXIjFX", inode=5167777, flags=119300, id=85650113): is_coalesced, is_created, is_file, is_hardlink, is_modified, is_removed, is_xattr_mod
+2025-02-24 14:25:04,849 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/6a/d3194400d4e8cb1e5f6c740afcf0371c4faeaf", inode=5167781, flags=110100, id=85650131): is_created, is_file, is_hardlink
+2025-02-24 14:25:04,850 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/6a", inode=5167780, flags=28500, id=85650134): is_created, is_directory, is_inode_meta_mod, is_xattr_mod
+2025-02-24 14:25:04,850 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/6a/tmp_obj_HvZhn9", inode=5167781, flags=119300, id=85650137): is_coalesced, is_created, is_file, is_hardlink, is_modified, is_removed, is_xattr_mod
+2025-02-24 14:25:04,850 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/index.lock", inode=5167769, flags=19900, id=85650143): is_coalesced, is_created, is_file, is_modified, is_renamed, is_xattr_mod
+2025-02-24 14:25:04,850 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/index", inode=5167769, flags=10800, id=85650144): is_file, is_renamed
+2025-02-24 14:25:04,850 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/index", inode=5059321, flags=10800, id=85650145): is_file, is_renamed
+2025-02-24 14:25:04,850 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/30/3f5697955f47b1112facdad2380249d1c40a32', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,850 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/30', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,850 - DEBUG - queue_event DirCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/30', dest_path='', event_type='created', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,850 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,850 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/30', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,850 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/30/tmp_obj_AS0Ux5', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,850 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/30/tmp_obj_AS0Ux5', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,850 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/30', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,851 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/0f/bc5f1525e17bd8914c96bd90f5bfad133f97c8', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,851 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/0f', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,851 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/0f', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,851 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/0f/tmp_obj_w5UNcU', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,851 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/0f/tmp_obj_w5UNcU', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,851 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/0f', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,851 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/a1/1cb051d2e884c051ff1c48a971e7969bc750b5', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,851 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/a1', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/a1', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/a1/tmp_obj_WXIjFX', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/a1/tmp_obj_WXIjFX', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/a1', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/6a/d3194400d4e8cb1e5f6c740afcf0371c4faeaf', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/6a', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event DirCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/6a', dest_path='', event_type='created', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/6a', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/6a/tmp_obj_HvZhn9', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/6a/tmp_obj_HvZhn9', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/6a', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/index.lock', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/index.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,852 - DEBUG - Destination event for rename is NativeEvent(path="/Users/joshua/cuunit/profit/.git/index", inode=5167769, flags=10800, id=85650144)
+2025-02-24 14:25:04,853 - DEBUG - queue_event FileMovedEvent(src_path='/Users/joshua/cuunit/profit/.git/index.lock', dest_path='/Users/joshua/cuunit/profit/.git/index', event_type='moved', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,853 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,853 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,853 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/index', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,853 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/34/5716443a35d1aa9577fd6df86627b7f3a8b466", inode=5167785, flags=110100, id=85650163): is_created, is_file, is_hardlink
+2025-02-24 14:25:04,860 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/34", inode=2034374, flags=20400, id=85650166): is_directory, is_inode_meta_mod
+2025-02-24 14:25:04,860 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/34/tmp_obj_FrnXOw", inode=5167785, flags=119300, id=85650169): is_coalesced, is_created, is_file, is_hardlink, is_modified, is_removed, is_xattr_mod
+2025-02-24 14:25:04,860 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/index.lock", inode=5167784, flags=19900, id=85650175): is_coalesced, is_created, is_file, is_modified, is_renamed, is_xattr_mod
+2025-02-24 14:25:04,860 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/index", inode=5167784, flags=10800, id=85650176): is_file, is_renamed
+2025-02-24 14:25:04,860 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/index", inode=5167769, flags=10800, id=85650177): is_file, is_renamed
+2025-02-24 14:25:04,860 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/COMMIT_EDITMSG", inode=1574230, flags=11400, id=85650183): is_file, is_inode_meta_mod, is_modified
+2025-02-24 14:25:04,860 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/49", inode=5167788, flags=28100, id=85650189): is_created, is_directory, is_xattr_mod
+2025-02-24 14:25:04,860 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/49/tmp_obj_1AZqPu", inode=5167789, flags=19100, id=85650198): is_created, is_file, is_modified, is_xattr_mod
+2025-02-24 14:25:04,860 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/34/5716443a35d1aa9577fd6df86627b7f3a8b466', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/34', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/34', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/34/tmp_obj_FrnXOw', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/34/tmp_obj_FrnXOw', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/34', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/index.lock', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/index.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - Destination event for rename is NativeEvent(path="/Users/joshua/cuunit/profit/.git/index", inode=5167784, flags=10800, id=85650176)
+2025-02-24 14:25:04,860 - DEBUG - queue_event FileMovedEvent(src_path='/Users/joshua/cuunit/profit/.git/index.lock', dest_path='/Users/joshua/cuunit/profit/.git/index', event_type='moved', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,860 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,861 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/index', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,861 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,861 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/COMMIT_EDITMSG', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,861 - DEBUG - queue_event DirCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/49', dest_path='', event_type='created', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,861 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,861 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/49', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,861 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/49/tmp_obj_1AZqPu', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,861 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/49', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,861 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/49/tmp_obj_1AZqPu', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,870 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/49/cf7a5a84373650919cc5ca5047213ee272d4bf", inode=5167789, flags=110100, id=85650201): is_created, is_file, is_hardlink
+2025-02-24 14:25:04,870 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/49", inode=5167788, flags=28500, id=85650204): is_created, is_directory, is_inode_meta_mod, is_xattr_mod
+2025-02-24 14:25:04,870 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/49/tmp_obj_1AZqPu", inode=5167789, flags=119300, id=85650207): is_coalesced, is_created, is_file, is_hardlink, is_modified, is_removed, is_xattr_mod
+2025-02-24 14:25:04,870 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/logs/HEAD", inode=1574237, flags=11000, id=85650225): is_file, is_modified
+2025-02-24 14:25:04,870 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/logs/refs/heads/main", inode=1574239, flags=11000, id=85650228): is_file, is_modified
+2025-02-24 14:25:04,870 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/refs/heads/main.lock", inode=5167793, flags=19900, id=85650231): is_coalesced, is_created, is_file, is_modified, is_renamed, is_xattr_mod
+2025-02-24 14:25:04,870 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/refs/heads/main", inode=5167793, flags=10800, id=85650232): is_file, is_renamed
+2025-02-24 14:25:04,870 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/refs/heads/main", inode=5059329, flags=10800, id=85650233): is_file, is_renamed
+2025-02-24 14:25:04,870 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/HEAD.lock", inode=5167792, flags=18300, id=85650236): is_coalesced, is_created, is_file, is_removed, is_xattr_mod
+2025-02-24 14:25:04,870 - DEBUG - NativeEvent(path="/Users/joshua/cuunit/profit/.git/objects/maintenance.lock", inode=5167794, flags=18300, id=85650245): is_coalesced, is_created, is_file, is_removed, is_xattr_mod
+2025-02-24 14:25:04,870 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/49', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,870 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/49/tmp_obj_1AZqPu', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/49/tmp_obj_1AZqPu', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/49', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/logs/HEAD', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/logs/refs/heads/main', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/refs/heads/main.lock', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/refs/heads', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/refs/heads/main.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - Destination event for rename is NativeEvent(path="/Users/joshua/cuunit/profit/.git/refs/heads/main", inode=5167793, flags=10800, id=85650232)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileMovedEvent(src_path='/Users/joshua/cuunit/profit/.git/refs/heads/main.lock', dest_path='/Users/joshua/cuunit/profit/.git/refs/heads/main', event_type='moved', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/refs/heads', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/refs/heads', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/refs/heads/main', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/refs/heads', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/HEAD.lock', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/HEAD.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/HEAD.lock', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,871 - DEBUG - queue_event FileCreatedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='created', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,872 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
+2025-02-24 14:25:04,872 - DEBUG - queue_event FileModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='modified', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,872 - DEBUG - queue_event FileDeletedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects/maintenance.lock', dest_path='', event_type='deleted', is_directory=False, is_synthetic=False)
+2025-02-24 14:25:04,872 - DEBUG - queue_event DirModifiedEvent(src_path='/Users/joshua/cuunit/profit/.git/objects', dest_path='', event_type='modified', is_directory=True, is_synthetic=False)
