@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import mysql.connector
 import json
+import os
 
 # MySQL 연결 함수
 def get_mysql_connection():
