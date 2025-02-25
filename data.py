@@ -8,7 +8,7 @@ import plotly.express as px
 @st.cache_data # 함수가 실행되고 결과 캐시 저장
 def load_data():
     # 매매기준율 데이터 로드 및 전처리 코드
-    df = pd.read_csv('../mama.csv', sep='\t', dtype=str)
+    df = pd.read_csv('./data/mama.csv', sep='\t', dtype=str)
     df.columns = ['createdAt,data']
     df = df['createdAt,data'].str.split(',', n=1, expand=True)
     df.columns = ['createdAt', 'data']
@@ -41,7 +41,7 @@ def load_data():
     final_df = pd.concat(parsed_data, ignore_index=True)
     
     # 거래 데이터 로드
-    trade_df = pd.read_csv('../trade.csv')
+    trade_df = pd.read_csv('./data/trade_08_02.csv')
     trade_df['executedAt'] = pd.to_datetime(trade_df['executedAt'], format='%Y-%m-%d %H:%M:%S') + pd.Timedelta(hours=9) # UTC -> KST
     
     return final_df, trade_df

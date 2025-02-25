@@ -1,0 +1,4 @@
+# Docker 및 환경 파일 무시
+docker-compose.yml
+*.env
+docker-entrypoint-initdb.d/
