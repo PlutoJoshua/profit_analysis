@@ -50,7 +50,7 @@ def load_data():
 @st.cache_data # 함수가 실행되고 결과 캐시 저장
 def load_trade_data():
     # 거래 데이터 로드
-    trade_df = pd.read_csv('./trade_08_02.csv')
+    trade_df = pd.read_csv('./trade.csv')
     trade_df['executedAt'] = pd.to_datetime(trade_df['executedAt'], format='%Y-%m-%d %H:%M:%S') + pd.Timedelta(hours=9) # UTC -> KST
     
     return trade_df
