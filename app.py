@@ -253,9 +253,9 @@ with tab2 :
         # 열지도 그리기
         plt.figure(figsize=(12, 8))
         sns.heatmap(heatmap_data, annot=True, fmt=".1f", cmap="YlGnBu")
-        plt.title('수익 변화 열지도')
-        plt.xlabel('조정 값')
-        plt.ylabel('날짜 범위')
+        plt.title('profit heatmap')
+        plt.xlabel('adjustment')
+        plt.ylabel('date')
         st.pyplot(plt)
 
         # 매수 거래량 바 그래프 시각화
