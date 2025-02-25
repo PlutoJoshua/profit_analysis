@@ -261,14 +261,14 @@ with tab2 :
         # 매수 거래량 바 그래프 시각화
         buy_volume_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_buy_amo")
         fig_buy_volume = px.line(buy_volume_data, 
-                                  title='매수 거래량 바 그래프', 
+                                  title='매수 거래금액(amount) 바 그래프', 
                                   labels={'value': '거래량', 'date_window': '날짜 범위'})
         st.plotly_chart(fig_buy_volume)
 
         # 매도 거래량 바 그래프 시각화
         sell_volume_data = profit_df.pivot_table(index="date_window", columns="adjustment", values="total_sell_amo")
         fig_sell_volume = px.line(sell_volume_data, 
-                                   title='매도 거래량 바 그래프', 
+                                   title='매도 거래금액(amount) 바 그래프', 
                                    labels={'value': '거래량', 'date_window': '날짜 범위'})
         st.plotly_chart(fig_sell_volume)
 
