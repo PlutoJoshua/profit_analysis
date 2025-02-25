@@ -3,3 +3,4 @@ docker-compose.yml
 *.env
 docker-entrypoint-initdb.d/
 data/
+.streamlit/secrets.toml

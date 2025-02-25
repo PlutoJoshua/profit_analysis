@@ -4,3 +4,4 @@ plotly
 matplotlib
 seaborn
 logging
+mysql-connector-python
