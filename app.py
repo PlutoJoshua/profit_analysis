@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 import plotly.express as px
-from data import load_data, filter_trade_data
+from data import load_data, filter_trade_data, load_final_data, load_trade_data
 import itertools
 from profit import analyze_target_prices, calculate_profit, display_metrics, plot_matching_success
 import matplotlib.pyplot as plt
@@ -23,7 +23,9 @@ logging.basicConfig(
 rc.rcParams['font.family'] = 'AppleGothic'
 
 # 데이터 로드
-final_df, trade_df = load_data()
+final_df = load_final_data()
+trade_df = load_trade_data()
+# final_df, trade_df = load_data()
 
 # Streamlit 앱 메인
 st.title('환율 목표가 분석')
