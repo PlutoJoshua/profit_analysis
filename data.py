@@ -1,31 +1,17 @@
 import streamlit as st
 import pandas as pd
-import mysql.connector
 import json
-import os
+from datetime import datetime
+import plotly.express as px
 
-# MySQL 연결 함수
-def get_mysql_connection():
-    # Streamlit secrets에서 MySQL 접속 정보 불러오기
-    conn = mysql.connector.connect(
-        host=st.secrets["mysql"]["host"],
-        user=st.secrets["mysql"]["user"],
-        password=st.secrets["mysql"]["password"],
-        database=st.secrets["mysql"]["database"]
-    )
-    return conn
 # 데이터 로드 함수
 @st.cache_data # 함수가 실행되고 결과 캐시 저장
 def load_data():
-    conn = get_mysql_connection()
-    # 매매기준율 데이터 로드 및 전처리
-    query = "SELECT createdAt, data FROM tb_currencyExchangeRate"
-    df = pd.read_sql(query, conn)
-
-    # 'createdAt'과 'data' 컬럼으로 분리
-    df[['createdAt', 'data']] = df['data'].str.split(',', n=1, expand=True)
-    df['createdAt'] = pd.to_datetime(df['createdAt'], format='%Y-%m-%d %H:%M:%S') + pd.Timedelta(hours=9)  # UTC -> KST
- 
+    # 매매기준율 데이터 로드 및 전처리 코드
+    df = pd.read_csv('../mama.csv', sep='\t', dtype=str)
+    df.columns = ['createdAt,data']
+    df = df['createdAt,data'].str.split(',', n=1, expand=True)
+    df.columns = ['createdAt', 'data']
     
     # JSON 파싱 함수
     def parse_json(json_str, created_at=None):
@@ -55,22 +41,17 @@ def load_data():
     final_df = pd.concat(parsed_data, ignore_index=True)
     
     # 거래 데이터 로드
-    trade_df = pd.read_sql("SELECT executedAt, transactionDetails FROM trade_data", conn)
-    trade_df['executedAt'] = pd.to_datetime(trade_df['executedAt'], format='%Y-%m-%d %H:%M:%S') + pd.Timedelta(hours=9)  # UTC -> KST
-    
-    conn.close()
+    trade_df = pd.read_csv('../trade.csv')
+    trade_df['executedAt'] = pd.to_datetime(trade_df['executedAt'], format='%Y-%m-%d %H:%M:%S') + pd.Timedelta(hours=9) # UTC -> KST
     
     return final_df, trade_df
 
-@st.cache_data  # 함수가 실행되고 결과 캐시 저장
+# 데이터 로드 함수
+@st.cache_data # 함수가 실행되고 결과 캐시 저장
 def load_trade_data():
-    conn = get_mysql_connection()
-    
     # 거래 데이터 로드
-    trade_df = pd.read_sql("SELECT executedAt, transactionDetails FROM trade_data", conn)
-    trade_df['executedAt'] = pd.to_datetime(trade_df['executedAt'], format='%Y-%m-%d %H:%M:%S') + pd.Timedelta(hours=9)  # UTC -> KST
-    
-    conn.close()
+    trade_df = pd.read_csv('../trade_08_02.csv')
+    trade_df['executedAt'] = pd.to_datetime(trade_df['executedAt'], format='%Y-%m-%d %H:%M:%S') + pd.Timedelta(hours=9) # UTC -> KST
     
     return trade_df
 
