@@ -242,7 +242,6 @@ with tab2 :
             logging.info(f"매수 거래량: {total_buy_amo}, 매도 거래량: {total_sell_amo}")
             logging.info(f"매수 수익: {total_buy_pro}, 매도 수익: {total_sell_pro}")
 
-
         # 결과를 DataFrame으로 변환
         profit_df = pd.DataFrame(profit_results)
         logging.info(f"시뮬레이션 실행 완료")
