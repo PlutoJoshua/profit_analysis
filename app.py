@@ -253,7 +253,7 @@ with tab2 :
         heatmap_data1 = profit_df.pivot_table(index="date_window", columns="adjustment", values=["total_buy_pro", "total_sell_pro"])
         # 열지도 그리기
         plt.figure(figsize=(12, 8))
-        sns.heatmap(heatmap_data1, annot=True, cmap="YlGnBu", annot_kws={"size": 8})  # 텍스트 크기 조정
+        sns.heatmap(heatmap_data1, annot=True, fmt=".0f", cmap="YlGnBu", annot_kws={"size": 8})  # 텍스트 크기 조정
         plt.title('profit heatmap')
         plt.xlabel('adjustment')
         plt.ylabel('date')
