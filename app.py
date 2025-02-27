@@ -218,6 +218,8 @@ with tab2 :
             results_df = results_df.drop_duplicates(subset=['currency', 'executedAt', 'amount'])
             logging.info(f"{i, j}조합 중복 제거... {len(results_df)}")
             logging.info(f"{results_df.head(10)}")
+            total_found = results_df['found'].sum()
+            total_success_rate = (total_found / len(results_df)) * 100 if len(results_df) > 0 else 0
             # calculate_profit 함수 호출하여 수익 계산
             (buy_profit_df, total_buy_amo, total_buy_pro), (sell_profit_df, total_sell_amo, total_sell_pro) = calculate_profit(
                 results_df, 
@@ -234,7 +236,8 @@ with tab2 :
                 'total_buy_amo': total_buy_amo,
                 'total_buy_pro': total_buy_pro,
                 'total_sell_amo': total_sell_amo,
-                'total_sell_pro': total_sell_pro
+                'total_sell_pro': total_sell_pro,
+                'total_success_rate': total_success_rate.round(2),
             })
 
             # 결과 출력 (각 조건별로 변동되는 수익과 거래량을 확인)
@@ -247,12 +250,20 @@ with tab2 :
         logging.info(f"시뮬레이션 실행 완료")
         logging.info(f"{profit_df.head(10)}")
         # 피벗 테이블 생성
-        heatmap_data = profit_df.pivot_table(index="date_window", columns="adjustment", values=["total_buy_pro", "total_sell_pro"])
-
+        heatmap_data1 = profit_df.pivot_table(index="date_window", columns="adjustment", values=["total_buy_pro", "total_sell_pro"])
         # 열지도 그리기
         plt.figure(figsize=(12, 8))
-        sns.heatmap(heatmap_data, annot=True, fmt=".1f", cmap="YlGnBu")
+        sns.heatmap(heatmap_data1, annot=True, cmap="YlGnBu", annot_kws={"size": 8})  # 텍스트 크기 조정
         plt.title('profit heatmap')
+        plt.xlabel('adjustment')
+        plt.ylabel('date')
+        st.pyplot(plt)
+        
+        heatmap_data2 = profit_df.pivot_table(index="date_window", columns="adjustment", values=["total_success_rate"])
+        # 열지도 그리기
+        plt.figure(figsize=(12, 8))
+        sns.heatmap(heatmap_data2, annot=True, fmt=".1f", cmap="YlGnBu")
+        plt.title('total_success_rate heatmap')
         plt.xlabel('adjustment')
         plt.ylabel('date')
         st.pyplot(plt)
